@@ -35,15 +35,16 @@ const scrapeSinglePlayerTransaction = async (playerUrl, playerTradeDate) => {
       .children('a[data-attr-to]')
       .text();
 
-    const string = $(this).text();
-    const substring = 'G-League';
-    const isGLeague = string.indexOf(substring) !== -1;
+    const tradeString = $(this).text();
+    const gLeague = 'G-League';
+    const isGLeague = tradeString.indexOf(gLeague) !== -1;
 
     if (!isGLeague) {
       data.push({
         transactionDate,
-        tradedBy,
-        tradedTo: status === 'drafted' ? '' : tradedTo,
+        tradedBy: getAbbr(tradedBy),
+        tradedTo:
+          status === 'drafted' ? '' : getAbbr(!isGLeague ? tradedTo : ''),
         status
       });
     }
