@@ -2,18 +2,18 @@ const puppeteer = require('puppeteer');
 const $ = require('cheerio');
 const utils = require('../utils');
 
-const { getAbbr } = utils;
+const { getAbbr, pruneTeam } = utils;
 
 const scrapeSinglePlayerTransaction = async (playerUrl, playerTradeDate) => {
   let data = [];
-  const selector = 'p.transaction';
+  const selector = '#div_transactions p';
 
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
   await page.goto(playerUrl);
   const html = await page.content();
 
-  $(selector, html).each(function() {
+  $(selector, html).each(function(index) {
     const status = $(this)
       .clone()
       .find('strong:nth-child(1)')
@@ -35,24 +35,43 @@ const scrapeSinglePlayerTransaction = async (playerUrl, playerTradeDate) => {
       .children('a[data-attr-to]')
       .text();
 
+    // const tradedFor = pruneTeam(
+    //   $(this)
+    //     .children('a:not(:nth-of-type(-n + 2))')
+    //     .text()
+    // );
+
+    const tradedFor = $(this)
+      .children('a:not(:nth-of-type(-n + 2))')
+      .map(function() {
+        return $(this).text();
+      })
+      .get();
+
     const tradeString = $(this).text();
     const gLeague = 'G-League';
     const isGLeague = tradeString.indexOf(gLeague) !== -1;
+    const notTraded =
+      status === 'drafted' || status === 'signed' || status === 'waived';
 
     if (!isGLeague) {
       data.push({
         transactionDate,
         tradedBy: getAbbr(tradedBy),
-        tradedTo:
-          status === 'drafted' ? '' : getAbbr(!isGLeague ? tradedTo : ''),
-        status
+        tradedTo: notTraded ? '' : getAbbr(!isGLeague ? tradedTo : ''),
+        status,
+        tradedFor: notTraded ? [] : pruneTeam(tradedFor)
       });
     }
   });
 
   await browser.close();
 
-  return data;
+  const dateTradedIndex = data.findIndex(
+    (date) => date.transactionDate === playerTradeDate
+  );
+
+  return data.splice(dateTradedIndex);
 };
 
 module.exports = scrapeSinglePlayerTransaction;

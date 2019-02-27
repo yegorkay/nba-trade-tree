@@ -1,3 +1,3 @@
 const getAbbr = require('./getAbbr');
-
-module.exports = { getAbbr };
+const pruneTeam = require('./pruneTeam');
+module.exports = { getAbbr, pruneTeam };
