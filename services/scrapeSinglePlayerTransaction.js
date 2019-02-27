@@ -35,12 +35,6 @@ const scrapeSinglePlayerTransaction = async (playerUrl, playerTradeDate) => {
       .children('a[data-attr-to]')
       .text();
 
-    // const tradedFor = pruneTeam(
-    //   $(this)
-    //     .children('a:not(:nth-of-type(-n + 2))')
-    //     .text()
-    // );
-
     const tradedFor = $(this)
       .children('a:not(:nth-of-type(-n + 2))')
       .map(function() {
