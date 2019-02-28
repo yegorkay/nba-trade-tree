@@ -2,7 +2,7 @@ const puppeteer = require('puppeteer');
 const $ = require('cheerio');
 const utils = require('../utils');
 
-const { getAbbr, pruneTeam } = utils;
+const { getAbbr, pruneTeam, getDraftPick /*extractDraftPick*/ } = utils;
 
 const scrapeSinglePlayerTransaction = async (playerUrl, playerTradeDate) => {
   let data = [];
@@ -13,7 +13,11 @@ const scrapeSinglePlayerTransaction = async (playerUrl, playerTradeDate) => {
   await page.goto(playerUrl);
   const html = await page.content();
 
-  $(selector, html).each(function(index) {
+  $(selector, html).each(function() {
+    const tradeString = $(this).text();
+    const gLeague = 'G-League';
+    const isGLeague = tradeString.indexOf(gLeague) !== -1;
+
     const status = $(this)
       .clone()
       .find('strong:nth-child(1)')
@@ -22,6 +26,9 @@ const scrapeSinglePlayerTransaction = async (playerUrl, playerTradeDate) => {
       .text()
       .split(' ')[1]
       .toLowerCase();
+
+    const notTraded =
+      status === 'drafted' || status === 'signed' || status === 'waived';
 
     const transactionDate = $(this)
       .children('strong:nth-child(1)')
@@ -42,19 +49,16 @@ const scrapeSinglePlayerTransaction = async (playerUrl, playerTradeDate) => {
       })
       .get();
 
-    const tradeString = $(this).text();
-    const gLeague = 'G-League';
-    const isGLeague = tradeString.indexOf(gLeague) !== -1;
-    const notTraded =
-      status === 'drafted' || status === 'signed' || status === 'waived';
-
     if (!isGLeague) {
+      // compare this to tradedFor and filter values that do not match console.log
+      // console.log(extractDraftPick(tradeString));
       data.push({
         transactionDate,
         tradedBy: getAbbr(tradedBy),
         tradedTo: notTraded ? '' : getAbbr(!isGLeague ? tradedTo : ''),
         status,
-        tradedFor: notTraded ? [] : pruneTeam(tradedFor)
+        tradedFor: notTraded ? [] : pruneTeam(tradedFor),
+        assets: getDraftPick(tradeString)
       });
     }
   });
