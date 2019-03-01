@@ -1,8 +1,16 @@
 const puppeteer = require('puppeteer');
 const $ = require('cheerio');
 const utils = require('../utils');
+const settings = require('../settings');
 
-const { getAbbr, pruneTeam, getDraftPick, extractDraftPick } = utils;
+const { bballPrefix } = settings;
+const {
+  getAbbr,
+  pruneTeam,
+  getDraftPick,
+  extractDraftPick,
+  mergePlayersAndPicks
+} = utils;
 
 const scrapeSinglePlayerTransaction = async (playerUrl, playerTradeDate) => {
   let data = [];
@@ -13,9 +21,11 @@ const scrapeSinglePlayerTransaction = async (playerUrl, playerTradeDate) => {
   await page.goto(playerUrl);
   const html = await page.content();
 
-  const playerDraftPosition = extractDraftPick($(`${selector}:contains("Drafted by")`, html).text());
+  const playerDraftPosition = extractDraftPick(
+    $(`${selector}:contains("Drafted by")`, html).text()
+  );
 
-  $(selector, html).each(function () {
+  $(selector, html).each(function() {
     const tradeString = $(this).text();
     const gLeague = 'G-League';
     const isGLeague = tradeString.indexOf(gLeague) !== -1;
@@ -44,21 +54,29 @@ const scrapeSinglePlayerTransaction = async (playerUrl, playerTradeDate) => {
       .children('a[data-attr-to]')
       .text();
 
-    const tradedFor = $(this)
-      .children('a:not(:nth-of-type(-n + 2))')
-      .map(function () {
-        return $(this).text();
+    const tradedForArray = $(this)
+      .children('a:not(:nth-of-type(-n + 1))')
+      .map(function() {
+        return {
+          name: $(this).text(),
+          link: `${bballPrefix}${$(this).attr('href')}`
+        };
       })
       .get();
 
+    const assets = notTraded
+      ? []
+      : getDraftPick(tradeString, playerDraftPosition);
+
+    const tradedFor = notTraded ? [] : pruneTeam(tradedForArray);
+
     if (!isGLeague) {
       data.push({
+        status,
         transactionDate,
         tradedBy: getAbbr(tradedBy),
         tradedTo: notTraded ? '' : getAbbr(!isGLeague ? tradedTo : ''),
-        status,
-        tradedFor: notTraded ? [] : pruneTeam(tradedFor),
-        assets: notTraded ? [] : getDraftPick(tradeString).filter((asset) => asset !== playerDraftPosition)
+        tradedFor: mergePlayersAndPicks(tradedFor, assets)
       });
     }
   });
