@@ -64,7 +64,7 @@ const sortedBycurrTeam = _.groupBy(data, 'currTeam');
 const { tradeDate, link } = sortedBycurrTeam.PHO[0];
 
 app.get('/api/player-history', (req, res) => {
-  services.scrapeSinglePlayerTransaction(link, tradeDate).then((data) => {
+  services.scrapeSinglePlayerTransaction('https://www.basketball-reference.com/players/g/garneke01.html#all_transactions', 'July 12, 2013').then((data) => {
     res.send({ data });
   });
 });

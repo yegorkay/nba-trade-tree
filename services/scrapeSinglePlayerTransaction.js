@@ -25,7 +25,7 @@ const scrapeSinglePlayerTransaction = async (playerUrl, playerTradeDate) => {
     $(`${selector}:contains("Drafted by")`, html).text()
   );
 
-  $(selector, html).each(function() {
+  $(selector, html).each(function () {
     const tradeString = $(this).text();
     const gLeague = 'G-League';
     const isGLeague = tradeString.indexOf(gLeague) !== -1;
@@ -56,7 +56,7 @@ const scrapeSinglePlayerTransaction = async (playerUrl, playerTradeDate) => {
 
     const tradedForArray = $(this)
       .children('a:not(:nth-of-type(-n + 1))')
-      .map(function() {
+      .map(function () {
         return {
           name: $(this).text(),
           link: `${bballPrefix}${$(this).attr('href')}`
@@ -70,14 +70,37 @@ const scrapeSinglePlayerTransaction = async (playerUrl, playerTradeDate) => {
 
     const tradedFor = notTraded ? [] : pruneTeam(tradedForArray);
 
+
+    const matchTest = (str, player) => {
+      const regex = new RegExp(`(\\b(19|20)\\d{2}\\b\\s([1-9]|[1-5][0-9]|60)(?:st|nd|rd|th)\\s(round draft pick))\\s(\\()(${player})`, 'g');
+      const match = str.match(regex);
+      return match ? match[0] : '';
+    }
+
+    const getPickArray = (playerArray, tradeString) => playerArray.map((player) => {
+      const { name, link } = player;
+      const draftString = matchTest(tradeString, name).split("(");
+      return {
+        name: draftString[1],
+        link: link,
+        pick: draftString[0].trim()
+      }
+    })
+
     if (!isGLeague) {
       data.push({
         status,
         transactionDate,
         tradedBy: getAbbr(tradedBy),
         tradedTo: notTraded ? '' : getAbbr(!isGLeague ? tradedTo : ''),
-        tradedFor: mergePlayersAndPicks(tradedFor, assets)
+        // tradedFor: mergePlayersAndPicks(tradedFor, assets)
+        tradedFor,
+        // assets
+        assets: getPickArray(tradedFor, tradeString).filter((player) => player.pick !== '')
       });
+      /**
+       * Need to be able to tie pick to player if they were a pick during the time of the trade
+       */
     }
   });
 
