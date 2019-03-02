@@ -3,8 +3,13 @@ const $ = require('cheerio');
 const utils = require('../utils');
 const settings = require('../settings');
 
-const { bballPrefix } = settings;
-const { getAbbr, pruneTeam, pruneTradedPlayers, filterByPicks } = utils;
+const {
+  getAbbr,
+  pruneTeam,
+  pruneTradedPlayers,
+  filterByPicks,
+  getPlayerId
+} = utils;
 
 const scrapeSinglePlayerTransaction = async (playerUrl, playerTradeDate) => {
   let data = [];
@@ -49,7 +54,7 @@ const scrapeSinglePlayerTransaction = async (playerUrl, playerTradeDate) => {
       .map(function() {
         return {
           name: $(this).text(),
-          link: `${bballPrefix}${$(this).attr('href')}`
+          playerId: getPlayerId($(this).attr('href'))
         };
       })
       .get();

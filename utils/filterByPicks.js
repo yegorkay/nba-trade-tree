@@ -11,11 +11,11 @@ const matchDraftString = (str, player) => {
 const filterByPicks = (playerArray, tradeString) => {
   return playerArray
     .map((player) => {
-      const { name, link } = player;
+      const { name, playerId } = player;
       const draftString = matchDraftString(tradeString, name).split('(');
       return {
         name: draftString[1],
-        link: link,
+        playerId,
         pick: draftString[0].trim()
       };
     })
