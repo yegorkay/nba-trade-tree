@@ -62,9 +62,26 @@ const data = [
 const sortedBycurrTeam = _.groupBy(data, 'currTeam');
 
 const { tradeDate, link } = sortedBycurrTeam.PHO[0];
+/**
+ * if tradedPicks is empty
+ * if this current season (2018-2019)
+ * scrape all picks (if they exist)
+ * else
+ * return empty array
+ */
+
+/** Need to figure out three or more team trades */
+
+// const toby =
+//   'https://www.basketball-reference.com/players/h/harrito02.html#all_transactions';
+// const date = 'June 23, 2011';
+
+// const harden =
+//   'https://www.basketball-reference.com/players/h/hardeja01.html#all_transactions';
+// const date = 'October 27, 2012';
 
 app.get('/api/player-history', (req, res) => {
-  services.scrapeSinglePlayerTransaction('https://www.basketball-reference.com/players/g/garneke01.html#all_transactions', 'July 12, 2013').then((data) => {
+  services.scrapeSinglePlayerTransaction(link, tradeDate).then((data) => {
     res.send({ data });
   });
 });

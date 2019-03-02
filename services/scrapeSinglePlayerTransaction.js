@@ -1,14 +1,15 @@
 const puppeteer = require('puppeteer');
 const $ = require('cheerio');
 const utils = require('../utils');
-const settings = require('../settings');
 
 const {
   getAbbr,
   pruneTeam,
   pruneTradedPlayers,
   filterByPicks,
-  getPlayerId
+  getPlayerId,
+  isCurrentYear,
+  fetchCurrentDraftPicks
 } = utils;
 
 const scrapeSinglePlayerTransaction = async (playerUrl, playerTradeDate) => {
@@ -72,7 +73,9 @@ const scrapeSinglePlayerTransaction = async (playerUrl, playerTradeDate) => {
         tradedBy: getAbbr(tradedBy),
         tradedTo: notTraded ? '' : getAbbr(!isGLeague ? tradedTo : ''),
         tradedPlayers: pruneTradedPlayers(allTradePieces, tradedPicks),
-        tradedPicks
+        tradedPicks: !isCurrentYear(transactionDate)
+          ? tradedPicks
+          : fetchCurrentDraftPicks(tradeString, transactionDate)
       });
     }
   });
