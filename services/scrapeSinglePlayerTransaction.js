@@ -21,7 +21,7 @@ const scrapeSinglePlayerTransaction = async (playerUrl, playerTradeDate) => {
   await page.goto(playerUrl);
   const html = await page.content();
 
-  $(selector, html).each(function() {
+  $(selector, html).each(function () {
     const tradeString = $(this).text();
     const gLeague = 'G-League';
     const isGLeague = tradeString.indexOf(gLeague) !== -1;
@@ -52,26 +52,29 @@ const scrapeSinglePlayerTransaction = async (playerUrl, playerTradeDate) => {
 
     const tradedPlayers = $(this)
       .children('a:not(:nth-of-type(-n + 1))')
-      .map(function() {
+      .map(function () {
         return {
           name: $(this).text(),
-          playerId: getPlayerId($(this).attr('href'))
+          playerId: getPlayerId($(this).attr('href')),
+          tradedTo: notTraded ? '' : getAbbr(!isGLeague ? tradedBy : '')
         };
       })
       .get();
 
     const allTradePieces = notTraded ? [] : pruneTeam(tradedPlayers);
 
-    const tradedPicks = notTraded
-      ? []
-      : filterByPicks(allTradePieces, tradeString);
 
     if (!isGLeague) {
+
+      const tradedPicks = notTraded
+        ? []
+        : filterByPicks(allTradePieces, tradeString, getAbbr(tradedTo));
+
       data.push({
         status,
         transactionDate,
         tradedBy: getAbbr(tradedBy),
-        tradedTo: notTraded ? '' : getAbbr(!isGLeague ? tradedTo : ''),
+        tradedTo: notTraded ? '' : getAbbr(tradedTo),
         tradedPlayers: pruneTradedPlayers(allTradePieces, tradedPicks),
         tradedPicks: !isCurrentYear(transactionDate)
           ? tradedPicks

@@ -8,7 +8,7 @@ const matchDraftString = (str, player) => {
   return match ? match[0] : '';
 };
 
-const filterByPicks = (playerArray, tradeString) => {
+const filterByPicks = (playerArray, tradeString, tradedTo = '') => {
   return playerArray
     .map((player) => {
       const { name, playerId } = player;
@@ -16,7 +16,8 @@ const filterByPicks = (playerArray, tradeString) => {
       return {
         name: draftString[1],
         playerId,
-        pick: draftString[0].trim()
+        tradedTo,
+        pick: draftString[0].trim(),
       };
     })
     .filter((player) => player.pick !== '');
