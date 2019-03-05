@@ -16,6 +16,10 @@ const teamNames = [
     teamName: 'Charlotte Hornets'
   },
   {
+    teamAbr: 'CHA',
+    teamName: 'Charlotte Bobcats'
+  },
+  {
     teamAbr: 'CHI',
     teamName: 'Chicago Bulls'
   },
@@ -70,6 +74,10 @@ const teamNames = [
   {
     teamAbr: 'MIN',
     teamName: 'Minnesota Timberwolves'
+  },
+  {
+    teamAbr: 'NOH',
+    teamName: 'New Orleans Hornets'
   },
   {
     teamAbr: 'NOP',
