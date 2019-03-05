@@ -46,12 +46,21 @@ const tradedPlayers = $(testHtml)
   })
   .get();
 
+const allValues = _.uniqBy(tradedPlayers, 'name');
+
 console.log({
   teamsInvolved,
   tradedBy,
   tradePartners: _.uniq(tradePartners),
   // tradedPlayers: pruneTeam(tradedPlayers),
-  allValues: _.uniqBy(tradedPlayers, 'name')
+  allValues
 })
+
+
+const getTeamIndexes = teamNames.map((team) => {
+  return allValues.findIndex((el) => el.name === team.teamName)
+}).filter((value) => value !== -1).sort((a, b) => a - b)
+
+console.log(getTeamIndexes)
 
 module.exports = pruneTeam;
