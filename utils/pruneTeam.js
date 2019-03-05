@@ -49,7 +49,7 @@ const tradedPlayers = $(testHtml)
 console.log({
   teamsInvolved,
   tradedBy,
-  tradePartners: [...new Set(tradePartners)],
+  tradePartners: _.uniq(tradePartners),
   // tradedPlayers: pruneTeam(tradedPlayers),
   allValues: _.uniqBy(tradedPlayers, 'name')
 })
