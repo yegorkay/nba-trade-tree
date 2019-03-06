@@ -30,28 +30,26 @@ const teamsInvolved = $(testHtml)
 
 const tradePartners = $(testHtml)
   .children('a[data-attr-to]')
-  .map(function() {
+  .map(function () {
     return getAbbr($(this).text());
   })
   .get();
 
-const tradedBy = getAbbr(
+const tradedBy = /*getAbbr(*/
   $(testHtml)
-    .children('a:nth-last-of-type(1)')
+    .children('strong:first-child + a')
     .text()
-);
+/*);*/
 
 const tradedPlayers = $(testHtml)
   .children('a:not(:nth-of-type(-n + 1))')
-  .map(function() {
+  .map(function () {
     return {
       name: $(this).text(),
       playerId: getPlayerId($(this).attr('href'))
     };
   })
   .get();
-
-const allValues = _.uniqBy(tradedPlayers, 'name');
 
 // console.log({
 //   teamsInvolved,
@@ -61,19 +59,63 @@ const allValues = _.uniqBy(tradedPlayers, 'name');
 //   allValues
 // });
 
-const getTeamIndexes = teamNames
-  .map((team) => {
-    return allValues.findIndex((el) => el.name === team.teamName);
-  })
-  .filter((value) => value !== -1)
-  .sort((a, b) => a - b);
+/**
+ * * [ 'Stephen Jackson', 'Shaun Livingston' ]
+ * ! [ 'Corey Maggette' ]
+ * ! [ 'Jimmer Freddete', 'John Salmons' ]
+ * ! [ 'Bismack Biyombo' ]
+ * * [ 'Beno Udrih' ] 
+ */
 
-/** We need to loop over/map this to make it dynamic */
-const mke = allValues.slice(0, 2);
-const cha = allValues.slice(3, 4);
-const sac = allValues.slice(8, allValues.length + 1);
+const tradedByLoop = () => {
+  let arr = [];
+  for (i = 0; i < tradedPlayers.length - 1; i++) {
 
-console.log(getTeamIndexes);
-console.log({ mke, cha, sac });
+    const prevNextIdsMatch = tradedPlayers[i].playerId === tradedPlayers[i + 1].playerId;
+    // The first team chunk is always implicitly tied to the player we are scraping
+    if (i === 0) {
+      arr.push({ name: tradedBy })
+    }
+    if (!prevNextIdsMatch) {
+      arr.push(tradedPlayers[i])
+    } else {
+      arr.push("match");
+    }
+  }
+  return arr;
+}
+
+const chunk = (arr, c) => {
+  return arr.reduce((m, o) => {
+    if (o === c) {
+      m.push([]);
+    } else {
+      m[m.length - 1].push(o);
+    }
+    return m;
+  }, [[]]).filter((array) => array.length > 0);
+}
+
+const chunkedValues = chunk(tradedByLoop(), 'match');
+
+const mapToFormat = (array) => array.map((chunk) => {
+  return chunk.map((tradedPlayers, index) => {
+    const { name, playerId } = tradedPlayers
+    return index !== 0 && {
+      name,
+      playerId,
+      tradedBy: getAbbr(chunk[0].name)
+    };
+  }).filter((val) => typeof val !== "boolean")
+})
+
+const flatten = (arr) => {
+  return arr.reduce((flat, toFlatten) => {
+    return flat.concat(Array.isArray(toFlatten) ? flatten(toFlatten) : toFlatten);
+  }, []);
+}
+
+console.log(flatten(mapToFormat(chunkedValues)))
+
 
 module.exports = pruneTeam;
