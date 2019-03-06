@@ -84,6 +84,10 @@ const teamNames = [
     teamName: 'New Orleans Pelicans'
   },
   {
+    teamAbr: 'NOK',
+    teamName: 'New Orleans/Oklahoma City Hornets'
+  },
+  {
     teamAbr: 'NYK',
     teamName: 'New York Knicks'
   },
