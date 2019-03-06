@@ -98,13 +98,24 @@ const chunk = (arr, c) => {
 
 const chunkedValues = chunk(tradedByLoop(), 'match');
 
-const mapToFormat = (array) => array.map((chunk) => {
-  return chunk.map((tradedPlayers, index) => {
+const prunePlayers = (tradeArray) => {
+  return tradeArray.filter(
+    (tradeTarget) =>
+      teamNames.find((team) => tradeTarget.name === team.teamName)
+  );
+};
+
+// there will always be an even amount of teams. A team that is trading, one that is receiving
+const tradedToArray = prunePlayers(tradedPlayers).filter((x, i) => i % 2 === 0);
+
+const mapToFormat = (array) => array.map((chunk, index) => {
+  return chunk.map((tradedPlayers, chunkIndex) => {
     const { name, playerId } = tradedPlayers
-    return index !== 0 && {
+    return chunkIndex !== 0 && {
       name,
       playerId,
-      tradedBy: getAbbr(chunk[0].name)
+      tradedBy: getAbbr(chunk[0].name),
+      tradedTo: getAbbr(tradedToArray[index].name)
     };
   }).filter((val) => typeof val !== "boolean")
 })
@@ -116,6 +127,5 @@ const flatten = (arr) => {
 }
 
 console.log(flatten(mapToFormat(chunkedValues)))
-
 
 module.exports = pruneTeam;
