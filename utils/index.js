@@ -10,6 +10,7 @@ const prunePlayers = require('./multi-team/prunePlayers');
 const splitArray = require('./multi-team/splitArray');
 const formatMultiTeam = require('./multi-team/formatMultiTeam');
 const isMultiTeam = require('./multi-team/isMultiTeam');
+const oneToOneTrade = require('./oneToOneTrade');
 
 module.exports = {
   getAbbr,
@@ -23,5 +24,6 @@ module.exports = {
   prunePlayers,
   splitArray,
   formatMultiTeam,
-  isMultiTeam
+  isMultiTeam,
+  oneToOneTrade
 };
