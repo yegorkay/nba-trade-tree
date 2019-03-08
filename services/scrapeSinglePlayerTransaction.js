@@ -1,6 +1,5 @@
 const puppeteer = require('puppeteer');
 const $ = require('cheerio');
-const _ = require('lodash');
 const utils = require('../utils');
 
 const {
@@ -12,11 +11,8 @@ const {
   isCurrentYear,
   fetchCurrentDraftPicks,
   isMultiTeam,
-  chunkArrayByElement,
-  splitArray,
-  prunePlayers,
-  formatMultiTeam,
-  oneToOneTrade
+  oneToOneTrade,
+  multiTeamTrade
 } = utils;
 
 const gLeague = 'G-League';
@@ -49,8 +45,8 @@ const scrapeSinglePlayerTransaction = async (playerUrl, playerTradeDate) => {
     const tradeString = $(this).text();
     const isGLeague = tradeString.indexOf(gLeague) !== -1;
 
-    const allTeamsInvolved = splitTradeString($(this), 5);
-    const isMultiTrade = isMultiTeam(allTeamsInvolved);
+    const manyTeamsInvolved = splitTradeString($(this), 5);
+    const isMultiTrade = isMultiTeam(manyTeamsInvolved);
 
     const status = splitTradeString(
       $(this),
@@ -62,21 +58,21 @@ const scrapeSinglePlayerTransaction = async (playerUrl, playerTradeDate) => {
       .children('strong:nth-child(1)')
       .text();
 
-    const tradedBy = $(this)
+    const tradedBy = getAbbr($(this)
       .children('strong:first-child + a')
-      .text();
+      .text());
 
     /** 
      * we are going to return an array and get the 
      * first element since it's cleaner than a 
      * ternary if we had a multi team trade
     */
-    const tradedTo = $(this)
+    const tradedTo = getAbbr($(this)
       .children('a[data-attr-to]')
       .map(function () {
         return $(this).text();
       })
-      .get()[0];
+      .get()[0]);
 
     const tradedPlayers = $(this)
       .children('a:not(:nth-of-type(-n + 1))')
@@ -90,28 +86,20 @@ const scrapeSinglePlayerTransaction = async (playerUrl, playerTradeDate) => {
       .get();
 
     const allTradePieces = isNotTraded ? [] : pruneTeam(tradedPlayers);
-    const isMultiTeamTradedPlayers = () => {
-      const chunkedValues = chunkArrayByElement(
-        splitArray(tradedPlayers, tradedBy),
-        'match'
-      );
-      const tradedToArray = prunePlayers(tradedPlayers);
-      return _.flatten(formatMultiTeam(chunkedValues, tradedToArray));
-    };
 
     if (!isGLeague) {
 
       const tradedPicks = isNotTraded
         ? []
-        : filterByPicks(allTradePieces, tradeString, getAbbr(tradedTo));
+        : filterByPicks(allTradePieces, tradeString, tradedTo);
 
       data.push({
         status,
         transactionDate,
-        tradedBy: getAbbr(tradedBy),
-        tradedTo: isNotTraded ? '' : getAbbr(tradedTo),
+        tradedBy,
+        tradedTo: isNotTraded ? '' : tradedTo,
         tradedPlayers: isMultiTrade
-          ? isMultiTeamTradedPlayers()
+          ? multiTeamTrade(tradedPlayers, tradedBy)
           : pruneTradedPlayers(oneToOneTrade($(this), tradedBy, tradedTo), tradedPicks),
         tradedPicks: !isCurrentYear(transactionDate)
           ? tradedPicks

@@ -11,6 +11,7 @@ const splitArray = require('./multi-team/splitArray');
 const formatMultiTeam = require('./multi-team/formatMultiTeam');
 const isMultiTeam = require('./multi-team/isMultiTeam');
 const oneToOneTrade = require('./oneToOneTrade');
+const multiTeamTrade = require('./multi-team/multiTeamTrade');
 
 module.exports = {
   getAbbr,
@@ -25,5 +26,6 @@ module.exports = {
   splitArray,
   formatMultiTeam,
   isMultiTeam,
-  oneToOneTrade
+  oneToOneTrade,
+  multiTeamTrade
 };
