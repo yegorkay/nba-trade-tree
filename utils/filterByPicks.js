@@ -15,6 +15,13 @@ const matchDraftString = (tradeString, player) => {
   return match ? match[0] : '';
 };
 
+/**
+ * Get the array of picks
+ * @param {*} playerArray The array of all players involved
+ * @param {*} tradeString The HTML transaction string
+ * @param {*} tradedTo Where the pick was traded to (**Needs to be fixes**)
+ * @return {*} Returns a filtered array with only assets (picks)
+ */
 const filterByPicks = (playerArray, tradeString, tradedTo = '') => {
   return playerArray
     .map((player) => {
