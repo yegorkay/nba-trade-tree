@@ -29,7 +29,6 @@ const oneToOneTrade = (tradeString, tradedBy, tradedTo) => {
   const secondHalf = getPlayerObj(secondHalfData, tradedBy, tradedTo, false);
 
   // WE need to check if data even exists in the first half, otherwise, tradedTo/tradedBy are incorrect
-  // somehow "Orlando Magic" is being shown up as a player
 
   if (firstHalfData.text().length > 0) {
     return firstHalf.concat(secondHalf);

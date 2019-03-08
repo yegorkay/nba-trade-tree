@@ -85,15 +85,10 @@ const scrapeSinglePlayerTransaction = async (playerUrl, playerTradeDate) => {
         };
 
         return playerData;
-        // ! tradedTo is incorrect if more than one player is involved in 1 to 1 team trades
-        // return isMultiTrade
-        //   ? playerData
-        //   : Object.assign(playerData, { tradedTo: isNotTraded ? '' : getAbbr(!isGLeague ? tradedBy : '') })
       })
       .get();
 
     const allTradePieces = isNotTraded ? [] : pruneTeam(tradedPlayers);
-    // console.log(allTradePieces);
     const isMultiTeamTradedPlayers = () => {
       const chunkedValues = chunkArrayByElement(
         splitArray(tradedPlayers, tradedBy),
