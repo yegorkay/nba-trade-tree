@@ -81,8 +81,8 @@ const date = 'June 23, 2011';
 // const date = 'October 27, 2012';
 
 app.get('/api/player-history', (req, res) => {
-  services.scrapeSinglePlayerTransaction(toby, date).then((data) => {
-    // services.scrapeSinglePlayerTransaction(link, tradeDate).then((data) => {
+  // services.scrapeSinglePlayerTransaction(toby, date).then((data) => {
+  services.scrapeSinglePlayerTransaction(link, tradeDate).then((data) => {
     res.send({ data });
   });
 });

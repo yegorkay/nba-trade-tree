@@ -15,7 +15,8 @@ const {
   chunkArrayByElement,
   splitArray,
   prunePlayers,
-  formatMultiTeam
+  formatMultiTeam,
+  oneToOneTrade
 } = utils;
 
 const gLeague = 'G-League';
@@ -44,15 +45,17 @@ const scrapeSinglePlayerTransaction = async (playerUrl, playerTradeDate) => {
   await page.goto(playerUrl);
   const html = await page.content();
 
-  $(selector, html).each(function () {
-
+  $(selector, html).each(function() {
     const tradeString = $(this).text();
     const isGLeague = tradeString.indexOf(gLeague) !== -1;
 
     const allTeamsInvolved = splitTradeString($(this), 5);
     const isMultiTrade = isMultiTeam(allTeamsInvolved);
 
-    const status = splitTradeString($(this), isMultiTrade ? 7 : 1).toLowerCase();
+    const status = splitTradeString(
+      $(this),
+      isMultiTrade ? 7 : 1
+    ).toLowerCase();
     const isNotTraded = status !== 'traded';
 
     const transactionDate = $(this)
@@ -68,50 +71,54 @@ const scrapeSinglePlayerTransaction = async (playerUrl, playerTradeDate) => {
 
     const tradedTo = $(this)
       .children('a[data-attr-to]')
-      .map(function () {
+      .map(function() {
         return $(this).text();
       })
       .get()[0];
 
     const tradedPlayers = $(this)
       .children('a:not(:nth-of-type(-n + 1))')
-      .map(function () {
-
+      .map(function() {
         const playerData = {
           name: $(this).text(),
-          playerId: getPlayerId($(this).attr('href')),
-        }
+          playerId: getPlayerId($(this).attr('href'))
+        };
+
+        return playerData;
         // ! tradedTo is incorrect if more than one player is involved in 1 to 1 team trades
-        return isMultiTrade
-          ? playerData
-          : Object.assign(playerData, { tradedTo: isNotTraded ? '' : getAbbr(!isGLeague ? tradedBy : '') })
+        // return isMultiTrade
+        //   ? playerData
+        //   : Object.assign(playerData, { tradedTo: isNotTraded ? '' : getAbbr(!isGLeague ? tradedBy : '') })
       })
       .get();
 
     const allTradePieces = isNotTraded ? [] : pruneTeam(tradedPlayers);
-
+    // console.log(allTradePieces);
     const isMultiTeamTradedPlayers = () => {
       const chunkedValues = chunkArrayByElement(
         splitArray(tradedPlayers, tradedBy),
         'match'
       );
       const tradedToArray = prunePlayers(tradedPlayers);
-      return _.flatten(formatMultiTeam(chunkedValues, tradedToArray))
-    }
-
+      return _.flatten(formatMultiTeam(chunkedValues, tradedToArray));
+    };
 
     if (!isGLeague) {
-
       const tradedPicks = isNotTraded
         ? []
         : filterByPicks(allTradePieces, tradeString, getAbbr(tradedTo));
+      // console.log(pruneTeam(oneToOneTrade($(this), tradedBy, tradedTo)));
+      // ! this goes in tradedPlayers once we remember how to prune tradedPlayers
+      // pruneTeam(oneToOneTrade($(this), tradedBy, tradedTo))
 
       data.push({
         status,
         transactionDate,
         tradedBy: getAbbr(tradedBy),
         tradedTo: isNotTraded ? '' : getAbbr(tradedTo),
-        tradedPlayers: isMultiTeam ? isMultiTeamTradedPlayers() : pruneTradedPlayers(allTradePieces, tradedPicks),
+        tradedPlayers: isMultiTrade
+          ? isMultiTeamTradedPlayers()
+          : pruneTradedPlayers(allTradePieces, tradedPicks),
         tradedPicks: !isCurrentYear(transactionDate)
           ? tradedPicks
           : fetchCurrentDraftPicks(tradeString, transactionDate)
