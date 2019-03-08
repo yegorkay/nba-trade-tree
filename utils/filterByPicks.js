@@ -1,13 +1,27 @@
-const matchDraftString = (str, player) => {
-  /** ex: 2019 1st round draft pick */
+/**
+ * Returns a string for a matching draft pick
+ * @param {*} tradeString The transaction string you are testing
+ * @param {*} player The player you are regex matching
+ * @return {*} Returns a value such as `2013 2nd round draft pick (Alex Oriakhi`
+ */
+const matchDraftString = (tradeString, player) => {
+  /** ex: `2013 2nd round draft pick (Alex Oriakhi` 
+   * **(There is no closing bracket on purpose)** */
   const regex = new RegExp(
     `(\\b(19|20)\\d{2}\\b\\s([1-9]|[1-5][0-9]|60)(?:st|nd|rd|th)\\s(round draft pick))\\s(\\()(${player})`,
     'g'
   );
-  const match = str.match(regex);
+  const match = tradeString.match(regex);
   return match ? match[0] : '';
 };
 
+/**
+ * Get the array of picks
+ * @param {*} playerArray The array of all players involved
+ * @param {*} tradeString The HTML transaction string
+ * @param {*} tradedTo Where the pick was traded to (**Needs to be fixes**)
+ * @return {*} Returns a filtered array with only assets (picks)
+ */
 const filterByPicks = (playerArray, tradeString, tradedTo = '') => {
   return playerArray
     .map((player) => {
