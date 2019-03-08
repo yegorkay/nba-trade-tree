@@ -1,3 +1,4 @@
+/** An `array` of objects for teams `[{teamAbr: '', teamName: '' }]` */
 const teamNames = [
   {
     teamAbr: 'ATL',

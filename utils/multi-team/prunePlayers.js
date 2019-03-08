@@ -2,7 +2,11 @@ const settings = require('../../settings');
 
 const { teamNames } = settings;
 
-/** Removes players and we are left with an array of teams */
+/**
+ * **multi-team:** Removes all players from our array and returns the teams
+ * @param {*} tradeArray the array that contains teams and players
+ * @return {*} Returns a filtered array where the only values are teams
+ */
 const prunePlayers = (tradeArray) => {
   return tradeArray
     .filter((tradeTarget) =>

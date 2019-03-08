@@ -9,7 +9,7 @@ const {
   filterByPicks,
   getPlayerId,
   isCurrentYear,
-  fetchCurrentDraftPicks,
+  getCurrentDraftPicks,
   isMultiTeam,
   oneToOneTrade,
   multiTeamTrade
@@ -20,7 +20,7 @@ const gLeague = 'G-League';
 /**
  * @param {*} htmlString (our tradedString)
  * @param {*} index (1 = status, 5 = allTeamsInvolved, 7 = status (multi-team))
- * @return {*} string
+ * @return {*} Specified string based on the index you pass. See `param` above
  */
 const splitTradeString = (htmlString, index) => {
   return htmlString
@@ -103,7 +103,7 @@ const scrapeSinglePlayerTransaction = async (playerUrl, playerTradeDate) => {
           : pruneTradedPlayers(oneToOneTrade($(this), tradedBy, tradedTo), tradedPicks),
         tradedPicks: !isCurrentYear(transactionDate)
           ? tradedPicks
-          : fetchCurrentDraftPicks(tradeString, transactionDate)
+          : getCurrentDraftPicks(tradeString)
       });
     }
   });

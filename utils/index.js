@@ -3,7 +3,7 @@ const pruneTeam = require('./pruneTeam');
 const pruneTradedPlayers = require('./pruneTradedPlayers');
 const filterByPicks = require('./filterByPicks');
 const getPlayerId = require('./getPlayerId');
-const fetchCurrentDraftPicks = require('./fetchCurrentDraftPicks');
+const getCurrentDraftPicks = require('./getCurrentDraftPicks');
 const isCurrentYear = require('./isCurrentYear');
 const chunkArrayByElement = require('./multi-team/chunkArrayByElement');
 const prunePlayers = require('./multi-team/prunePlayers');
@@ -19,7 +19,7 @@ module.exports = {
   pruneTradedPlayers,
   filterByPicks,
   getPlayerId,
-  fetchCurrentDraftPicks,
+  getCurrentDraftPicks,
   isCurrentYear,
   chunkArrayByElement,
   prunePlayers,

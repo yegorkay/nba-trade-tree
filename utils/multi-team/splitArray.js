@@ -1,4 +1,13 @@
-/** This is used to split the array by team. Replaces the team with a string so we can format our array accordingly after */
+/**
+ * **multi-team:** This is used to split the `playerArray` by team. 
+ * Replaces a duplicated team with a dummy string so 
+ * we can format our array accordingly afterwards
+ * @param {*} playerArray The array of players
+ * @param {*} firstGroupTeam The name of the team that will be pushed of the 
+ * beginning of the array (the player we are trading for is implictly tied to the first trade group)
+ * @return {*} Returns an array with `'match'` thrown in where the previous 
+ * and next elements of the array match `[1, 2, 4, 4] => [1, 2, 'match']`
+ */
 const splitArray = (playerArray, firstGroupTeam) => {
   let arr = [];
   for (i = 0; i < playerArray.length - 1; i++) {
