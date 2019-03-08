@@ -45,7 +45,7 @@ const scrapeSinglePlayerTransaction = async (playerUrl, playerTradeDate) => {
   await page.goto(playerUrl);
   const html = await page.content();
 
-  $(selector, html).each(function() {
+  $(selector, html).each(function () {
     const tradeString = $(this).text();
     const isGLeague = tradeString.indexOf(gLeague) !== -1;
 
@@ -66,25 +66,26 @@ const scrapeSinglePlayerTransaction = async (playerUrl, playerTradeDate) => {
       .children('strong:first-child + a')
       .text();
 
-    // this is the first issue we encounter when we have a multi team trade. It returns a string it cannot parse
-    // we are going to return an array and get the first element since it's cleaner than a ternary
-
+    /** 
+     * we are going to return an array and get the 
+     * first element since it's cleaner than a 
+     * ternary if we had a multi team trade
+    */
     const tradedTo = $(this)
       .children('a[data-attr-to]')
-      .map(function() {
+      .map(function () {
         return $(this).text();
       })
       .get()[0];
 
     const tradedPlayers = $(this)
       .children('a:not(:nth-of-type(-n + 1))')
-      .map(function() {
-        const playerData = {
+      .map(function () {
+
+        return {
           name: $(this).text(),
           playerId: getPlayerId($(this).attr('href'))
         };
-
-        return playerData;
       })
       .get();
 
@@ -99,12 +100,10 @@ const scrapeSinglePlayerTransaction = async (playerUrl, playerTradeDate) => {
     };
 
     if (!isGLeague) {
+
       const tradedPicks = isNotTraded
         ? []
         : filterByPicks(allTradePieces, tradeString, getAbbr(tradedTo));
-      // console.log(pruneTeam(oneToOneTrade($(this), tradedBy, tradedTo)));
-      // ! this goes in tradedPlayers once we remember how to prune tradedPlayers
-      // pruneTeam(oneToOneTrade($(this), tradedBy, tradedTo))
 
       data.push({
         status,
@@ -113,7 +112,7 @@ const scrapeSinglePlayerTransaction = async (playerUrl, playerTradeDate) => {
         tradedTo: isNotTraded ? '' : getAbbr(tradedTo),
         tradedPlayers: isMultiTrade
           ? isMultiTeamTradedPlayers()
-          : pruneTradedPlayers(allTradePieces, tradedPicks),
+          : pruneTradedPlayers(oneToOneTrade($(this), tradedBy, tradedTo), tradedPicks),
         tradedPicks: !isCurrentYear(transactionDate)
           ? tradedPicks
           : fetchCurrentDraftPicks(tradeString, transactionDate)
