@@ -1,5 +1,10 @@
 const settings = require('../settings');
 
+/**
+ * Get the  `abbreviation` for a `team name`
+ * @param teamName The team name to convert to an abbreviation.
+ * @return Returns abbreviation `("Toronto Raptors" => "TOR")`
+ */
 const getAbbr = (teamName) => {
   if (teamName !== '') {
     const { teamNames } = settings;
