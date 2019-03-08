@@ -1,8 +1,11 @@
 const getPlayerId = (playerURL) => {
-  return playerURL
-    .split('/')
-    .pop()
-    .replace(/(.html)/g, '');
+  if (playerURL) {
+    return playerURL
+      .split('/')
+      .pop()
+      .replace(/(.html)/g, '');
+  }
+  return '';
 };
 
 module.exports = getPlayerId;
