@@ -11,17 +11,13 @@ const pruneDate = (date) => {
 };
 
 /**
- * If the year of the transaction is `this year` or `last year`
+ * If the year of the transaction is `this year`
  * @param tradeYear The year you are checking
  * @return Returns boolean `(2000 => false)`
  */
 const isCurrentYear = (tradeYear) => {
   const currentYear = new Date().getFullYear();
-  const prevYear = currentYear - 1;
-  if (
-    pruneDate(tradeYear) === currentYear ||
-    pruneDate(tradeYear) === prevYear
-  ) {
+  if (pruneDate(tradeYear) === currentYear) {
     return true;
   }
   return false;
