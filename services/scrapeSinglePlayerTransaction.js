@@ -94,7 +94,7 @@ const scrapeSinglePlayerTransaction = async (playerUrl, playerTradeDate) => {
       const tradedPicks = isNotTraded
         ? []
         : filterByPicks(allTradePieces, tradeString, tradedTo);
-
+      console.log(allTradePieces);
       data.push({
         status,
         transactionDate,
@@ -108,7 +108,7 @@ const scrapeSinglePlayerTransaction = async (playerUrl, playerTradeDate) => {
             ),
         tradedPicks: !isCurrentYear(transactionDate)
           ? tradedPicks
-          : getCurrentDraftPicks(tradeString)
+          : getCurrentDraftPicks(tradeString, $(this))
       });
     }
   });

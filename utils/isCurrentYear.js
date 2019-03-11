@@ -17,7 +17,10 @@ const pruneDate = (date) => {
  */
 const isCurrentYear = (tradeYear) => {
   const currentYear = new Date().getFullYear();
-  if (pruneDate(tradeYear) === currentYear) {
+  if (
+    pruneDate(tradeYear) === currentYear ||
+    pruneDate(tradeYear) === currentYear - 1
+  ) {
     return true;
   }
   return false;
