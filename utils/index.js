@@ -1,7 +1,7 @@
 const getAbbr = require('./getAbbr');
 const pruneTeam = require('./pruneTeam');
 const pruneTradedPlayers = require('./pruneTradedPlayers');
-const filterByPicks = require('./filterByPicks');
+const getPicks = require('./getPicks');
 const getPlayerId = require('./getPlayerId');
 const getCurrentDraftPicks = require('./getCurrentDraftPicks');
 const isCurrentYear = require('./isCurrentYear');
@@ -17,7 +17,7 @@ module.exports = {
   getAbbr,
   pruneTeam,
   pruneTradedPlayers,
-  filterByPicks,
+  getPicks,
   getPlayerId,
   getCurrentDraftPicks,
   isCurrentYear,
