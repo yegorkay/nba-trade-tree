@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const $ = require('cheerio');
+const teamNames = require('../settings/teamNames')
 
 const testString = `July 18, 2018: Traded by the San Antonio Spurs with Danny Green 
 and cash to the Toronto Raptors for DeMar DeRozan, Jakob Poeltl and 
@@ -11,12 +11,17 @@ for Blake Griffin, Brice Johnson and Willie Reed.`;
 
 const testString3 = `July 11, 2012: Traded by the Los Angeles Lakers (as a future 2013 1st round draft pick) with a 2013 2nd round draft pick (Alex Oriakhi was later selected), a 2014 2nd round draft pick (Johnny O'Bryant was later selected) and a 2018 1st round draft pick (Mikal Bridges was later selected) to the Phoenix Suns for Steve Nash.`;
 
+
+// console.log(getTeamsInString(testString))
+
 const getAssets = (assetsArray) => {
   if (assetsArray !== null) {
     return assetsArray.map((asset) => {
       return {
         pick: asset,
-        name: ''
+        name: '',
+        // tradedTo: '',
+        // tradedBy: ''
       };
     });
   } else {
@@ -29,7 +34,9 @@ const getDraftedPlayers = (playerArray) =>
     const playerString = playerData.split('(');
     return {
       pick: playerString[0].trim(),
-      name: playerString[1].split('was')[0].trim()
+      name: playerString[1].split('was')[0].trim(),
+      // tradedTo: '',
+      // tradedBy: ''
     };
   });
 
@@ -75,6 +82,29 @@ const splitString = (tradeString) => {
 
 const multi = `February 7, 2019: As part of a 3-team trade, traded by the New Orleans Pelicans to the Milwaukee Bucks; the Detroit Pistons traded Stanley Johnson to the New Orleans Pelicans; the Milwaukee Bucks traded Thon Maker to the Detroit Pistons; and the Milwaukee Bucks traded Jason Smith, a 2019 2nd round draft pick, a 2020 2nd round draft pick, a 2020 2nd round draft pick and a 2021 2nd round draft pick to the New Orleans Pelicans. (Pick is DEN's 2019 second-round pick, top-55 protected.) (Pick is WAS's 2020 second-round pick.) (Pick is WAS's 2021 second-round pick.)`;
 
-console.log(splitString(multi));
+const allPicks = (tradeString) => {
+  const mappedData = splitString(tradeString)
+    .map((tradeFragment) => getPicks(tradeFragment))
+    .filter((picksArray) => picksArray.length > 0)
+
+  return _.flatten(mappedData);
+};
+
+const getTeamsInString = (tradeString) => {
+  let teams = [];
+  for (let i = 0; i < teamNames.length; i++) {
+    const team = teamNames[i].teamName;
+    if ((new RegExp(`\\b${team}\\b`, "g").test(tradeString))) {
+      teams.push(teamNames[i].teamAbr);
+    }
+  }
+  return teams;
+}
+
+const teamsInvolved = getTeamsInString(testString);
+
+console.log(teamsInvolved)
+// console.log(allPicks(multi))
+// console.log(getPicks(testString2))
 
 module.exports = getPicks;
