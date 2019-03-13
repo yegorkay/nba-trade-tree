@@ -2,7 +2,6 @@ const $ = require('cheerio');
 const getAbbr = require('./getAbbr');
 const getPlayerId = require('./getPlayerId');
 
-
 /**
  * Maps over data to get an array of players
  * @param {*} data The data we are mapping
@@ -13,7 +12,7 @@ const getPlayerId = require('./getPlayerId');
  */
 const getPlayerObj = (data, tradedBy, tradedTo, isTradedBy) => {
   return data
-    .map(function () {
+    .map(function() {
       return {
         name: $(this).text(),
         playerId: getPlayerId($(this).attr('href')),
@@ -42,7 +41,7 @@ const oneToOneTrade = (tradeString, tradedBy, tradedTo) => {
   const secondHalf = getPlayerObj(secondHalfData, tradedBy, tradedTo, false);
 
   /**
-   * WE need to check if data even exists in the first half, 
+   * WE need to check if data even exists in the first half,
    * otherwise, tradedTo/tradedBy are incorrect
    */
   if (firstHalfData.text().length > 0) {

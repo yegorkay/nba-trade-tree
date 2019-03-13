@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const $ = require('cheerio');
 
 const testString = `July 18, 2018: Traded by the San Antonio Spurs with Danny Green 
 and cash to the Toronto Raptors for DeMar DeRozan, Jakob Poeltl and 
@@ -21,7 +22,7 @@ const getAssets = (assetsArray) => {
   } else {
     return [];
   }
-}
+};
 
 const getDraftedPlayers = (playerArray) =>
   playerArray.map((playerData) => {
@@ -32,10 +33,11 @@ const getDraftedPlayers = (playerArray) =>
     };
   });
 
-const getPicks = (tradeString) => {
-  const playerRegex = /(19|20)\d{2}\b\s([1-9]|[1-5][0-9]|60)(?:st|nd|rd|th)\s(round draft pick)\s(.*?)was/g;
-  const assetRegex = /(future\s)?(\b(19|20)\d{2}\b\s([1-9]|[1-5][0-9]|60)(?:st|nd|rd|th)\s(round draft pick))/g;
+// These regex consts are used throughout, hence outside of a variable scope
+const playerRegex = /(19|20)\d{2}\b\s([1-9]|[1-5][0-9]|60)(?:st|nd|rd|th)\s(round draft pick)\s(.*?)was/g;
+const assetRegex = /(future\s)?(\b(19|20)\d{2}\b\s([1-9]|[1-5][0-9]|60)(?:st|nd|rd|th)\s(round draft pick))/g;
 
+const getPicks = (tradeString) => {
   const playerMatch = tradeString.match(playerRegex);
   const assetMatch = tradeString.match(assetRegex);
 
@@ -56,6 +58,23 @@ const getPicks = (tradeString) => {
   }
 };
 
-console.log(getPicks(testString3));
+const splitString = (tradeString) => {
+  const isMultiTeam = tradeString.includes('As part of a');
+  const hasAssets = (trade) =>
+    playerRegex.test(trade) || assetRegex.test(trade);
+  // [0] tradedBy
+  // [1] tradedTo
+  return (
+    tradeString
+      // `to the` for 1to1 trades, `;` for multi team
+      .split(isMultiTeam ? ';' : 'to the')
+      .map((splitString) => splitString.trim())
+      .filter((trade) => (isMultiTeam ? hasAssets(trade) : trade))
+  );
+};
+
+const multi = `February 7, 2019: As part of a 3-team trade, traded by the New Orleans Pelicans to the Milwaukee Bucks; the Detroit Pistons traded Stanley Johnson to the New Orleans Pelicans; the Milwaukee Bucks traded Thon Maker to the Detroit Pistons; and the Milwaukee Bucks traded Jason Smith, a 2019 2nd round draft pick, a 2020 2nd round draft pick, a 2020 2nd round draft pick and a 2021 2nd round draft pick to the New Orleans Pelicans. (Pick is DEN's 2019 second-round pick, top-55 protected.) (Pick is WAS's 2020 second-round pick.) (Pick is WAS's 2021 second-round pick.)`;
+
+console.log(splitString(multi));
 
 module.exports = getPicks;
