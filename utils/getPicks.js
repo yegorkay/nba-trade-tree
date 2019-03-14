@@ -1,14 +1,15 @@
 const _ = require('lodash');
 const teamNames = require('../settings/teamNames');
 
-const getAssets = (assetsArray, teamsInvolved) => {
+const getAssets = (assetsArray, teamsInvolved, index) => {
+  // index [0] = tradedBy , [1] = tradedTo (for 1to1 traded)
   if (assetsArray !== null) {
     return assetsArray.map((asset) => {
       return {
         pick: asset,
         name: '',
-        tradedBy: teamsInvolved[0],
-        tradedTo: teamsInvolved[1]
+        tradedBy: teamsInvolved[index === 0 ? 0 : 1],
+        tradedTo: teamsInvolved[index === 0 ? 1 : 0]
       };
     });
   } else {
@@ -16,14 +17,15 @@ const getAssets = (assetsArray, teamsInvolved) => {
   }
 };
 
-const getDraftedPlayers = (playerArray, teamsInvolved) => {
+const getDraftedPlayers = (playerArray, teamsInvolved, index) => {
+  // index [0] = tradedBy , [1] = tradedTo (for 1to1 traded)
   return playerArray.map((playerData) => {
     const playerString = playerData.split('(');
     return {
       pick: playerString[0].trim(),
       name: playerString[1].split('was')[0].trim(),
-      tradedBy: teamsInvolved[0],
-      tradedTo: teamsInvolved[1]
+      tradedBy: teamsInvolved[index === 0 ? 0 : 1],
+      tradedTo: teamsInvolved[index === 0 ? 1 : 0]
     };
   });
 };
@@ -32,14 +34,15 @@ const getDraftedPlayers = (playerArray, teamsInvolved) => {
 const playerRegex = /(19|20)\d{2}\b\s([1-9]|[1-5][0-9]|60)(?:st|nd|rd|th)\s(round draft pick)\s(.*?)was/g;
 const assetRegex = /(future\s)?(\b(19|20)\d{2}\b\s([1-9]|[1-5][0-9]|60)(?:st|nd|rd|th)\s(round draft pick))/g;
 
-const joinPicks = (tradeString, teamsInvolved) => {
+const joinPicks = (tradeString, teamsInvolved, index) => {
+  // console.log(index)
   const playerMatch = tradeString.match(playerRegex);
   const assetMatch = tradeString.match(assetRegex);
 
-  const assets = getAssets(assetMatch, teamsInvolved);
+  const assets = getAssets(assetMatch, teamsInvolved, index);
 
   if (playerMatch !== null) {
-    const draftedPlayers = getDraftedPlayers(playerMatch, teamsInvolved);
+    const draftedPlayers = getDraftedPlayers(playerMatch, teamsInvolved, index);
     /** `Future` indicates that the player we are searching was drafted. Therefore, we don't want him in this data */
     const undraftedPicks = assets.filter((asset) =>
       draftedPlayers.find(
@@ -77,13 +80,13 @@ const getTeamsInString = (tradeString) => {
   return teams;
 };
 
-const allPicks = (tradeString) => {
+const getPicks = (tradeString) => {
   const teamsInvolved = getTeamsInString(tradeString);
   const mappedData = splitString(tradeString)
-    .map((tradeFragment) => joinPicks(tradeFragment, teamsInvolved))
+    .map((tradeFragment, index) => joinPicks(tradeFragment, teamsInvolved, index))
     .filter((picksArray) => picksArray.length > 0);
 
   return _.flatten(mappedData);
 };
 
-module.exports = allPicks;
+module.exports = getPicks;
