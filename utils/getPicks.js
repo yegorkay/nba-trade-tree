@@ -23,7 +23,7 @@ const getDraftedPlayers = (playerArray, teamsInvolved, index) => {
     const playerString = playerData.split('(');
     return {
       pick: playerString[0].trim(),
-      name: playerString[1].split('was')[0].trim(),
+      name: playerString[1].replace('was', '').trim(),
       tradedBy: teamsInvolved[index === 0 ? 0 : 1],
       tradedTo: teamsInvolved[index === 0 ? 1 : 0]
     };
