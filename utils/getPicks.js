@@ -96,7 +96,7 @@ const getPicks = (tradeString) => {
   const tradeFragment = splitString(tradeString);
   // if multiteam, we split string, otherwise we get teams in string
   const teamsInvolved = isMultiTeam ? getTeamsInString(tradeFragment) : getTeamsInString(tradeString);
-  // console.log(teamsInvolved)
+
   const mappedData = tradeFragment
     .map((tradeFragment, index) => joinPicks(tradeFragment, teamsInvolved, index))
     .filter((picksArray) => picksArray.length > 0);
