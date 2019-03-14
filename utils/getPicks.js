@@ -67,6 +67,12 @@ const splitString = (tradeString) => {
   );
 };
 
+const compareStringIndex = (a, b) => {
+  if (a.stringIndex < b.stringIndex) { return -1 };
+  if (a.stringIndex > b.stringIndex) { return 1 };
+  return 0;
+}
+
 // this returns the array in alphabetical order. We want to return it in order of appearance
 const getTeamsInString = (tradeString) => {
   let teams = [];
@@ -79,12 +85,6 @@ const getTeamsInString = (tradeString) => {
        */
       teams.push({ abbr: teamNames[i].teamAbr, stringIndex: tradeString.indexOf(team) });
     }
-  }
-
-  const compareStringIndex = (a, b) => {
-    if (a.stringIndex < b.stringIndex) { return -1 };
-    if (a.stringIndex > b.stringIndex) { return 1 };
-    return 0;
   }
 
   return teams.sort(compareStringIndex).map((team) => team.abbr);
@@ -115,6 +115,6 @@ const toby2 = `January 29, 2018: Traded by the Detroit Pistons with Avery Bradle
 
 const alphaTest = `Traded by the Phoenix Suns to the Denver Nuggets`
 
-console.log(getPicks(kawhi))
+console.log(getPicks(hard))
 
 module.exports = getPicks;
