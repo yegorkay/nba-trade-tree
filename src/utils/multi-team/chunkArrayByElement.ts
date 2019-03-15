@@ -8,7 +8,7 @@ interface IAllTradeValues {
  * @param {*} el The element we are chunking by
  * @return An array of arrays chunked by the index of the element we passed
  */
-export const chunkArrayByElement = (arr: IAllTradeValues[], el: string) => {
+export const chunkArrayByElement = (arr: any[], el: string) => {
   if (arr.length === 0) {
     return arr;
   }
