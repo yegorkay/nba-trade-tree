@@ -1,16 +1,16 @@
-const express = require('express');
-const bodyParser = require('body-parser');
+import express from "express";
+import bodyParser from "body-parser";
+import * as _ from "lodash";
 const services = require('./services');
-const _ = require('lodash');
 const app = express();
-const port = 5000;
+const PORT: number = 5000;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/api/trade', (req, res) => {
   const { f1, f2 } = req.query;
-  scrapeMainTransaction(f1, f2).then((data) => {
+  services.scrapeMainTransaction(f1, f2).then((data: any) => {
     res.send({ data });
   });
 });
@@ -84,13 +84,13 @@ const kawhi = 'https://www.basketball-reference.com/players/l/leonaka01.html';
 // const date = 'July 18, 2018';
 
 app.get('/api/player-history', (req, res) => {
-  services.scrapeSinglePlayerTransaction(toby, date).then((data) => {
+  services.scrapeSinglePlayerTransaction(toby, date).then((data: any) => {
     // services.scrapeSinglePlayerTransaction(link, tradeDate).then((data) => {
     res.send({ data });
   });
 });
 
-app.listen(port, () => console.log(`Listening on port ${port}`));
+app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
 
 process.on('uncaughtException', (err) => {
   console.log(`Caught exception: ${err}`);
