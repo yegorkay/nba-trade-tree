@@ -1,16 +1,21 @@
+interface IAllTradeValues {
+  name: string;
+  playerId: string;
+}
 /**
  * **multi-team:** Chunks an array by a particular element in an array
  * @param {*} arr The array we are chunking
  * @param {*} el The element we are chunking by
  * @return An array of arrays chunked by the index of the element we passed
  */
-const chunkArrayByElement = (arr, el) => {
+export const chunkArrayByElement = (arr: IAllTradeValues[], el: string) => {
   if (arr.length === 0) {
     return arr;
   }
 
   return arr.reduce(
-    (prev, curr, index) => {
+    // TODO figure out what curr is IAllTradeValues | string
+    (prev: IAllTradeValues[][] | [][], curr: any, index: number) => {
       if (curr === el) {
         if (index === 0 || index === arr.length - 1) {
           return prev;
@@ -27,5 +32,3 @@ const chunkArrayByElement = (arr, el) => {
     [[]]
   );
 };
-
-module.exports = chunkArrayByElement;

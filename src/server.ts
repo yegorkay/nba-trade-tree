@@ -1,8 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import _ from "lodash";
-const services = require('./services');
-import { scrapeTeamCodes } from "./services";
+import { scrapeTeamCodes, scrapeSinglePlayerTransaction } from "./services";
 const app = express();
 const PORT: number = 5000;
 
@@ -86,7 +85,7 @@ const kawhi = 'https://www.basketball-reference.com/players/l/leonaka01.html';
 // const date = 'July 18, 2018';
 
 app.get('/api/player-history', (req, res) => {
-  services.scrapeSinglePlayerTransaction(toby, date).then((data: any) => {
+  scrapeSinglePlayerTransaction(toby, date).then((data: any) => {
     // services.scrapeSinglePlayerTransaction(link, tradeDate).then((data) => {
     res.send({ data });
   });

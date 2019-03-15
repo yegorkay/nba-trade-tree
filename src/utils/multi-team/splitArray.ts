@@ -1,3 +1,7 @@
+interface IAllTradeValues {
+  name: string;
+  playerId: string;
+}
 /**
  * **multi-team:** This is used to split the `playerArray` by team. 
  * Replaces a duplicated team with a dummy string so 
@@ -8,9 +12,9 @@
  * @return {*} Returns an array with `'match'` thrown in where the previous 
  * and next elements of the array match `[1, 2, 4, 4] => [1, 2, 'match']`
  */
-const splitArray = (playerArray, firstGroupTeam) => {
+export const splitArray = (playerArray: IAllTradeValues[], firstGroupTeam: string) => {
   let arr = [];
-  for (i = 0; i < playerArray.length - 1; i++) {
+  for (let i = 0; i < playerArray.length - 1; i++) {
     const prevNextIdsMatch =
       playerArray[i].playerId === playerArray[i + 1].playerId;
     // The first team chunk is always implicitly tied to the player we are scraping
@@ -27,5 +31,3 @@ const splitArray = (playerArray, firstGroupTeam) => {
   }
   return arr;
 };
-
-module.exports = splitArray;

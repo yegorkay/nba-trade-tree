@@ -12,7 +12,7 @@ import { getPlayerId } from './getPlayerId';
  */
 const getPlayerObj = (data: Cheerio, tradedBy: string, tradedTo: string, isTradedBy: boolean): IPlayer[] => {
   return $(data)
-    .map(function (i, ele) {
+    .map(function (_i, ele) {
       return {
         name: $(ele).text(),
         playerId: getPlayerId($(ele).attr('href')),
@@ -30,7 +30,7 @@ const getPlayerObj = (data: Cheerio, tradedBy: string, tradedTo: string, isTrade
  * @param {*} tradedTo The team our selected player was traded to
  * @return {*} Returns an array of player objects
  */
-export const oneToOneTrade = (tradeString: string, tradedBy: string, tradedTo: string) => {
+export const oneToOneTrade = (tradeString: Cheerio, tradedBy: string, tradedTo: string) => {
   const firstHalfData: Cheerio = $(tradeString)
     .children('strong:first-child + a:first-of-type')
     .nextUntil('a[data-attr-to]');

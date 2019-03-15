@@ -132,18 +132,22 @@ const getTeamsInString = (tradeString: any): string[] => {
  * @param {*} tradeString The string where we will find our picks in
  * @return {*} Returns an array of picks 
  */
-export const getPicks = (tradeString: string) => {
-  const isMultiTeam: boolean = tradeString.includes('As part of a ');
-  const tradePiece: string[] = splitString(tradeString);
-  // if multiteam, we split string, otherwise we get teams in string
-  const teamsInvolved: string[] = getTeamsInString(
-    isMultiTeam ? tradePiece : tradeString
-  );
+export const getPicks = (tradeString: string | null) => {
+  if (tradeString !== null) {
+    const isMultiTeam: boolean = tradeString.includes('As part of a ');
+    const tradePiece: string[] = splitString(tradeString);
+    // if multiteam, we split string, otherwise we get teams in string
+    const teamsInvolved: string[] = getTeamsInString(
+      isMultiTeam ? tradePiece : tradeString
+    );
 
-  const mappedData = tradePiece
-    .map((tradeFragment, index) =>
-      findPicks(tradeFragment, teamsInvolved, index)
-    )
-    .filter((picksArray) => picksArray.length > 0);
-  return _.flatten(mappedData);
+    const mappedData = tradePiece
+      .map((tradeFragment, index) =>
+        findPicks(tradeFragment, teamsInvolved, index)
+      )
+      .filter((picksArray) => picksArray.length > 0);
+    return _.flatten(mappedData);
+  } else {
+    return [];
+  }
 };
