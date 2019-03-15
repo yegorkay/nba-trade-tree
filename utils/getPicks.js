@@ -7,8 +7,14 @@ const getPlayerId = require('./getPlayerId');
 const PLAYER_REGEX = /(19|20)\d{2}\b\s([1-9]|[1-5][0-9]|60)(?:st|nd|rd|th)\s(round draft pick)\s(.*?)was/g;
 const ASSET_REGEX = /(future\s)?(\b(19|20)\d{2}\b\s([1-9]|[1-5][0-9]|60)(?:st|nd|rd|th)\s(round draft pick))/g;
 
+/**
+ * Formats the data into an array of picks (also drafted players if they exist)
+ * @param {*} assetsArray The array of all scraped trade assets 
+ * @param {*} teamsInvolved all teams involved in the trade
+ * @param {*} index index `[0]` = tradedBy , `[1]` = tradedTo 
+ * @return {*} Returns an array of assets
+ */
 const getAssets = (assetsArray, teamsInvolved, index) => {
-  // index [0] = tradedBy , [1] = tradedTo (for 1to1 traded)
   if (assetsArray !== null) {
     return assetsArray.map((asset) => {
       const isDrafted = asset.includes('(');
@@ -29,7 +35,14 @@ const getAssets = (assetsArray, teamsInvolved, index) => {
   }
 };
 
-const joinPicks = (tradeString, teamsInvolved, index) => {
+/**
+ * Gets all picks for each `tradeString`
+ * @param {*} tradeString The string we are finding our picks in
+ * @param {*} teamsInvolved The teams involved for our picks
+ * @param {*} index index `[0]` = tradedBy , `[1]` = tradedTo 
+ * @return {*} Returns all picks for each `tradeString` fragment (see `getPicks`)
+ */
+const findPicks = (tradeString, teamsInvolved, index) => {
   const playerMatch = tradeString.match(PLAYER_REGEX);
   const assetMatch = tradeString.match(ASSET_REGEX);
 
@@ -50,6 +63,11 @@ const joinPicks = (tradeString, teamsInvolved, index) => {
   }
 };
 
+/**
+ * Splits the trade string into two pieces (`[0]` = tradedBy, `[1]` = tradedTo)
+ * @param {*} tradeString The string we are splitting
+ * @return {*} Returns an array of strings `(length === 2)`
+ */
 const splitString = (tradeString) => {
   const isMultiTeam = tradeString.includes('As part of a');
   const hasAssets = (trade) =>
@@ -62,7 +80,12 @@ const splitString = (tradeString) => {
       .filter((trade) => (isMultiTeam ? hasAssets(trade) : trade))
   );
 };
-
+/**
+ * Sorts array of teams by `stringIndex` property
+ * @param {*} a First element
+ * @param {*} b Second element
+ * @return {*} Returns sorted array of teams
+ */
 const compareStringIndex = (a, b) => {
   if (a.stringIndex < b.stringIndex) {
     return -1;
@@ -73,7 +96,11 @@ const compareStringIndex = (a, b) => {
   return 0;
 };
 
-// this returns the array in alphabetical order. We want to return it in order of appearance
+/**
+ * Finds all existing teams in a string, and returns the array of teams in order of appearance
+ * @param {*} tradeString The string where we will find our teams in
+ * @return {*} Returns an array of teams 
+ */
 const getTeamsInString = (tradeString) => {
   let teams = [];
   for (let i = 0; i < teamNames.length; i++) {
@@ -93,6 +120,11 @@ const getTeamsInString = (tradeString) => {
   return teams.sort(compareStringIndex).map((team) => team.abbr);
 };
 
+/**
+ * Get all picks with correct object values
+ * @param {*} tradeString The string where we will find our picks in
+ * @return {*} Returns an array of picks 
+ */
 const getPicks = (tradeString) => {
   const isMultiTeam = tradeString.includes('As part of a ');
   const tradePiece = splitString(tradeString);
@@ -103,7 +135,7 @@ const getPicks = (tradeString) => {
 
   const mappedData = tradePiece
     .map((tradeFragment, index) =>
-      joinPicks(tradeFragment, teamsInvolved, index)
+      findPicks(tradeFragment, teamsInvolved, index)
     )
     .filter((picksArray) => picksArray.length > 0);
   return _.flatten(mappedData);
