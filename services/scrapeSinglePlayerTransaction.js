@@ -89,8 +89,7 @@ const scrapeSinglePlayerTransaction = async (playerUrl, playerTradeDate) => {
       .get();
 
     if (!isGLeague) {
-      const tradedPicks = isNotTraded ? [] : getPicks(tradeString);
-      // console.log(allTradePieces);
+      const tradedPicks = isNotTraded ? [] : getPicks($(this).html());
       data.push({
         status,
         transactionDate,
