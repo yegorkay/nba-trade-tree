@@ -9,7 +9,6 @@ const {
   getPicks,
   getPlayerId,
   // isCurrentYear,
-  // getCurrentDraftPicks,
   isMultiTeam,
   oneToOneTrade,
   multiTeamTrade
@@ -41,7 +40,7 @@ const scrapeSinglePlayerTransaction = async (playerUrl, playerTradeDate) => {
   await page.goto(playerUrl);
   const html = await page.content();
 
-  $(selector, html).each(function() {
+  $(selector, html).each(function () {
     const tradeString = $(this).text();
     const isGLeague = tradeString.indexOf(gLeague) !== -1;
 
@@ -72,7 +71,7 @@ const scrapeSinglePlayerTransaction = async (playerUrl, playerTradeDate) => {
     const tradedTo = getAbbr(
       $(this)
         .children('a[data-attr-to]')
-        .map(function() {
+        .map(function () {
           return $(this).text();
         })
         .get()[0]
@@ -80,7 +79,7 @@ const scrapeSinglePlayerTransaction = async (playerUrl, playerTradeDate) => {
 
     const tradedPlayers = $(this)
       .children('a:not(:nth-of-type(-n + 1))')
-      .map(function() {
+      .map(function () {
         return {
           name: $(this).text(),
           playerId: getPlayerId($(this).attr('href'))
@@ -98,9 +97,9 @@ const scrapeSinglePlayerTransaction = async (playerUrl, playerTradeDate) => {
         tradedPlayers: isMultiTrade
           ? multiTeamTrade(tradedPlayers, tradedBy)
           : pruneTradedPlayers(
-              oneToOneTrade($(this), tradedBy, tradedTo),
-              tradedPicks
-            ),
+            oneToOneTrade($(this), tradedBy, tradedTo),
+            tradedPicks
+          ),
         tradedPicks
       });
     }
