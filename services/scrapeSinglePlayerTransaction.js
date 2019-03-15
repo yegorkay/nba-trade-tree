@@ -4,12 +4,9 @@ const utils = require('../utils');
 
 const {
   getAbbr,
-  // pruneTeam,
   pruneTradedPlayers,
   getPicks,
   getPlayerId,
-  // isCurrentYear,
-  isMultiTeam,
   oneToOneTrade,
   multiTeamTrade
 } = utils;
@@ -44,8 +41,7 @@ const scrapeSinglePlayerTransaction = async (playerUrl, playerTradeDate) => {
     const tradeString = $(this).text();
     const isGLeague = tradeString.indexOf(gLeague) !== -1;
 
-    const manyTeamsInvolved = splitTradeString($(this), 5);
-    const isMultiTrade = isMultiTeam(manyTeamsInvolved);
+    const isMultiTrade = tradeString.includes('As part of a ');
 
     const status = splitTradeString(
       $(this),

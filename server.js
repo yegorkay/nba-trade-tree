@@ -76,8 +76,8 @@ const toby =
   'https://www.basketball-reference.com/players/h/harrito02.html#all_transactions';
 const date = 'June 23, 2011';
 
-// const harden =
-//   'https://www.basketball-reference.com/players/h/hardeja01.html#all_transactions';
+const harden =
+  'https://www.basketball-reference.com/players/h/hardeja01.html#all_transactions';
 // const date = 'October 27, 2012';
 
 const kawhi = 'https://www.basketball-reference.com/players/l/leonaka01.html';
