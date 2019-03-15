@@ -1,4 +1,4 @@
-const _ = require('lodash');
+import _ from "lodash";
 const chunkArrayByElement = require('./chunkArrayByElement');
 const splitArray = require('./splitArray');
 const prunePlayers = require('./prunePlayers');

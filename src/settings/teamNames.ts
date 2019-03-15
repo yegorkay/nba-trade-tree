@@ -1,5 +1,9 @@
-/** An `array` of objects for teams `[{teamAbr: '', teamName: '' }]` */
-const teamNames = [
+interface ITeams {
+  teamAbr: string;
+  teamName: string;
+}
+
+const teamNames: ITeams[] = [
   {
     teamAbr: 'ATL',
     teamName: 'Atlanta Hawks'

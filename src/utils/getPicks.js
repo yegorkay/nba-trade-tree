@@ -1,6 +1,6 @@
-const _ = require('lodash');
+import _ from "lodash";
 const $ = require('cheerio');
-const teamNames = require('../settings/teamNames');
+import * as teamNames from '../settings/teamNames';
 const getPlayerId = require('./getPlayerId');
 
 // These regex consts are used throughout, hence outside of a variable scope

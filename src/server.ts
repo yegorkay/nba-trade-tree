@@ -1,6 +1,6 @@
 import express from "express";
 import bodyParser from "body-parser";
-import * as _ from "lodash";
+import _ from "lodash";
 const services = require('./services');
 const app = express();
 const PORT: number = 5000;
