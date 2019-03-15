@@ -1,11 +1,12 @@
 import _ from "lodash";
-const $ = require('cheerio');
-import * as teamNames from '../settings/teamNames';
-const getPlayerId = require('./getPlayerId');
+import $ from "cheerio";
+import { teamNames } from '../settings/teamNames';
+import { getPlayerId } from './getPlayerId';
+import { IPlayer } from './../models';
 
 // These regex consts are used throughout, hence outside of a variable scope
-const PLAYER_REGEX = /(19|20)\d{2}\b\s([1-9]|[1-5][0-9]|60)(?:st|nd|rd|th)\s(round draft pick)\s(.*?)was/g;
-const ASSET_REGEX = /(future\s)?(\b(19|20)\d{2}\b\s([1-9]|[1-5][0-9]|60)(?:st|nd|rd|th)\s(round draft pick))/g;
+const PLAYER_REGEX: RegExp = /(19|20)\d{2}\b\s([1-9]|[1-5][0-9]|60)(?:st|nd|rd|th)\s(round draft pick)\s(.*?)was/g;
+const ASSET_REGEX: RegExp = /(future\s)?(\b(19|20)\d{2}\b\s([1-9]|[1-5][0-9]|60)(?:st|nd|rd|th)\s(round draft pick))/g;
 
 /**
  * Formats the data into an array of picks (also drafted players if they exist)
@@ -14,12 +15,12 @@ const ASSET_REGEX = /(future\s)?(\b(19|20)\d{2}\b\s([1-9]|[1-5][0-9]|60)(?:st|nd
  * @param {*} index index `[0]` = tradedBy , `[1]` = tradedTo 
  * @return {*} Returns an array of assets
  */
-const getAssets = (assetsArray, teamsInvolved, index) => {
+const getAssets = (assetsArray: RegExpMatchArray | null, teamsInvolved: string[], index: number): IPlayer[] => {
   if (assetsArray !== null) {
     return assetsArray.map((asset) => {
-      const isDrafted = asset.includes('(');
-      const draftedPlayer = asset.split('(');
-      const getPlayer = (player) => player.replace('was', '').trim();
+      const isDrafted: boolean = asset.includes('(');
+      const draftedPlayer: string[] = asset.split('(');
+      const getPlayer = (player: string): string => player.replace('was', '').trim();
       return {
         name: isDrafted ? $(getPlayer(draftedPlayer[1])).text() : '',
         playerId: isDrafted
@@ -42,16 +43,16 @@ const getAssets = (assetsArray, teamsInvolved, index) => {
  * @param {*} index index `[0]` = tradedBy , `[1]` = tradedTo 
  * @return {*} Returns all picks for each `tradeString` fragment (see `getPicks`)
  */
-const findPicks = (tradeString, teamsInvolved, index) => {
-  const playerMatch = tradeString.match(PLAYER_REGEX);
-  const assetMatch = tradeString.match(ASSET_REGEX);
+const findPicks = (tradeString: string, teamsInvolved: string[], index: number) => {
+  const playerMatch: RegExpMatchArray | null = tradeString.match(PLAYER_REGEX);
+  const assetMatch: RegExpMatchArray | null = tradeString.match(ASSET_REGEX);
 
-  const assets = getAssets(assetMatch, teamsInvolved, index);
+  const assets: IPlayer[] = getAssets(assetMatch, teamsInvolved, index);
 
   if (playerMatch !== null) {
-    const draftedPlayers = getAssets(playerMatch, teamsInvolved, index);
+    const draftedPlayers: IPlayer[] = getAssets(playerMatch, teamsInvolved, index);
     /** `Future` indicates that the player we are searching was drafted. Therefore, we don't want him in this data */
-    const undraftedPicks = assets.filter((asset) =>
+    const undraftedPicks: IPlayer[] = assets.filter((asset) =>
       draftedPlayers.find(
         (player) => player.pick !== asset.pick && !asset.pick.includes('future')
       )
@@ -68,9 +69,9 @@ const findPicks = (tradeString, teamsInvolved, index) => {
  * @param {*} tradeString The string we are splitting
  * @return {*} Returns an array of strings `(length === 2)`
  */
-const splitString = (tradeString) => {
+const splitString = (tradeString: string) => {
   const isMultiTeam = tradeString.includes('As part of a');
-  const hasAssets = (trade) =>
+  const hasAssets = (trade: string): boolean =>
     PLAYER_REGEX.test(trade) || ASSET_REGEX.test(trade);
   return (
     tradeString
@@ -80,13 +81,18 @@ const splitString = (tradeString) => {
       .filter((trade) => (isMultiTeam ? hasAssets(trade) : trade))
   );
 };
+
+interface IOrderedTeam {
+  abbr: string;
+  stringIndex: number;
+}
 /**
  * Sorts array of teams by `stringIndex` property
  * @param {*} a First element
  * @param {*} b Second element
  * @return {*} Returns sorted array of teams
  */
-const compareStringIndex = (a, b) => {
+const compareStringIndex = (a: IOrderedTeam, b: IOrderedTeam) => {
   if (a.stringIndex < b.stringIndex) {
     return -1;
   }
@@ -101,10 +107,11 @@ const compareStringIndex = (a, b) => {
  * @param {*} tradeString The string where we will find our teams in
  * @return {*} Returns an array of teams 
  */
-const getTeamsInString = (tradeString) => {
-  let teams = [];
+const getTeamsInString = (tradeString: any): string[] => {
+  // any should be string | string[], come back to it
+  let teams: IOrderedTeam[] = [];
   for (let i = 0; i < teamNames.length; i++) {
-    const team = teamNames[i].teamName;
+    const team: string = teamNames[i].teamName;
     if (new RegExp(`\\b${team}\\b`, 'g').test(tradeString)) {
       /**
        * might need to optimize this... I am seeing which index is first, sorting the array
@@ -125,11 +132,11 @@ const getTeamsInString = (tradeString) => {
  * @param {*} tradeString The string where we will find our picks in
  * @return {*} Returns an array of picks 
  */
-const getPicks = (tradeString) => {
-  const isMultiTeam = tradeString.includes('As part of a ');
-  const tradePiece = splitString(tradeString);
+export const getPicks = (tradeString: string) => {
+  const isMultiTeam: boolean = tradeString.includes('As part of a ');
+  const tradePiece: string[] = splitString(tradeString);
   // if multiteam, we split string, otherwise we get teams in string
-  const teamsInvolved = getTeamsInString(
+  const teamsInvolved: string[] = getTeamsInString(
     isMultiTeam ? tradePiece : tradeString
   );
 
@@ -140,5 +147,3 @@ const getPicks = (tradeString) => {
     .filter((picksArray) => picksArray.length > 0);
   return _.flatten(mappedData);
 };
-
-module.exports = getPicks;

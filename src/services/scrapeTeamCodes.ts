@@ -1,9 +1,9 @@
-const puppeteer = require('puppeteer');
-const $ = require('cheerio');
+import puppeteer from 'puppeteer';
+import $ from "cheerio";
 
-const scrapeTeamCodes = async () => {
-  let data = [];
-  const selector = 'tr:not(:first-child)';
+export const scrapeTeamCodes = async () => {
+  let data: any = [];
+  const rowSelector = 'tr:not(:first-child)';
 
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
@@ -12,9 +12,9 @@ const scrapeTeamCodes = async () => {
   );
   const html = await page.content();
 
-  $(selector, html).each(function() {
-    const selector = (index) =>
-      $(this)
+  $(rowSelector, html).each((i, ele) => {
+    const selector = (index: number) =>
+      $(ele)
         .children(`td:nth-child(${index})`)
         .text()
         .replace('\n', '');
@@ -29,5 +29,3 @@ const scrapeTeamCodes = async () => {
 
   return data;
 };
-
-module.exports = scrapeTeamCodes;

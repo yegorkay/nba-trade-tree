@@ -1,9 +1,6 @@
-interface ITeams {
-  teamAbr: string;
-  teamName: string;
-}
+import { ITeam } from './../models';
 
-const teamNames: ITeams[] = [
+export const teamNames: ITeam[] = [
   {
     teamAbr: 'ATL',
     teamName: 'Atlanta Hawks'
@@ -137,5 +134,3 @@ const teamNames: ITeams[] = [
     teamName: 'Washington Wizards'
   }
 ];
-
-module.exports = teamNames;

@@ -1,7 +1,7 @@
-const $ = require('cheerio');
-const getAbbr = require('./getAbbr');
-const getPlayerId = require('./getPlayerId');
-
+import $ from "cheerio";
+import { IPlayer } from './../models';
+import { getAbbr } from './getAbbr';
+import { getPlayerId } from './getPlayerId';
 /**
  * Maps over data to get an array of players
  * @param {*} data The data we are mapping
@@ -10,12 +10,12 @@ const getPlayerId = require('./getPlayerId');
  * @param {*} isTradedBy A boolean switch that determines whether the player was traded by a team, or for a team
  * @return {*} Returns an array of player objects
  */
-const getPlayerObj = (data, tradedBy, tradedTo, isTradedBy) => {
-  return data
-    .map(function() {
+const getPlayerObj = (data: Cheerio, tradedBy: string, tradedTo: string, isTradedBy: boolean): IPlayer[] => {
+  return $(data)
+    .map(function (i, ele) {
       return {
-        name: $(this).text(),
-        playerId: getPlayerId($(this).attr('href')),
+        name: $(ele).text(),
+        playerId: getPlayerId($(ele).attr('href')),
         tradedBy: getAbbr(isTradedBy ? tradedBy : tradedTo),
         tradedTo: getAbbr(isTradedBy ? tradedTo : tradedBy)
       };
@@ -30,15 +30,15 @@ const getPlayerObj = (data, tradedBy, tradedTo, isTradedBy) => {
  * @param {*} tradedTo The team our selected player was traded to
  * @return {*} Returns an array of player objects
  */
-const oneToOneTrade = (tradeString, tradedBy, tradedTo) => {
-  const firstHalfData = tradeString
+export const oneToOneTrade = (tradeString: string, tradedBy: string, tradedTo: string) => {
+  const firstHalfData: Cheerio = $(tradeString)
     .children('strong:first-child + a:first-of-type')
     .nextUntil('a[data-attr-to]');
 
-  const secondHalfData = tradeString.children('a[data-attr-to]').nextAll();
+  const secondHalfData: Cheerio = $(tradeString).children('a[data-attr-to]').nextAll();
 
-  const firstHalf = getPlayerObj(firstHalfData, tradedBy, tradedTo, true);
-  const secondHalf = getPlayerObj(secondHalfData, tradedBy, tradedTo, false);
+  const firstHalf: IPlayer[] = getPlayerObj(firstHalfData, tradedBy, tradedTo, true);
+  const secondHalf: IPlayer[] = getPlayerObj(secondHalfData, tradedBy, tradedTo, false);
 
   /**
    * WE need to check if data even exists in the first half,
@@ -50,5 +50,3 @@ const oneToOneTrade = (tradeString, tradedBy, tradedTo) => {
     return secondHalf;
   }
 };
-
-module.exports = oneToOneTrade;
