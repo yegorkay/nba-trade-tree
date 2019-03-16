@@ -1,6 +1,6 @@
 import { IPlayer } from './../models';
 import puppeteer from 'puppeteer';
-import $ from "cheerio";
+import $ from 'cheerio';
 import {
   getAbbr,
   pruneTradedPlayers,
@@ -37,7 +37,10 @@ const splitTradeString = (htmlString: Cheerio, index: number) => {
     .split(' ')[index];
 };
 
-export const scrapeSinglePlayerTransaction = async (playerUrl: string, playerTradeDate: string) => {
+export const scrapeSinglePlayerTransaction = async (
+  playerUrl: string,
+  playerTradeDate: string
+) => {
   let data: ISinglePlayerTransaction[] = [];
   const selector = '#div_transactions p';
 
@@ -47,22 +50,19 @@ export const scrapeSinglePlayerTransaction = async (playerUrl: string, playerTra
   const html = await page.content();
 
   $(selector, html).each((_i: number, ele: CheerioElement) => {
-    const tradeString = $(ele).text();
-    const isGLeague = tradeString.indexOf(gLeague) !== -1;
+    const tradeString: string = $(ele).text();
+    const isGLeague: boolean = tradeString.indexOf(gLeague) !== -1;
 
-    const isMultiTrade = tradeString.includes('As part of a ');
+    const isMultiTrade: boolean = tradeString.includes('As part of a ');
 
-    const status = splitTradeString(
-      $(ele),
-      isMultiTrade ? 7 : 1
-    ).toLowerCase();
+    const status = splitTradeString($(ele), isMultiTrade ? 7 : 1).toLowerCase();
     const isNotTraded = status !== 'traded';
 
-    const transactionDate = $(ele)
+    const transactionDate: string = $(ele)
       .children('strong:nth-child(1)')
       .text();
 
-    const tradedBy = getAbbr(
+    const tradedBy: string = getAbbr(
       $(ele)
         .children('strong:first-child + a')
         .text()
@@ -73,7 +73,7 @@ export const scrapeSinglePlayerTransaction = async (playerUrl: string, playerTra
      * first element since it's cleaner than a
      * ternary if we had a multi team trade
      */
-    const tradedTo = getAbbr(
+    const tradedTo: string = getAbbr(
       $(ele)
         .children('a[data-attr-to]')
         .map((_i: number, ele: CheerioElement) => {
@@ -82,7 +82,12 @@ export const scrapeSinglePlayerTransaction = async (playerUrl: string, playerTra
         .get()[0]
     );
 
-    const tradedPlayers = $(ele)
+    interface ITradedPlayers {
+      name: string;
+      playerId: string;
+    }
+
+    const tradedPlayers: ITradedPlayers[] = $(ele)
       .children('a:not(:nth-of-type(-n + 1))')
       .map((_i: number, ele: CheerioElement) => {
         return {
@@ -102,9 +107,9 @@ export const scrapeSinglePlayerTransaction = async (playerUrl: string, playerTra
         tradedPlayers: isMultiTrade
           ? multiTeamTrade(tradedPlayers, tradedBy)
           : pruneTradedPlayers(
-            oneToOneTrade($(ele), tradedBy, tradedTo),
-            tradedPicks
-          ),
+              oneToOneTrade($(ele), tradedBy, tradedTo),
+              tradedPicks
+            ),
         tradedPicks
       });
     }
