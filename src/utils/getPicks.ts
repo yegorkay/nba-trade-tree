@@ -107,7 +107,7 @@ const compareStringIndex = (a: IOrderedTeam, b: IOrderedTeam) => {
  * @param {*} tradeString The string where we will find our teams in
  * @return {*} Returns an array of teams 
  */
-const getTeamsInString = (tradeString: any): string[] => {
+const getTeamsInString = (tradeString: string): string[] => {
   // any should be string | string[], come back to it
   let teams: IOrderedTeam[] = [];
   for (let i = 0; i < teamNames.length; i++) {
@@ -137,13 +137,12 @@ export const getPicks = (tradeString: string | null) => {
     const isMultiTeam: boolean = tradeString.includes('As part of a ');
     const tradePiece: string[] = splitString(tradeString);
     // if multiteam, we split string, otherwise we get teams in string
-    const teamsInvolved: string[] = getTeamsInString(
-      isMultiTeam ? tradePiece : tradeString
-    );
 
     const mappedData = tradePiece
       .map((tradeFragment, index) =>
-        findPicks(tradeFragment, teamsInvolved, index)
+        findPicks(tradeFragment, getTeamsInString(
+          isMultiTeam ? tradeFragment : tradeString
+        ), index)
       )
       .filter((picksArray) => picksArray.length > 0);
     return _.flatten(mappedData);
