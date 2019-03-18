@@ -5,12 +5,8 @@ import { getPlayerId } from './getPlayerId';
 import { splitTradeString } from './splitTradeString';
 import { getPlayersMultiTrade } from './getPlayersMultiTrade';
 import { IPlayer } from './../models';
+import { regex } from './../settings';
 import util from 'util';
-
-// These regex consts are used throughout, hence outside of a variable scope
-// TODO export these
-const PLAYER_REGEX: RegExp = /(19|20)\d{2}\b\s([1-9]|[1-5][0-9]|60)(?:st|nd|rd|th)\s(round draft pick)\s(.*?)was/g;
-const ASSET_REGEX: RegExp = /(future\s)?(\b(19|20)\d{2}\b\s([1-9]|[1-5][0-9]|60)(?:st|nd|rd|th)\s(round draft pick))/g;
 
 /**
  * Formats the data into an array of picks (also drafted players if they exist)
@@ -48,6 +44,9 @@ const getAssets = (assetsArray: RegExpMatchArray | null, teamsInvolved: string[]
  * @return {*} Returns all picks for each `tradeString` fragment (see `getPicks`)
  */
 const findPicks = (tradeString: string, teamsInvolved: string[], index: number) => {
+
+  const { PLAYER_REGEX, ASSET_REGEX } = regex;
+
   const playerMatch: RegExpMatchArray | null = tradeString.match(PLAYER_REGEX);
   const assetMatch: RegExpMatchArray | null = tradeString.match(ASSET_REGEX);
 

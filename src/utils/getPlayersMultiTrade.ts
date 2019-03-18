@@ -1,6 +1,7 @@
 import $ from 'cheerio';
 import _ from "lodash";
 import { IPlayer } from './../models';
+import { regex } from './../settings';
 import { getPlayerId } from './getPlayerId';
 import { splitTradeString } from './splitTradeString';
 import { getTeamsInString } from './getTeamsInString';
@@ -13,9 +14,7 @@ import { getTeamsInString } from './getTeamsInString';
  */
 const formatMultiTrade = (tradeString: string | null, playerData: IPlayer[]) => {
 
-  // TODO get this exported
-  const PLAYER_REGEX: RegExp = /(19|20)\d{2}\b\s([1-9]|[1-5][0-9]|60)(?:st|nd|rd|th)\s(round draft pick)\s(.*?)was/g;
-
+  const { PLAYER_REGEX } = regex;
   /** Null check for our trade string */
   if (tradeString) {
 
