@@ -50,6 +50,7 @@ export const scrapeSinglePlayerTransaction = async (
 
   $(selector, html).each((_i: number, ele: CheerioElement) => {
     const tradeString: string = $(ele).text();
+    const tradeHtml: string | null = $(ele).html();
     const isGLeague: boolean = tradeString.indexOf(gLeague) !== -1;
 
     const isMultiTrade: boolean = tradeString.includes('As part of a ');
@@ -75,21 +76,21 @@ export const scrapeSinglePlayerTransaction = async (
     const tradedTo: string = getAbbr(
       $(ele)
         .children('a[data-attr-to]')
-        .map((_i: number, ele: CheerioElement) => {
-          return $(ele).text();
+        .map((_i: number, tradedTo: CheerioElement) => {
+          return $(tradedTo).text();
         })
         .get()[0]
     );
 
     if (!isGLeague) {
-      const tradedPicks = isNotTraded ? [] : getPicks($(ele).html());
+      const tradedPicks = isNotTraded ? [] : getPicks(tradeHtml);
       data.push({
         status,
         transactionDate,
         tradedBy,
         tradedTo: isNotTraded ? '' : tradedTo,
         tradedPlayers: isMultiTrade
-          ? getPlayersMultiTrade($(ele).html())
+          ? getPlayersMultiTrade(tradeHtml)
           : pruneTradedPlayers(
             oneToOneTrade($(ele), tradedBy, tradedTo),
             tradedPicks
