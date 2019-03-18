@@ -1,4 +1,4 @@
-import { IPlayer } from './../models';
+import { ITransaction } from './../models';
 import puppeteer from 'puppeteer';
 import $ from 'cheerio';
 import {
@@ -10,16 +10,6 @@ import {
 } from './../utils';
 
 const gLeague = 'G-League';
-
-// TODO export this
-interface ISinglePlayerTransaction {
-  status: string;
-  transactionDate: string;
-  tradedBy: string;
-  tradedTo: string;
-  tradedPlayers: IPlayer[] | [];
-  tradedPicks: IPlayer[] | [];
-}
 
 /**
  * @param {*} htmlString (our tradedString)
@@ -40,7 +30,7 @@ export const scrapeSinglePlayerTransaction = async (
   playerUrl: string,
   playerTradeDate: string
 ) => {
-  let data: ISinglePlayerTransaction[] = [];
+  let data: ITransaction[] = [];
   const selector = '#div_transactions p';
 
   const browser = await puppeteer.launch();
@@ -103,7 +93,7 @@ export const scrapeSinglePlayerTransaction = async (
   await browser.close();
 
   const dateTradedIndex = data.findIndex(
-    (date) => date.transactionDate === playerTradeDate
+    (transaction) => transaction.transactionDate === playerTradeDate
   );
 
   return data.splice(dateTradedIndex);

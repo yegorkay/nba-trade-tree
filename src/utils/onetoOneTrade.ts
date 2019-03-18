@@ -12,7 +12,7 @@ import { getPlayerId } from './getPlayerId';
  */
 const getPlayerObj = (data: Cheerio, tradedBy: string, tradedTo: string, isTradedBy: boolean): IPlayer[] => {
   return $(data)
-    .map(function (_i, ele) {
+    .map((_i, ele) => {
       return {
         name: $(ele).text(),
         playerId: getPlayerId($(ele).attr('href')),

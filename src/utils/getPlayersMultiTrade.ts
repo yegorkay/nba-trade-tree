@@ -46,8 +46,6 @@ const formatMultiTrade = (tradeString: string | null, playerData: IPlayer[]) => 
 export const getPlayersMultiTrade = (tradeString: string | null): IPlayer[] | [] => {
   if (tradeString) {
 
-    // const draftedAssets: RegExpMatchArray | null = tradeString.match(PLAYER_REGEX);
-
     const tradeStrings: string[] = splitTradeString(tradeString, false);
     // Wrap all strings in html wrapper so I can parse the data. First index has a p tag, so we close with p tag
     const wrapInDiv: string[] = tradeStrings.map((str, index) => index !== 0 ? `<div>${str}</div>` : `${str}</p>`)
