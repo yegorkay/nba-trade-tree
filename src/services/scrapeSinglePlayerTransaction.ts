@@ -5,9 +5,8 @@ import {
   getAbbr,
   pruneTradedPlayers,
   getPicks,
-  getPlayerId,
   oneToOneTrade,
-  multiTeamTrade
+  getPlayersMultiTrade
 } from './../utils';
 
 const gLeague = 'G-League';
@@ -18,8 +17,8 @@ interface ISinglePlayerTransaction {
   transactionDate: string;
   tradedBy: string;
   tradedTo: string;
-  tradedPlayers: any;
-  tradedPicks: IPlayer[];
+  tradedPlayers: IPlayer[] | [];
+  tradedPicks: IPlayer[] | [];
 }
 
 /**
@@ -82,21 +81,6 @@ export const scrapeSinglePlayerTransaction = async (
         .get()[0]
     );
 
-    interface ITradedPlayers {
-      name: string;
-      playerId: string;
-    }
-
-    const tradedPlayers: ITradedPlayers[] = $(ele)
-      .children('a:not(:nth-of-type(-n + 1))')
-      .map((_i: number, ele: CheerioElement) => {
-        return {
-          name: $(ele).text(),
-          playerId: getPlayerId($(ele).attr('href'))
-        };
-      })
-      .get();
-
     if (!isGLeague) {
       const tradedPicks = isNotTraded ? [] : getPicks($(ele).html());
       data.push({
@@ -105,11 +89,11 @@ export const scrapeSinglePlayerTransaction = async (
         tradedBy,
         tradedTo: isNotTraded ? '' : tradedTo,
         tradedPlayers: isMultiTrade
-          ? multiTeamTrade(tradedPlayers, tradedBy)
+          ? getPlayersMultiTrade($(ele).html())
           : pruneTradedPlayers(
-              oneToOneTrade($(ele), tradedBy, tradedTo),
-              tradedPicks
-            ),
+            oneToOneTrade($(ele), tradedBy, tradedTo),
+            tradedPicks
+          ),
         tradedPicks
       });
     }
