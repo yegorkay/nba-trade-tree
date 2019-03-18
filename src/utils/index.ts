@@ -8,3 +8,5 @@ export * from './multi-team/splitArray';
 export * from './multi-team/formatMultiTeam';
 export * from './oneToOneTrade';
 export * from './multi-team/multiTeamTrade';
+export * from './splitTradeString';
+export * from './getTeamsInString';

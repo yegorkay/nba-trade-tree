@@ -1,8 +1,11 @@
 import _ from "lodash";
 import $ from "cheerio";
-import { teamNames } from '../settings/teamNames';
+import { getTeamsInString } from './getTeamsInString';
 import { getPlayerId } from './getPlayerId';
+import { splitTradeString } from './splitTradeString';
+import { getPlayersMultiTrade } from './getPlayersMultiTrade';
 import { IPlayer } from './../models';
+import util from 'util';
 
 // These regex consts are used throughout, hence outside of a variable scope
 const PLAYER_REGEX: RegExp = /(19|20)\d{2}\b\s([1-9]|[1-5][0-9]|60)(?:st|nd|rd|th)\s(round draft pick)\s(.*?)was/g;
@@ -65,69 +68,6 @@ const findPicks = (tradeString: string, teamsInvolved: string[], index: number) 
 };
 
 /**
- * Splits the trade string into two pieces (`[0]` = tradedBy, `[1]` = tradedTo)
- * @param {*} tradeString The string we are splitting
- * @return {*} Returns an array of strings `(length === 2)`
- */
-const splitString = (tradeString: string) => {
-  const isMultiTeam = tradeString.includes('As part of a');
-  const hasAssets = (trade: string): boolean =>
-    PLAYER_REGEX.test(trade) || ASSET_REGEX.test(trade);
-  return (
-    tradeString
-      // `to the` for 1to1 trades, `;` for multi team
-      .split(isMultiTeam ? ';' : 'to the')
-      .map((splitString) => splitString.trim())
-      .filter((trade) => (isMultiTeam ? hasAssets(trade) : trade))
-  );
-};
-
-interface IOrderedTeam {
-  abbr: string;
-  stringIndex: number;
-}
-/**
- * Sorts array of teams by `stringIndex` property
- * @param {*} a First element
- * @param {*} b Second element
- * @return {*} Returns sorted array of teams
- */
-const compareStringIndex = (a: IOrderedTeam, b: IOrderedTeam) => {
-  if (a.stringIndex < b.stringIndex) {
-    return -1;
-  }
-  if (a.stringIndex > b.stringIndex) {
-    return 1;
-  }
-  return 0;
-};
-
-/**
- * Finds all existing teams in a string, and returns the array of teams in order of appearance
- * @param {*} tradeString The string where we will find our teams in
- * @return {*} Returns an array of teams 
- */
-const getTeamsInString = (tradeString: string): string[] => {
-  // any should be string | string[], come back to it
-  let teams: IOrderedTeam[] = [];
-  for (let i = 0; i < teamNames.length; i++) {
-    const team: string = teamNames[i].teamName;
-    if (new RegExp(`\\b${team}\\b`, 'g').test(tradeString)) {
-      /**
-       * might need to optimize this... I am seeing which index is first, sorting the array
-       * by index size, then mapping it over to get back the teams I want in order...
-       */
-      teams.push({
-        abbr: teamNames[i].teamAbr,
-        stringIndex: tradeString.indexOf(team)
-      });
-    }
-  }
-
-  return teams.sort(compareStringIndex).map((team) => team.abbr);
-};
-
-/**
  * Get all picks with correct object values
  * @param {*} tradeString The string where we will find our picks in
  * @return {*} Returns an array of picks 
@@ -135,9 +75,8 @@ const getTeamsInString = (tradeString: string): string[] => {
 export const getPicks = (tradeString: string | null) => {
   if (tradeString !== null) {
     const isMultiTeam: boolean = tradeString.includes('As part of a ');
-    const tradePiece: string[] = splitString(tradeString);
+    const tradePiece: string[] = splitTradeString(tradeString);
     // if multiteam, we split string, otherwise we get teams in string
-
     const mappedData = tradePiece
       .map((tradeFragment, index) =>
         findPicks(tradeFragment, getTeamsInString(
@@ -150,3 +89,7 @@ export const getPicks = (tradeString: string | null) => {
     return [];
   }
 };
+
+const testStr = `<p class="transaction "><strong>June 23, 2011</strong>: As part of a 3-team trade, traded by the <a data-attr-from="CHA" href="/teams/CHA/2011.html">Charlotte Bobcats</a> with <a href="/players/j/jacksst02.html">Stephen Jackson</a> and <a href="/players/l/livinsh01.html">Shaun Livingston</a> to the <a data-attr-to="MIL" href="/teams/MIL/2011.html">Milwaukee Bucks</a>; the <a data-attr-from="MIL" href="/teams/MIL/2011.html">Milwaukee Bucks</a> traded <a href="/players/m/maggeco01.html">Corey Maggette</a> to the <a data-attr-to="CHA" href="/teams/CHA/2011.html">Charlotte Bobcats</a>; the <a data-attr-from="MIL" href="/teams/MIL/2011.html">Milwaukee Bucks</a> traded <a href="/players/f/fredeji01.html">Jimmer Fredette</a> and <a href="/players/s/salmojo01.html">John Salmons</a> to the <a data-attr-to="SAC" href="/teams/SAC/2011.html">Sacramento Kings</a>; the <a data-attr-from="SAC" href="/teams/SAC/2011.html">Sacramento Kings</a> traded <a href="/players/b/biyombi01.html">Bismack Biyombo</a> to the <a data-attr-to="CHA" href="/teams/CHA/2011.html">Charlotte Bobcats</a>; and  the <a data-attr-from="SAC" href="/teams/SAC/2011.html">Sacramento Kings</a> traded <a href="/players/u/udrihbe01.html">Beno Udrih</a> to the <a data-attr-to="MIL" href="/teams/MIL/2011.html">Milwaukee Bucks</a>.</p>`;
+const testStr2 = `<p class="transaction "><strong>February 7, 2019</strong>: As part of a 3-team trade, traded by the <a data-attr-from="NOP" href="/teams/NOP/2019.html">New Orleans Pelicans</a> to the <a data-attr-to="MIL" href="/teams/MIL/2019.html">Milwaukee Bucks</a>; the <a data-attr-from="DET" href="/teams/DET/2019.html">Detroit Pistons</a> traded <a href="/players/j/johnsst04.html">Stanley Johnson</a> to the <a data-attr-to="NOP" href="/teams/NOP/2019.html">New Orleans Pelicans</a>; the <a data-attr-from="MIL" href="/teams/MIL/2019.html">Milwaukee Bucks</a> traded <a href="/players/m/makerth01.html">Thon Maker</a> to the <a data-attr-to="DET" href="/teams/DET/2019.html">Detroit Pistons</a>; and  the <a data-attr-from="MIL" href="/teams/MIL/2019.html">Milwaukee Bucks</a> traded <a href="/players/s/smithja02.html">Jason Smith</a>, a 2019 2nd round draft pick, a 2020 2nd round draft pick, a 2020 2nd round draft pick and a 2021 2nd round draft pick to the <a data-attr-to="NOP" href="/teams/NOP/2019.html">New Orleans Pelicans</a>. (Pick is DEN's 2019 second-round pick, top-55 protected.) (Pick is WAS's 2020 second-round pick.) (Pick is WAS's 2021 second-round pick.)</p>`;
+console.log(util.inspect(getPlayersMultiTrade(testStr), false, null, true))
