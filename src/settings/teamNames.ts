@@ -1,5 +1,6 @@
-/** An `array` of objects for teams `[{teamAbr: '', teamName: '' }]` */
-const teamNames = [
+import { ITeam } from './../models';
+
+export const teamNames: ITeam[] = [
   {
     teamAbr: 'ATL',
     teamName: 'Atlanta Hawks'
@@ -133,5 +134,3 @@ const teamNames = [
     teamName: 'Washington Wizards'
   }
 ];
-
-module.exports = teamNames;
