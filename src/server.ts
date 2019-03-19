@@ -1,7 +1,7 @@
-import express from "express";
-import bodyParser from "body-parser";
-import _ from "lodash";
-import { scrapeTeamCodes, scrapeSinglePlayerTransaction } from "./services";
+import express from 'express';
+import bodyParser from 'body-parser';
+import _ from 'lodash';
+import { scrapeTeamCodes, scrapeSinglePlayerTransaction } from './services';
 const app = express();
 const PORT: number = 5000;
 
@@ -13,7 +13,7 @@ app.get('/api/trade', (req, res) => {
   // services.scrapeMainTransaction(f1, f2).then((data: any) => {
   //   res.send({ data });
   // });
-  scrapeTeamCodes().then((data: any) => res.send({ data }))
+  scrapeTeamCodes().then((data: any) => res.send({ data }));
 });
 
 const data = [
@@ -75,18 +75,18 @@ const { tradeDate, link } = sortedBycurrTeam.PHO[0];
 
 const toby =
   'https://www.basketball-reference.com/players/h/harrito02.html#all_transactions';
-const date = 'June 23, 2011';
+// const date = 'June 23, 2011';
 
 const harden =
   'https://www.basketball-reference.com/players/h/hardeja01.html#all_transactions';
-// const date = 'October 27, 2012';
+const date = 'October 27, 2012';
 
 const kawhi = 'https://www.basketball-reference.com/players/l/leonaka01.html';
 // const date = 'July 18, 2018';
 
 app.get('/api/player-history', (req, res) => {
-  scrapeSinglePlayerTransaction(toby, date).then((data: any) => {
-    // services.scrapeSinglePlayerTransaction(link, tradeDate).then((data) => {
+  scrapeSinglePlayerTransaction(harden, date).then((data: any) => {
+    // scrapeSinglePlayerTransaction(link, tradeDate).then((data) => {
     res.send({ data });
   });
 });

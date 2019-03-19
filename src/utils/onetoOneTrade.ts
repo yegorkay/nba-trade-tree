@@ -1,4 +1,4 @@
-import $ from "cheerio";
+import $ from 'cheerio';
 import { IPlayer } from './../models';
 import { getAbbr } from './getAbbr';
 import { getPlayerId } from './getPlayerId';
@@ -10,7 +10,12 @@ import { getPlayerId } from './getPlayerId';
  * @param {*} isTradedBy A boolean switch that determines whether the player was traded by a team, or for a team
  * @return {*} Returns an array of player objects
  */
-const getPlayerObj = (data: Cheerio, tradedBy: string, tradedTo: string, isTradedBy: boolean): IPlayer[] => {
+const getPlayerObj = (
+  data: Cheerio,
+  tradedBy: string,
+  tradedTo: string,
+  isTradedBy: boolean
+): IPlayer[] => {
   return $(data)
     .map((_i, ele) => {
       return {
@@ -30,15 +35,31 @@ const getPlayerObj = (data: Cheerio, tradedBy: string, tradedTo: string, isTrade
  * @param {*} tradedTo The team our selected player was traded to
  * @return {*} Returns an array of player objects
  */
-export const oneToOneTrade = (tradeString: Cheerio, tradedBy: string, tradedTo: string) => {
+export const oneToOneTrade = (
+  tradeString: Cheerio,
+  tradedBy: string,
+  tradedTo: string
+) => {
   const firstHalfData: Cheerio = $(tradeString)
     .children('strong:first-child + a:first-of-type')
     .nextUntil('a[data-attr-to]');
 
-  const secondHalfData: Cheerio = $(tradeString).children('a[data-attr-to]').nextAll();
+  const secondHalfData: Cheerio = $(tradeString)
+    .children('a[data-attr-to]')
+    .nextAll();
 
-  const firstHalf: IPlayer[] = getPlayerObj(firstHalfData, tradedBy, tradedTo, true);
-  const secondHalf: IPlayer[] = getPlayerObj(secondHalfData, tradedBy, tradedTo, false);
+  const firstHalf: IPlayer[] = getPlayerObj(
+    firstHalfData,
+    tradedBy,
+    tradedTo,
+    true
+  );
+  const secondHalf: IPlayer[] = getPlayerObj(
+    secondHalfData,
+    tradedBy,
+    tradedTo,
+    false
+  );
 
   /**
    * WE need to check if data even exists in the first half,

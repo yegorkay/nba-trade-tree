@@ -7,7 +7,9 @@ import { teamNames } from './../settings';
  */
 export const getAbbr = (teamName: string): string => {
   if (teamName !== '') {
-    const index: number = teamNames.findIndex((team) => team.teamName === teamName);
+    const index: number = teamNames.findIndex(
+      (team) => team.teamName === teamName
+    );
     return index !== -1 ? teamNames[index].teamAbr : teamName;
   } else {
     return '';

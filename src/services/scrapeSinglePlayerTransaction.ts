@@ -79,12 +79,7 @@ export const scrapeSinglePlayerTransaction = async (
         transactionDate,
         tradedBy,
         tradedTo: isNotTraded ? '' : tradedTo,
-        tradedPlayers: isMultiTrade
-          ? getPlayersMultiTrade(tradeHtml)
-          : pruneTradedPlayers(
-            oneToOneTrade($(ele), tradedBy, tradedTo),
-            tradedPicks
-          ),
+        tradedPlayers: getPlayersMultiTrade(tradeHtml),
         tradedPicks
       });
     }

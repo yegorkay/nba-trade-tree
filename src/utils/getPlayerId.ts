@@ -1,4 +1,3 @@
-
 /**
  * Extracts the `playerId` out of a BBall-Ref URL
  * @param playerURL The BBall-Ref URL of the player you want

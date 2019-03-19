@@ -6,8 +6,10 @@ import { regex } from './../settings';
  * @param {*} forAssets Splitting and filtering by draft picks (default `true`)
  * @return {*} Returns an array of strings `(length === 2)`
  */
-export const splitTradeString = (tradeString: string, forAssets: boolean = true) => {
-
+export const splitTradeString = (
+  tradeString: string,
+  forAssets: boolean = true
+) => {
   const { PLAYER_REGEX, ASSET_REGEX } = regex;
 
   const isMultiTeam = tradeString.includes('As part of a');
@@ -19,5 +21,7 @@ export const splitTradeString = (tradeString: string, forAssets: boolean = true)
     .split(isMultiTeam ? ';' : 'to the')
     .map((splitString) => splitString.trim());
 
-  return forAssets ? stringData.filter((trade) => (isMultiTeam ? hasAssets(trade) : trade)) : stringData;
+  return forAssets
+    ? stringData.filter((trade) => (isMultiTeam ? hasAssets(trade) : trade))
+    : stringData;
 };

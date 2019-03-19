@@ -24,7 +24,7 @@ const compareStringIndex = (a: IOrderedTeam, b: IOrderedTeam) => {
 /**
  * Finds all existing teams in a string, and returns the array of teams in order of appearance
  * @param {*} tradeString The string where we will find our teams in
- * @return {*} Returns an array of teams 
+ * @return {*} Returns an array of teams
  */
 export const getTeamsInString = (tradeString: string): string[] => {
   // any should be string | string[], come back to it
