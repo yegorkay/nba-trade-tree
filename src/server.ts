@@ -1,19 +1,18 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import _ from 'lodash';
-import { scrapeTeamCodes, scrapeSinglePlayerTransaction } from './services';
+import { scrapeMainTransaction, scrapeSinglePlayerTransaction } from './services';
 const app = express();
 const PORT: number = 5000;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.get('/api/trade', (_req, res) => {
-  // const { f1, f2 } = req.query;
-  // services.scrapeMainTransaction(f1, f2).then((data: any) => {
-  //   res.send({ data });
-  // });
-  scrapeTeamCodes().then((data: any) => res.send({ data }));
+app.get('/api/trade', (req, res) => {
+  const { f1, f2 } = req.query;
+  scrapeMainTransaction(f1, f2).then((data: any) => {
+    res.send({ data });
+  });
 });
 
 // const data = [
