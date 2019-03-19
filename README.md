@@ -6,7 +6,7 @@ This project will be displaying an NBA trade timeline after a trade transaction 
 
 ## What tech is involved?
 
-Currently, Node.js is used, but it will be converted into TypeScript in the near future. Front-end will likely be TypeScript and React. 
+Currently, Node.js with TypeScript is used for the backend webscraping. Front-end will likely be TypeScript and React. 
 
 ## Examples
 
