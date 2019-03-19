@@ -82,7 +82,7 @@ const findPicks = (
  * @param {*} tradeString The string where we will find our picks in
  * @return {*} Returns an array of picks
  */
-export const getPicks = (tradeString: string | null) => {
+export const getPicks = (tradeString: string | null): IPlayer[] => {
   if (tradeString !== null) {
     const isMultiTeam: boolean = tradeString.includes('As part of a ');
     const tradePiece: string[] = splitTradeString(tradeString);
