@@ -39,7 +39,7 @@ export const oneToOneTrade = (
   tradeString: Cheerio,
   tradedBy: string,
   tradedTo: string
-) => {
+): IPlayer[] => {
   const firstHalfData: Cheerio = $(tradeString)
     .children('strong:first-child + a:first-of-type')
     .nextUntil('a[data-attr-to]');

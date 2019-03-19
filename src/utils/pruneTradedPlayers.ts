@@ -8,7 +8,7 @@ import { IPlayer } from './../models';
 export const pruneTradedPlayers = (
   tradedForArray: IPlayer[],
   assetsArray: IPlayer[]
-) => {
+): IPlayer[] => {
   return tradedForArray.filter(
     (tradeTarget) =>
       !assetsArray.find(

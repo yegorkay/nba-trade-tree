@@ -15,7 +15,7 @@ import { getTeamsInString } from './getTeamsInString';
 const formatMultiTrade = (
   tradeString: string | null,
   playerData: IPlayer[]
-) => {
+): IPlayer[] => {
   const { PLAYER_REGEX } = regex;
   /** Null check for our trade string */
   if (tradeString) {

@@ -3,10 +3,8 @@ import $ from 'cheerio';
 import { getTeamsInString } from './getTeamsInString';
 import { getPlayerId } from './getPlayerId';
 import { splitTradeString } from './splitTradeString';
-import { getTradedPlayers } from './getTradedPlayers';
 import { IPlayer } from './../models';
 import { regex } from './../settings';
-import util from 'util';
 
 /**
  * Formats the data into an array of picks (also drafted players if they exist)
@@ -52,7 +50,7 @@ const findPicks = (
   tradeString: string,
   teamsInvolved: string[],
   index: number
-) => {
+): IPlayer[] => {
   const { PLAYER_REGEX, ASSET_REGEX } = regex;
 
   const playerMatch: RegExpMatchArray | null = tradeString.match(PLAYER_REGEX);

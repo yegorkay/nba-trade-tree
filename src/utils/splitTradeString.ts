@@ -9,7 +9,7 @@ import { regex } from './../settings';
 export const splitTradeString = (
   tradeString: string,
   forAssets: boolean = true
-) => {
+): string[] => {
   const { PLAYER_REGEX, ASSET_REGEX } = regex;
 
   const isMultiTeam = tradeString.includes('As part of a');

@@ -3,9 +3,7 @@ import puppeteer from 'puppeteer';
 import $ from 'cheerio';
 import {
   getAbbr,
-  pruneTradedPlayers,
   getPicks,
-  oneToOneTrade,
   getTradedPlayers
 } from './../utils';
 
@@ -16,7 +14,7 @@ const gLeague = 'G-League';
  * @param {*} index (1 = status, 5 = allTeamsInvolved, 7 = status (multi-team))
  * @return {*} Specified string based on the index you pass. See `param` above
  */
-const splitTradeString = (htmlString: Cheerio, index: number) => {
+const splitTradeString = (htmlString: Cheerio, index: number): string => {
   return htmlString
     .clone()
     .find('strong:nth-child(1)')

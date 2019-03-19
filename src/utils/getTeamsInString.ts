@@ -11,7 +11,7 @@ interface IOrderedTeam {
  * @param {*} b Second element
  * @return {*} Returns sorted array of teams
  */
-const compareStringIndex = (a: IOrderedTeam, b: IOrderedTeam) => {
+const compareStringIndex = (a: IOrderedTeam, b: IOrderedTeam): -1 | 1 | 0 => {
   if (a.stringIndex < b.stringIndex) {
     return -1;
   }
