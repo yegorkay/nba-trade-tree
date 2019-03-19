@@ -6,7 +6,7 @@ import {
   pruneTradedPlayers,
   getPicks,
   oneToOneTrade,
-  getPlayersMultiTrade
+  getTradedPlayers
 } from './../utils';
 
 const gLeague = 'G-League';
@@ -79,7 +79,7 @@ export const scrapeSinglePlayerTransaction = async (
         transactionDate,
         tradedBy,
         tradedTo: isNotTraded ? '' : tradedTo,
-        tradedPlayers: getPlayersMultiTrade(tradeHtml),
+        tradedPlayers: getTradedPlayers(tradeHtml, tradedBy, tradedTo),
         tradedPicks
       });
     }

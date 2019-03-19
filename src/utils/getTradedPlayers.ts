@@ -5,7 +5,6 @@ import { regex } from './../settings';
 import { getPlayerId } from './getPlayerId';
 import { splitTradeString } from './splitTradeString';
 import { getTeamsInString } from './getTeamsInString';
-import { getAbbr } from './getAbbr';
 
 /**
  * Formats the array by removing any drafted assets if they exist
@@ -48,32 +47,22 @@ const formatMultiTrade = (
 };
 
 /**
- * Get all players involved in multitrade
+ * Get all players involved in a trade
  * @param {*} tradeString The string where we will find our players in
+ * @param {*} tradedTo The team players are traded to
+ * @param {*} tradedBy The team players are traded by
  * @return {*} Returns an array of traded players in a multi-team scenario
  */
-export const getPlayersMultiTrade = (
-  tradeString: string | null
+export const getTradedPlayers = (
+  tradeString: string | null,
+  tradedBy: string,
+  tradedTo: string
 ): IPlayer[] | [] => {
   if (tradeString) {
     const isMultiTeam = tradeString.includes('As part of a ');
     const tradeStrings: string[] = splitTradeString(tradeString, false);
     // Wrap all strings in html wrapper so I can parse the data.
     const wrapInDiv: string[] = tradeStrings.map((str) => `<div>${str}</div>`);
-
-    // for single
-    const tradedBy = getAbbr(
-      $(wrapInDiv[0])
-        .children('a[data-attr-from]')
-        .text()
-    );
-
-    // for single
-    const tradedTo = getAbbr(
-      $(wrapInDiv[1])
-        .children('a[data-attr-to]')
-        .text()
-    );
 
     const playerData: IPlayer[][] = wrapInDiv.map(
       (htmlNode, nodeIndex): IPlayer[] => {
@@ -86,13 +75,13 @@ export const getPlayersMultiTrade = (
               tradedBy: isMultiTeam
                 ? getTeamsInString(htmlNode)[0]
                 : nodeIndex === 0
-                ? tradedBy
-                : tradedTo,
+                  ? tradedBy
+                  : tradedTo,
               tradedTo: isMultiTeam
                 ? getTeamsInString(htmlNode)[1]
                 : nodeIndex === 1
-                ? tradedBy
-                : tradedTo
+                  ? tradedBy
+                  : tradedTo
             };
           })
           .get();
