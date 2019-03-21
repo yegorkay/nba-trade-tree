@@ -72,9 +72,9 @@ app.get('/api/trade', (req, res) => {
 
 /** Need to figure out three or more team trades */
 
-const toby =
-  'https://www.basketball-reference.com/players/h/harrito02.html#all_transactions';
-const date = 'June 23, 2011';
+// const toby =
+//   'https://www.basketball-reference.com/players/h/harrito02.html#all_transactions';
+// const date = 'June 23, 2011';
 
 // const harden =
 // 'https://www.basketball-reference.com/players/h/hardeja01.html#all_transactions';
@@ -83,8 +83,11 @@ const date = 'June 23, 2011';
 // const kawhi = 'https://www.basketball-reference.com/players/l/leonaka01.html';
 // const date = 'July 18, 2018';
 
+const miro = 'https://www.basketball-reference.com/players/m/mirotni01.html#all_transactions';
+const date = 'February 7, 2019'
+
 app.get('/api/player-history', (_req, res) => {
-  scrapeSinglePlayerTransaction(toby, date).then((data: any) => {
+  scrapeSinglePlayerTransaction(miro, date).then((data: any) => {
     // scrapeSinglePlayerTransaction(link, tradeDate).then((data) => {
     res.send({ data });
   });
