@@ -80,14 +80,14 @@ app.get('/api/trade', (req, res) => {
 // 'https://www.basketball-reference.com/players/h/hardeja01.html#all_transactions';
 // const date = 'October 27, 2012';
 
-// const kawhi = 'https://www.basketball-reference.com/players/l/leonaka01.html';
-// const date = 'July 18, 2018';
+const kawhi = 'https://www.basketball-reference.com/players/l/leonaka01.html';
+const date = 'July 18, 2018';
 
-const miro = 'https://www.basketball-reference.com/players/m/mirotni01.html#all_transactions';
-const date = 'February 7, 2019'
+// const miro = 'https://www.basketball-reference.com/players/m/mirotni01.html#all_transactions';
+// const date = 'February 7, 2019'
 
 app.get('/api/player-history', (_req, res) => {
-  scrapeSinglePlayerTransaction(miro, date).then((data: any) => {
+  scrapeSinglePlayerTransaction(kawhi, date).then((data: any) => {
     // scrapeSinglePlayerTransaction(link, tradeDate).then((data) => {
     res.send({ data });
   });
