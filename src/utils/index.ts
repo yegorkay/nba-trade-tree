@@ -1,5 +1,4 @@
 export * from './getAbbr';
-export * from './pruneTradedPlayers';
 export * from './getPicks';
 export * from './getPlayerId';
 export * from './oneToOneTrade';
