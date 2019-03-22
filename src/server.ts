@@ -1,4 +1,4 @@
-import { ITransaction } from './models';
+import { ITransaction, ITrade } from './models';
 import express from 'express';
 import bodyParser from 'body-parser';
 import _ from 'lodash';
@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/api/trade', (req, res) => {
   const { f1, f2 } = req.query;
-  scrapeMainTransaction(f1, f2).then((data: any) => {
+  scrapeMainTransaction(f1, f2).then((data: ITrade[]) => {
     res.send({ data });
   });
 });
