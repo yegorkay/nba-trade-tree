@@ -2,6 +2,7 @@ import { BBALL_PREFIX } from './../settings';
 import { ITrade } from './../models';
 import puppeteer from 'puppeteer';
 import $ from 'cheerio';
+import { getPlayerId } from './../utils';
 
 export const scrapeMainTransaction = async (
   f1: string,
@@ -30,19 +31,19 @@ export const scrapeMainTransaction = async (
         $(ele)
           .children(`td:nth-child(${index})`)
           .text();
-      const suffix: string = $(ele)
+      const playerURL = $(ele)
         .children(`td:nth-child(1)`)
         .children('a')
         .attr('href');
-      const player: string = child(1);
-      const prevTeam: string = child(2);
-      const currTeam: string = child(10);
+      const name: string = child(1);
+      const tradedBy: string = child(2);
+      const tradedTo: string = child(10);
       data.push({
-        player,
-        prevTeam,
-        currTeam,
-        link: `${BBALL_PREFIX}${suffix}#all_transactions`,
-        tradeDate: tradeDates[tradeTableIndex]
+        name,
+        playerId: getPlayerId(playerURL),
+        tradedBy,
+        tradedTo,
+        transactionDate: tradeDates[tradeTableIndex]
       });
     });
 

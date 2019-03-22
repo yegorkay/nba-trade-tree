@@ -1,7 +1,7 @@
 export interface ITrade {
-  player: string;
-  prevTeam: string;
-  currTeam: string;
-  link: string;
-  tradeDate: string;
+  name: string;
+  playerId: string;
+  tradedBy: string;
+  tradedTo: string;
+  transactionDate: string;
 }
