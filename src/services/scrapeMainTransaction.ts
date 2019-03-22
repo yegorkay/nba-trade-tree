@@ -1,19 +1,16 @@
+import { ITrade } from './../models';
 import puppeteer from 'puppeteer';
-import $ from "cheerio";
-import { bballPrefix } from './../settings';
+import $ from 'cheerio';
 
-interface ITrade {
-  player: string;
-  prevTeam: string;
-  currTeam: string;
-  link: string;
-  tradeDate: string;
-}
-
-export const scrapeMainTransaction = async (f1: string, f2: string, tradeTableIndex: number = 0) => {
+export const scrapeMainTransaction = async (
+  f1: string,
+  f2: string,
+  tradeTableIndex: number = 0
+) => {
   let data: ITrade[] = [];
   let tradeDates: string[] = [];
   const selector = `#st_${tradeTableIndex} tr`;
+  const bballPrefix = `https://www.basketball-reference.com`;
   const tradeURL = `${bballPrefix}/friv/trades.fcgi?f1=${f1}&f2=${f2}`;
 
   const browser = await puppeteer.launch();

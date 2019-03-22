@@ -1,1 +1,3 @@
-export const bballPrefix: string = `https://www.basketball-reference.com`;
+export const urls = {
+  bballPrefix: `https://www.basketball-reference.com`
+};
