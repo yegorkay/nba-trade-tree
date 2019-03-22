@@ -1,3 +1,4 @@
+import { BBALL_PREFIX } from './../settings';
 import { ITrade } from './../models';
 import puppeteer from 'puppeteer';
 import $ from 'cheerio';
@@ -10,8 +11,7 @@ export const scrapeMainTransaction = async (
   let data: ITrade[] = [];
   let tradeDates: string[] = [];
   const selector = `#st_${tradeTableIndex} tr`;
-  const bballPrefix = `https://www.basketball-reference.com`;
-  const tradeURL = `${bballPrefix}/friv/trades.fcgi?f1=${f1}&f2=${f2}`;
+  const tradeURL = `${BBALL_PREFIX}/friv/trades.fcgi?f1=${f1}&f2=${f2}`;
 
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
@@ -41,7 +41,7 @@ export const scrapeMainTransaction = async (
         player,
         prevTeam,
         currTeam,
-        link: `${bballPrefix}${suffix}#all_transactions`,
+        link: `${BBALL_PREFIX}${suffix}#all_transactions`,
         tradeDate: tradeDates[tradeTableIndex]
       });
     });
