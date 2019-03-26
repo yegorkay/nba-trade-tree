@@ -1,7 +1,5 @@
-export interface IPlayer {
-  name: string;
-  playerId: string;
-  tradedBy: string;
-  tradedTo: string;
+import { IBasePlayer } from '../models';
+
+export interface IPlayer extends IBasePlayer {
   pick: string;
 }
