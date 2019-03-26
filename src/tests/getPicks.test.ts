@@ -1,5 +1,5 @@
 
-import { getPicks } from './../utils';
+import { getPicks } from '../utils';
 
 test('if picks are correct', () => {
   const testString = `<strong>October 27, 2012</strong>: Traded by the <a data-attr-from="OKC" href="/teams/OKC/2013.html">Oklahoma City Thunder</a> with <a href="/players/a/aldrico01.html">Cole Aldrich</a>, <a href="/players/c/cookda02.html">Daequan Cook</a> and <a href="/players/h/haywala01.html">Lazar Hayward</a> to the <a data-attr-to="HOU" href="/teams/HOU/2013.html">Houston Rockets</a> for <a href="/players/l/lambje01.html">Jeremy Lamb</a>, <a href="/players/m/martike02.html">Kevin Martin</a>, a 2013 1st round draft pick (<a href="/players/a/adamsst01.html">Steven Adams</a> was later selected), a 2013 2nd round draft pick (<a href="/players/a/abrinal01.html">Alex Abrines</a> was later selected) and a 2014 1st round draft pick (<a href="/players/m/mcgarmi01.html">Mitch McGary</a> was later selected).`;

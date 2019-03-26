@@ -1,8 +1,6 @@
 import _ from 'lodash';
 import $ from 'cheerio';
-import { getTeamsInString } from './getTeamsInString';
-import { getPlayerId } from './getPlayerId';
-import { splitTradeString } from './splitTradeString';
+import { splitTradeString, getPlayerId, getTeamsInString } from '../utils';
 import { IPlayer } from './../models';
 import { regex } from './../settings';
 

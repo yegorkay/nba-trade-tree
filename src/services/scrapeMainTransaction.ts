@@ -1,9 +1,9 @@
-import { BBALL_PREFIX } from './../settings';
-import { ITrade } from './../models';
+import { BBALL_PREFIX } from '../settings';
+import { ITrade } from '../models';
 import puppeteer from 'puppeteer';
 import $ from 'cheerio';
 import _ from 'lodash';
-import { getPlayerId } from './../utils';
+import { getPlayerId } from '../utils';
 
 export const scrapeMainTransaction = async (
   f1: string,

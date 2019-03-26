@@ -1,4 +1,4 @@
-import { regex } from './../settings';
+import { regex } from '../settings';
 
 /**
  * Splits the trade string into two pieces (`[0]` = tradedBy, `[1]` = tradedTo)

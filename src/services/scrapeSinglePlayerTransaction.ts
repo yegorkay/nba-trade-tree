@@ -1,7 +1,7 @@
-import { ITransaction } from './../models';
+import { ITransaction } from '../models';
 import puppeteer from 'puppeteer';
 import $ from 'cheerio';
-import { getAbbr, getPicks, getTradedPlayers, getPlayerURL } from './../utils';
+import { getAbbr, getPicks, getTradedPlayers, getPlayerURL } from '../utils';
 
 const gLeague = 'G-League';
 

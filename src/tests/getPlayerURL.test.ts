@@ -1,4 +1,4 @@
-import { getPlayerURL } from './../utils';
+import { getPlayerURL } from '../utils';
 
 test('return player id', () => {
   expect(getPlayerURL('harrito02')).toBe(

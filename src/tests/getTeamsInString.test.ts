@@ -1,4 +1,4 @@
-import { getTeamsInString } from './../utils';
+import { getTeamsInString } from '../utils';
 
 test('return two teams in the string', () => {
   expect(
