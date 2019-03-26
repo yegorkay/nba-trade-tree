@@ -1,4 +1,4 @@
-import { getAbbr } from './../utils';
+import { getAbbr } from '../utils';
 
 test('return team abbreviation', () => {
   expect(getAbbr('Toronto Raptors')).toBe('TOR');

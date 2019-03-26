@@ -1,5 +1,5 @@
-import { BBALL_PREFIX } from './../settings';
-import { getPlayerId } from './../utils';
+import { BBALL_PREFIX } from '../settings';
+import { getPlayerId } from '../utils';
 
 test('return player id', () => {
   expect(getPlayerId(`${BBALL_PREFIX}/players/h/harrito02.html`)).toBe(

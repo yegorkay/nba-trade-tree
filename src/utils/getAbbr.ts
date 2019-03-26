@@ -1,4 +1,4 @@
-import { teamNames } from './../settings';
+import { teamNames } from '../settings';
 
 /**
  * Get the  `abbreviation` for a `team name`

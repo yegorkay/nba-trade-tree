@@ -1,10 +1,8 @@
 import $ from 'cheerio';
 import _ from 'lodash';
-import { IPlayer } from './../models';
-import { regex } from './../settings';
-import { getPlayerId } from './getPlayerId';
-import { splitTradeString } from './splitTradeString';
-import { getTeamsInString } from './getTeamsInString';
+import { IPlayer } from '../models';
+import { regex } from '../settings';
+import { getPlayerId, splitTradeString, getTeamsInString } from '../utils';
 
 /**
  * Formats the array by removing any drafted assets if they exist
