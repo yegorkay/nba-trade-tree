@@ -1,11 +1,9 @@
-import { ITransaction, ITrade } from './models';
+import { playerController } from './controllers';
+import { ITrade } from './models';
 import express from 'express';
 import bodyParser from 'body-parser';
 import { Dictionary } from 'lodash';
-import {
-  scrapeMainTransaction,
-  scrapeSinglePlayerTransaction
-} from './services';
+import { scrapeMainTransaction } from './services';
 const app = express();
 const PORT: number = 5000;
 
@@ -19,12 +17,7 @@ app.get('/api/trade', (req, res) => {
   });
 });
 
-app.get('/api/player-history', (req, res) => {
-  const { id } = req.query;
-  scrapeSinglePlayerTransaction(id).then((data: ITransaction[]) => {
-    res.send({ data });
-  });
-});
+app.get('/api/player-history', playerController.getPlayerHistory);
 
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
 
