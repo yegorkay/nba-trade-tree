@@ -20,7 +20,6 @@ export const splitTradeString = (
     // `to the` for 1to1 trades, `;` for multi team
     .split(isMultiTeam ? ';' : 'to the')
     .map((splitString) => splitString.trim());
-
   return forAssets
     ? stringData.filter((trade) => (isMultiTeam ? hasAssets(trade) : trade))
     : stringData;

@@ -1,3 +1,3 @@
 export * from './teamNames';
-export * from './settings';
+export * from './bballPrefix';
 export * from './regex';

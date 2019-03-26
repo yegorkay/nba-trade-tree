@@ -1,11 +1,7 @@
 import { ITransaction } from './../models';
 import puppeteer from 'puppeteer';
 import $ from 'cheerio';
-import {
-  getAbbr,
-  getPicks,
-  getTradedPlayers
-} from './../utils';
+import { getAbbr, getPicks, getTradedPlayers, getPlayerURL } from './../utils';
 
 const gLeague = 'G-League';
 
@@ -24,16 +20,19 @@ const splitTradeString = (htmlString: Cheerio, index: number): string => {
     .split(' ')[index];
 };
 
-export const scrapeSinglePlayerTransaction = async (
-  playerUrl: string,
-  playerTradeDate: string
-) => {
+/**
+ * Get the transaction history for the player we are searching
+ * @param {*} playerId The bball-ref playerId in the URL
+ * @return {*} Returns the full transaction history of the player's NBA career
+ */
+export const scrapeSinglePlayerTransaction = async (playerId: string) => {
   let data: ITransaction[] = [];
   const selector = '#div_transactions p';
 
+  const playerPage: string = getPlayerURL(playerId);
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
-  await page.goto(playerUrl);
+  await page.goto(playerPage);
   const html = await page.content();
 
   $(selector, html).each((_i: number, ele: CheerioElement) => {
@@ -85,9 +84,5 @@ export const scrapeSinglePlayerTransaction = async (
 
   await browser.close();
 
-  const dateTradedIndex = data.findIndex(
-    (transaction) => transaction.transactionDate === playerTradeDate
-  );
-
-  return data.splice(dateTradedIndex);
+  return data;
 };

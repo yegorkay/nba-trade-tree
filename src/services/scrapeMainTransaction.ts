@@ -1,30 +1,22 @@
+import { BBALL_PREFIX } from './../settings';
+import { ITrade } from './../models';
 import puppeteer from 'puppeteer';
-import $ from "cheerio";
-import { bballPrefix } from './../settings';
+import $ from 'cheerio';
+import _ from 'lodash';
+import { getPlayerId } from './../utils';
 
-interface ITrade {
-  player: string;
-  prevTeam: string;
-  currTeam: string;
-  link: string;
-  tradeDate: string;
-}
-
-export const scrapeMainTransaction = async (f1: string, f2: string, tradeTableIndex: number = 0) => {
+export const scrapeMainTransaction = async (
+  f1: string,
+  f2: string,
+) => {
   let data: ITrade[] = [];
-  let tradeDates: string[] = [];
-  const selector = `#st_${tradeTableIndex} tr`;
-  const tradeURL = `${bballPrefix}/friv/trades.fcgi?f1=${f1}&f2=${f2}`;
+  const selector: string = `.transaction + .table_wrapper > .stats_table tbody tr`;
+  const tradeURL: string = `${BBALL_PREFIX}/friv/trades.fcgi?f1=${f1}&f2=${f2}`;
 
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
   await page.goto(tradeURL);
   const html = await page.content();
-
-  $('p.transaction strong', html).each((_i: number, ele: CheerioElement) => {
-    const date = $(ele).text();
-    tradeDates.push(date);
-  });
 
   $(selector, html)
     .not('.thead')
@@ -33,23 +25,25 @@ export const scrapeMainTransaction = async (f1: string, f2: string, tradeTableIn
         $(ele)
           .children(`td:nth-child(${index})`)
           .text();
-      const suffix: string = $(ele)
+      const playerURL: string = $(ele)
         .children(`td:nth-child(1)`)
         .children('a')
         .attr('href');
-      const player: string = child(1);
-      const prevTeam: string = child(2);
-      const currTeam: string = child(10);
+      const name: string = child(1);
+      const tradedBy: string = child(2);
+      const tradedTo: string = child(10);
+      const transactionDate: string = $(ele).parent().parent().parent().prev().children('strong').text();
       data.push({
-        player,
-        prevTeam,
-        currTeam,
-        link: `${bballPrefix}${suffix}#all_transactions`,
-        tradeDate: tradeDates[tradeTableIndex]
+        name,
+        playerId: getPlayerId(playerURL),
+        tradedBy,
+        tradedTo,
+        transactionDate
       });
     });
 
   await browser.close();
 
-  return data;
+  const groupedData = _.groupBy(data, "transactionDate");
+  return groupedData;
 };
