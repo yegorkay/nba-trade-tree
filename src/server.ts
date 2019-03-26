@@ -1,7 +1,7 @@
 import { ITransaction, ITrade } from './models';
 import express from 'express';
 import bodyParser from 'body-parser';
-import _ from 'lodash';
+import { Dictionary } from 'lodash';
 import {
   scrapeMainTransaction,
   scrapeSinglePlayerTransaction
@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/api/trade', (req, res) => {
   const { f1, f2 } = req.query;
-  scrapeMainTransaction(f1, f2).then((data: ITrade[]) => {
+  scrapeMainTransaction(f1, f2).then((data: Dictionary<ITrade[]>) => {
     res.send({ data });
   });
 });
