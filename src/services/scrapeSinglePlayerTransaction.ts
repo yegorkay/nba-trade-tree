@@ -1,7 +1,7 @@
 import { ITransaction } from '../models';
 import puppeteer from 'puppeteer';
 import $ from 'cheerio';
-import { getAbbr, getPicks, getTradedPlayers, getPlayerURL } from '../utils';
+import { getAbbr, getPicks, getTradedPlayers, getPlayerURL, formatDate } from '../utils';
 
 const gLeague = 'G-League';
 
@@ -45,9 +45,9 @@ export const scrapeSinglePlayerTransaction = async (playerId: string) => {
     const status = splitTradeString($(ele), isMultiTrade ? 7 : 1).toLowerCase();
     const isNotTraded = status !== 'traded';
 
-    const transactionDate: string = $(ele)
+    const transactionDate: string = formatDate($(ele)
       .children('strong:nth-child(1)')
-      .text();
+      .text());
 
     const tradedBy: string = getAbbr(
       $(ele)
