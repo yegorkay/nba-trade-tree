@@ -2,7 +2,9 @@ import $ from 'cheerio';
 import _ from 'lodash';
 import { IPlayer } from '../models';
 import { regex } from '../settings';
-import { getPlayerId, splitTradeString, getTeamsInString } from '../utils';
+import { getPlayerId } from '../utils/getPlayerId';
+import { splitTradeString } from '../utils/splitTradeString';
+import { getTeamsInString } from '../utils/getTeamsInString';
 
 /**
  * Formats the array by removing any drafted assets if they exist

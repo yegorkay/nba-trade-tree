@@ -1,8 +1,8 @@
 import _ from 'lodash';
 import $ from 'cheerio';
 import { splitTradeString, getPlayerId, getTeamsInString } from '../utils';
-import { IPlayer } from './../models';
-import { regex } from './../settings';
+import { IPlayer } from '../models';
+import { regex } from '../settings';
 
 /**
  * Formats the data into an array of picks (also drafted players if they exist)
@@ -49,6 +49,7 @@ const findPicks = (
   teamsInvolved: string[],
   index: number
 ): IPlayer[] => {
+
   const { PLAYER_REGEX, ASSET_REGEX } = regex;
 
   const playerMatch: RegExpMatchArray | null = tradeString.match(PLAYER_REGEX);
@@ -83,7 +84,8 @@ const findPicks = (
 export const getPicks = (tradeString: string | null): IPlayer[] => {
   if (tradeString !== null) {
     const isMultiTeam: boolean = tradeString.includes('As part of a ');
-    const tradePiece: string[] = splitTradeString(tradeString);
+    // remove <strong /> tag which breaks getting picks that contain "future"
+    const tradePiece: string[] = splitTradeString(tradeString.replace(regex.STRONG_TAG_REGEX, ''));
     // if multiteam, we split string, otherwise we get teams in string
     const mappedData = tradePiece
       .map((tradeFragment, index) =>
