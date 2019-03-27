@@ -3,7 +3,7 @@ import { ITrade } from '../models';
 import puppeteer from 'puppeteer';
 import $ from 'cheerio';
 import _ from 'lodash';
-import { getPlayerId } from '../utils';
+import { getPlayerId, formatDate } from '../utils';
 
 export const scrapeMainTransaction = async (
   f1: string,
@@ -38,7 +38,7 @@ export const scrapeMainTransaction = async (
         playerId: getPlayerId(playerURL),
         tradedBy,
         tradedTo,
-        transactionDate
+        transactionDate: formatDate(transactionDate)
       });
     });
 
