@@ -12,9 +12,10 @@ Currently, Node.js with TypeScript is used for the backend webscraping. Front-en
 
 (These images are where I got my inspiration)
 
-- [Steve Nash](https://i.imgur.com/n8MJK00.jpg)
+- [Steve Nash](https://i.imgur.com/hF61NiW.jpg)
 - [Vince Carter](https://i.imgur.com/n8MJK00.jpg)
 - [Tracy McGracy](https://i.imgur.com/RTExHxV.png)
+- [Dwight Howard](https://i.imgur.com/jBCUqqs.jpg)
 
 
 ## But why?
