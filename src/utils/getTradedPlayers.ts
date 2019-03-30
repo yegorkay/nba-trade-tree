@@ -75,13 +75,13 @@ export const getTradedPlayers = (
               tradedBy: isMultiTeam
                 ? getTeamsInString(htmlNode)[0]
                 : nodeIndex === 0
-                  ? tradedBy
-                  : tradedTo,
+                ? tradedBy
+                : tradedTo,
               tradedTo: isMultiTeam
                 ? getTeamsInString(htmlNode)[1]
                 : nodeIndex === 1
-                  ? tradedBy
-                  : tradedTo
+                ? tradedBy
+                : tradedTo
             };
           })
           .get();

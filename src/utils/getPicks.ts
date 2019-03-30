@@ -49,7 +49,6 @@ const findPicks = (
   teamsInvolved: string[],
   index: number
 ): IPlayer[] => {
-
   const { PLAYER_REGEX, ASSET_REGEX } = regex;
 
   const playerMatch: RegExpMatchArray | null = tradeString.match(PLAYER_REGEX);
@@ -85,7 +84,9 @@ export const getPicks = (tradeString: string | null): IPlayer[] => {
   if (tradeString !== null) {
     const isMultiTeam: boolean = tradeString.includes('As part of a ');
     // remove <strong /> tag which breaks getting picks that contain "future"
-    const tradePiece: string[] = splitTradeString(tradeString.replace(regex.STRONG_TAG_REGEX, ''));
+    const tradePiece: string[] = splitTradeString(
+      tradeString.replace(regex.STRONG_TAG_REGEX, '')
+    );
     // if multiteam, we split string, otherwise we get teams in string
     const mappedData = tradePiece
       .map((tradeFragment, index) =>

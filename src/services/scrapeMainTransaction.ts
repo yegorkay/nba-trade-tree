@@ -5,10 +5,7 @@ import $ from 'cheerio';
 import _ from 'lodash';
 import { getPlayerId, formatDate } from '../utils';
 
-export const scrapeMainTransaction = async (
-  f1: string,
-  f2: string,
-) => {
+export const scrapeMainTransaction = async (f1: string, f2: string) => {
   let data: ITrade[] = [];
   const selector: string = `.transaction + .table_wrapper > .stats_table tbody tr`;
   const tradeURL: string = `${BBALL_PREFIX}/friv/trades.fcgi?f1=${f1}&f2=${f2}`;
@@ -32,7 +29,13 @@ export const scrapeMainTransaction = async (
       const name: string = child(1);
       const tradedBy: string = child(2);
       const tradedTo: string = child(10);
-      const transactionDate: string = $(ele).parent().parent().parent().prev().children('strong').text();
+      const transactionDate: string = $(ele)
+        .parent()
+        .parent()
+        .parent()
+        .prev()
+        .children('strong')
+        .text();
       data.push({
         name,
         playerId: getPlayerId(playerURL),
@@ -44,6 +47,6 @@ export const scrapeMainTransaction = async (
 
   await browser.close();
 
-  const groupedData = _.groupBy(data, "transactionDate");
+  const groupedData = _.groupBy(data, 'transactionDate');
   return groupedData;
 };

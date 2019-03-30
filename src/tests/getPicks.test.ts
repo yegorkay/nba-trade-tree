@@ -1,4 +1,3 @@
-
 import { getPicks } from '../utils';
 
 test('if picks are correct', () => {
