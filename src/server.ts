@@ -1,5 +1,5 @@
 import { dbConfig } from './settings';
-import * as pg from 'pg';
+import pg from 'pg';
 import express, { Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import { playerController, tradeController } from './controllers';
