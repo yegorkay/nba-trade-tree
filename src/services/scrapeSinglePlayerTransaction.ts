@@ -31,7 +31,10 @@ const splitTradeString = (htmlString: Cheerio, index: number): string => {
  * @param {*} playerId The bball-ref playerId in the URL
  * @return {*} Returns the full transaction history of the player's NBA career
  */
-export const scrapeSinglePlayerTransaction = async (playerId: string) => {
+export const scrapeSinglePlayerTransaction = async (
+  playerId: string,
+  playerTradeDate?: string
+) => {
   let data: ITransaction[] = [];
   const selector = '#div_transactions p';
 
@@ -90,7 +93,14 @@ export const scrapeSinglePlayerTransaction = async (playerId: string) => {
     }
   });
 
+  /** This is used to return data for all transaction after a certain date if the date is provided */
+  const dateTradedIndex = data.findIndex(
+    (transaction) => transaction.transactionDate === playerTradeDate
+  );
+
+  const hasDateTraded = dateTradedIndex !== -1;
+
   await browser.close();
 
-  return data;
+  return hasDateTraded ? data.splice(dateTradedIndex) : data;
 };

@@ -1,5 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import { routes } from './settings';
 import { playerController, tradeController } from './controllers';
 const app = express();
 const PORT: number = 5000;
@@ -7,9 +8,10 @@ const PORT: number = 5000;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.get('/api/trade', tradeController.getAllTransactions);
-app.get('/api/player-history', playerController.getPlayerHistory);
+app.get(routes.TRADE, tradeController.getAllTransactions);
+app.get(routes.PLAYER_HISTORY, playerController.getPlayerHistory);
 
+/**if `not` return `not-signed` */
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
 
 process.on('uncaughtException', (err) => {
