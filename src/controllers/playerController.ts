@@ -1,3 +1,4 @@
+import { validDateFormat } from '../utils';
 import { ITransaction } from '../models';
 import { scrapeSinglePlayerTransaction } from '../services';
 import { Response, Request } from 'express';
@@ -10,13 +11,18 @@ class PlayerController {
    * @returns Returns player transaction history
    */
   getPlayerHistory(req: Request, res: Response) {
-    const { id } = req.query;
+    const { id, date } = req.query;
     if (!id) {
       return res.status(400).send({ message: 'playerId is required' });
+    }
+    if (!validDateFormat(date)) {
+      return res.status(400).send({ message: 'date is invalid' });
     } else {
-      return scrapeSinglePlayerTransaction(id).then((data: ITransaction[]) => {
-        res.send({ data });
-      });
+      return scrapeSinglePlayerTransaction(id, date).then(
+        (data: ITransaction[]) => {
+          res.send({ data });
+        }
+      );
     }
   }
 }
