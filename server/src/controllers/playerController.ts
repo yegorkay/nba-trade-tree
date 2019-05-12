@@ -12,10 +12,12 @@ class PlayerController {
    */
   getPlayerHistory(req: Request, res: Response) {
     const { id, date } = req.query;
+    const invalidDate = date !== undefined && !validDateFormat(date);
+
     if (!id) {
       return res.status(400).send({ message: 'playerId is required' });
     }
-    if (!validDateFormat(date)) {
+    if (invalidDate) {
       return res.status(400).send({ message: 'date is invalid' });
     } else {
       return scrapeSinglePlayerTransaction(id, date).then(
