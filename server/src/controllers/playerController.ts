@@ -1,5 +1,5 @@
 import { validDateFormat } from '../utils';
-import { ITransaction } from '../models';
+import { ITransaction, IPlayerHistoryParams } from '../models';
 import { scrapeSinglePlayerTransaction } from '../services';
 import { Response, Request } from 'express';
 
@@ -11,7 +11,8 @@ class PlayerController {
    * @returns Returns player transaction history
    */
   getPlayerHistory(req: Request, res: Response) {
-    const { id, date } = req.query;
+    const playerHistoryParams: IPlayerHistoryParams = req.query;
+    const { id, date } = playerHistoryParams;
     const invalidDate = date !== undefined && !validDateFormat(date);
 
     if (!id) {
