@@ -1,34 +1,32 @@
 {
-  "name": "homex-front-end-test",
+  "name": "nba-trade-tree",
   "version": "1.0.0",
-  "description": "Front End Test for HomeX Applicants",
-  "main": "src/index.js",
+  "description": "A way to display how NBA trade assets are flipped over time.",
+  "main": "src/index.tsx",
   "scripts": {
     "start": "webpack-dev-server --open --config webpack.config.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/HomeXLabs/front-end-test.git"
+    "url": "git+https://github.com/yegorkay/nba-trade-tree.git"
   },
-  "author": "",
+  "author": "yegorkay",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/HomeXLabs/front-end-test/issues"
+    "url": "https://github.com/yegorkay/nba-trade-tree/issues"
   },
-  "homepage": "https://github.com/HomeXLabs/front-end-test#readme",
+  "homepage": "https://github.com/yegorkay/nba-trade-tree#readme",
   "dependencies": {
     "react": "16.8.6",
     "react-dom": "16.8.6"
   },
   "devDependencies": {
-    "@babel/plugin-proposal-class-properties": "7.3.0",
-    "babel-core": "6.26.3",
-    "babel-loader": "7.1.4",
-    "babel-plugin-transform-class-properties": "6.24.1",
-    "babel-preset-env": "1.7.0",
-    "babel-preset-react": "6.24.1",
+    "@types/react": "16.8.17",
+    "@types/react-dom": "16.8.4",
+    "awesome-typescript-loader": "5.2.1",
     "friendly-errors-webpack-plugin": "1.7.0",
     "styled-components": "4.1.3",
+    "typescript": "3.4.5",
     "webpack": "4.15.1",
     "webpack-cli": "3.0.8",
     "webpack-dev-server": "3.1.14"
