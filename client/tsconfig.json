@@ -15,7 +15,7 @@
     "noUnusedParameters": true,
     "noUnusedLocals": true,
     "outDir": "dist",
-    "rootDir": "./",
+    "rootDir": "../../../",
     "sourceMap": true,
     "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,

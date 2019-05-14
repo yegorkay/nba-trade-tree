@@ -1,13 +1,9 @@
-import * as React from 'react';
+import { React } from './vendor';
+import { apiService } from './services';
 
 class App extends React.Component {
   componentDidMount() {
-    fetch('api/teams')
-      .then((resp) => resp.json()) // Transform the data into json
-      .then(function({ data }) {
-        console.log(data);
-        // Create and append the li's to the ul
-      });
+    apiService.getTeams().then(({ data }) => console.log(data));
   }
 
   render() {
