@@ -30,6 +30,7 @@ module.exports = {
       clearConsole: true
     })
   ],
+  devtool: 'source-map',
   devServer: {
     contentBase: path.join(__dirname, 'public'),
     historyApiFallback: true,
@@ -39,6 +40,9 @@ module.exports = {
     overlay: {
       warnings: false,
       errors: true
+    },
+    proxy: {
+      '/api': 'http://localhost:5000'
     }
   }
 };
