@@ -1,6 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import { routes } from './settings';
+import { routes } from '../../shared';
 import {
   playerController,
   tradeController,

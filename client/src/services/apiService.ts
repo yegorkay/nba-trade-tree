@@ -1,6 +1,6 @@
 import { axios } from '../vendor';
 // TODO alias the imports
-import { routes } from '../../../server/src/settings';
+import { routes } from '../../../shared';
 
 class ApiService {
   getTeams() {
