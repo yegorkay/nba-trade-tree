@@ -1,6 +1,9 @@
 const path = require('path');
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 
+const resolveSrc = (relativePath) => path.resolve(__dirname, relativePath);
+const basePath = '../client/src';
+
 const PORT = 3000;
 
 module.exports = {
@@ -11,7 +14,12 @@ module.exports = {
     filename: 'bundle.js'
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.json']
+    extensions: ['.ts', '.tsx', '.js', '.json'],
+    alias: {
+      vendor: resolveSrc(`${basePath}/vendor`),
+      services: resolveSrc(`${basePath}/services`),
+      shared: resolveSrc(`../shared`)
+    }
   },
   module: {
     rules: [

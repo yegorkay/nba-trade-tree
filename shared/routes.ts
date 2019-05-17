@@ -1,5 +1,5 @@
 export const routes = {
-  TRADE: 'api/trade',
+  TRADE: '/api/trade',
   PLAYER_HISTORY: '/api/player-history',
   TEAMS: '/api/teams'
 };

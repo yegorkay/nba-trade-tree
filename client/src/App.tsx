@@ -1,5 +1,5 @@
-import { React } from './vendor';
-import { apiService } from './services';
+import { React } from 'vendor';
+import { apiService } from 'services';
 
 class App extends React.Component {
   componentDidMount() {

@@ -19,7 +19,12 @@
     "sourceMap": true,
     "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
-    "target": "es5"
+    "target": "es5",
+    "paths": {
+      "vendor": ["../client/src/vendor"],
+      "services": ["../client/src/services"],
+      "shared": ["../shared"]
+    }
   },
   "include": ["./src/**/*"],
   "exclude": ["node_modules", "./data", "./*.js"]
