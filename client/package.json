@@ -1,0 +1,38 @@
+{
+  "name": "nba-trade-tree",
+  "version": "1.0.0",
+  "description": "A way to display how NBA trade assets are flipped over time.",
+  "main": "src/index.tsx",
+  "proxy": "http://localhost:5000",
+  "scripts": {
+    "start": "webpack-dev-server --open --config webpack.config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yegorkay/nba-trade-tree.git"
+  },
+  "author": "yegorkay",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yegorkay/nba-trade-tree/issues"
+  },
+  "homepage": "https://github.com/yegorkay/nba-trade-tree#readme",
+  "dependencies": {
+    "react": "16.8.6",
+    "react-dom": "16.8.6"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.129",
+    "@types/react": "16.8.17",
+    "@types/react-dom": "16.8.4",
+    "awesome-typescript-loader": "5.2.1",
+    "axios": "0.18.0",
+    "friendly-errors-webpack-plugin": "1.7.0",
+    "lodash": "4.17.11",
+    "styled-components": "4.1.3",
+    "typescript": "3.4.5",
+    "webpack": "4.15.1",
+    "webpack-cli": "3.0.8",
+    "webpack-dev-server": "3.1.14"
+  }
+}

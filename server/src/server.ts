@@ -1,7 +1,11 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import { routes } from './settings';
-import { playerController, tradeController } from './controllers';
+import { routes } from '../../shared';
+import {
+  playerController,
+  tradeController,
+  teamController
+} from './controllers';
 const app = express();
 const PORT: number = 5000;
 
@@ -10,6 +14,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get(routes.TRADE, tradeController.getAllTransactions);
 app.get(routes.PLAYER_HISTORY, playerController.getPlayerHistory);
+app.get(routes.TEAMS, teamController.getAllTeams);
 
 /**if `not` return `not-signed` */
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
