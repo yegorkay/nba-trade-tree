@@ -8,6 +8,14 @@ class ApiService {
       url: routes.TEAMS
     });
   }
+
+  getTradeHistory(f1: string, f2: string) {
+    return axios({
+      method: 'GET',
+      url: routes.TRADE,
+      params: { f1, f2 }
+    });
+  }
 }
 
 const apiService = new ApiService();
