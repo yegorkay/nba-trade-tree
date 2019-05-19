@@ -1,5 +1,5 @@
 class FormatService {
-  createSelectLabels(data: any, valueKey: string, labelKey: string) {
+  createSelectLabels(data: any[], valueKey: string, labelKey: string) {
     return data.map((item: any) => {
       return {
         value: item[valueKey],

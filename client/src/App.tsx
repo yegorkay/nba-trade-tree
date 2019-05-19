@@ -1,21 +1,16 @@
 import { React, Select } from 'vendor';
-import { apiService, formatService } from 'services';
+import { connect } from 'react-redux';
+import { appActions } from './store';
 
-class App extends React.Component {
+class App extends React.Component<any, any> {
   state = {
     teamData: [],
     selectedOption: null
   };
 
   componentDidMount() {
-    apiService.getTeams().then(({ data }) => {
-      const teamData = formatService.createSelectLabels(
-        data.data,
-        'teamAbr',
-        'teamName'
-      );
-      this.setState({ teamData });
-    });
+    const { dispatch } = this.props;
+    dispatch(appActions.getTeams());
   }
 
   handleChange = (selectedOption: any) => {
@@ -27,6 +22,7 @@ class App extends React.Component {
   };
 
   render() {
+    console.log(this.props);
     const { teamData, selectedOption } = this.state;
     return (
       <div>
@@ -45,4 +41,10 @@ class App extends React.Component {
   }
 }
 
-export { App };
+const mapStateToProps = (state: any) => {
+  return {
+    teams: state.app.teams
+  };
+};
+
+export default connect(mapStateToProps)(App);
