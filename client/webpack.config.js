@@ -18,6 +18,7 @@ module.exports = {
     alias: {
       vendor: resolveSrc(`${basePath}/vendor`),
       services: resolveSrc(`${basePath}/services`),
+      store: resolveSrc(`${basePath}/store`),
       shared: resolveSrc(`../shared`)
     }
   },

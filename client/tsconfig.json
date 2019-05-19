@@ -23,6 +23,7 @@
     "paths": {
       "vendor": ["../client/src/vendor"],
       "services": ["../client/src/services"],
+      "store": ["../client/src/store"],
       "shared": ["../shared"]
     }
   },

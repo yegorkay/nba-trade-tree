@@ -1,6 +1,6 @@
 import { apiService, formatService } from 'services';
 import { Dispatch } from 'redux';
-import { actionTypes } from './actionTypes';
+import { actionTypes } from 'store';
 
 class AppActions {
   getTeams() {

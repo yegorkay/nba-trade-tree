@@ -1,6 +1,6 @@
 import { React, Select } from 'vendor';
 import { connect } from 'react-redux';
-import { appActions } from './store';
+import { appActions } from 'store';
 
 class App extends React.Component<any, any> {
   state = {

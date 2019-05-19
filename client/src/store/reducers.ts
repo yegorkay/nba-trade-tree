@@ -1,4 +1,4 @@
-import { actionTypes } from './actionTypes';
+import { actionTypes } from 'store';
 import produce from 'immer';
 
 interface IState {
