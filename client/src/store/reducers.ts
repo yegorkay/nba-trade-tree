@@ -1,8 +1,9 @@
+import { ITeam } from 'shared';
 import { actionTypes } from 'store';
 import { produce } from 'vendor';
 
 interface IState {
-  teams: any[];
+  readonly teams: ITeam[];
 }
 
 const initialState: IState = {

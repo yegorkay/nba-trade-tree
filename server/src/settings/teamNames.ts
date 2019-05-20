@@ -1,4 +1,4 @@
-import { ITeam } from '../models';
+import { ITeam } from '../../../shared';
 
 export const teamNames: ITeam[] = [
   {
