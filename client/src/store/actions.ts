@@ -1,5 +1,5 @@
 import { apiService, formatService } from 'services';
-import { Dispatch } from 'redux';
+import { Dispatch } from 'vendor';
 import { actionTypes } from 'store';
 
 class AppActions {

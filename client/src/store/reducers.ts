@@ -1,5 +1,5 @@
 import { actionTypes } from 'store';
-import produce from 'immer';
+import { produce } from 'vendor';
 
 interface IState {
   teams: any[];
