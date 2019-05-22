@@ -10,6 +10,7 @@ import {
   createStore,
   Dispatch
 } from 'redux';
+import { connect } from 'react-redux';
 import thunk from 'redux-thunk';
 
 export {
@@ -18,6 +19,7 @@ export {
   axios,
   combineReducers,
   compose,
+  connect,
   createStore,
   Dispatch,
   produce,

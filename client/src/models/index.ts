@@ -1,4 +1,2 @@
-export interface ITeamSelectOption {
-  value: string;
-  label: string;
-}
+export * from './teamModel';
+export * from './stateModel';

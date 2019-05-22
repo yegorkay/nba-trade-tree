@@ -1,6 +1,6 @@
-import { React, Select } from 'vendor';
-import { connect } from 'react-redux';
+import { React, Select, connect } from 'vendor';
 import { appActions } from 'store';
+import { IReduxState } from 'models';
 
 class App extends React.Component<any, any> {
   state = {
@@ -41,7 +41,7 @@ class App extends React.Component<any, any> {
   }
 }
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = (state: IReduxState) => {
   return {
     teams: state.app.teams,
     teamSelectOptions: state.app.teamSelectOptions

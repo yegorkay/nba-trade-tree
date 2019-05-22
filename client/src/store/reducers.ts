@@ -1,17 +1,6 @@
 import { produce } from 'vendor';
-import { ITeam } from 'shared';
-import { Actions, ActionTypes } from 'store';
-import { ITeamSelectOption } from 'models';
-
-interface IState {
-  readonly teams: ITeam[];
-  readonly teamSelectOptions: ITeamSelectOption[];
-}
-
-const initialState: IState = {
-  teams: [],
-  teamSelectOptions: []
-};
+import { Actions } from 'store';
+import { initialState, ActionTypes } from 'models';
 
 const appReducer = (state = initialState, action: ActionTypes) =>
   produce(state, (draft) => {
