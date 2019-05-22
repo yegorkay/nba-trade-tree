@@ -2,7 +2,7 @@ import { ITeamSelectOption } from 'models';
 import { apiService, formatService } from 'services';
 import { Dispatch } from 'vendor';
 import { Actions } from 'store';
-import { ITeam } from 'shared';
+import { ITeam, ITrade } from 'shared';
 
 class AppActions {
   getTeams() {
@@ -29,6 +29,21 @@ class AppActions {
   setTeamSelectOptions(data: ITeamSelectOption[]) {
     return {
       type: Actions.SET_TEAM_SELECT_OPTIONS,
+      data
+    };
+  }
+
+  getTradeHistory(f1: string, f2: string) {
+    return (dispatch: Dispatch) => {
+      apiService.getTradeHistory(f1, f2).then(({ data }) => {
+        dispatch(this.setTradeHistory(data.data));
+      });
+    };
+  }
+
+  setTradeHistory(data: ITrade[]) {
+    return {
+      type: Actions.SET_TRADE_HISTORY,
       data
     };
   }

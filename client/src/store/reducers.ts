@@ -11,6 +11,9 @@ const appReducer = (state = initialState, action: ActionTypes) =>
       case Actions.SET_TEAM_SELECT_OPTIONS:
         draft.teamSelectOptions = action.data;
         break;
+      case Actions.SET_TRADE_HISTORY:
+        draft.tradeHistory = action.data;
+        break;
     }
   });
 

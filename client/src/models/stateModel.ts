@@ -1,5 +1,5 @@
 import { ITeamSelectOption } from 'models';
-import { ITeam } from 'shared';
+import { ITeam, ITrade } from 'shared';
 import { Actions } from 'store';
 
 /** Reducer action types */
@@ -14,18 +14,25 @@ interface ISetTeamSelectOptions {
   type: Actions.SET_TEAM_SELECT_OPTIONS;
 }
 
-type ActionTypes = ISetTeamsAction | ISetTeamSelectOptions;
+interface ISetTradeHistory {
+  data: ITrade[];
+  type: Actions.SET_TRADE_HISTORY;
+}
+
+type ActionTypes = ISetTeamsAction | ISetTeamSelectOptions | ISetTradeHistory;
 
 /** State type definitions */
 
 interface IState {
   readonly teams: ITeam[];
   readonly teamSelectOptions: ITeamSelectOption[];
+  readonly tradeHistory: ITrade[];
 }
 
 const initialState: IState = {
   teams: [],
-  teamSelectOptions: []
+  teamSelectOptions: [],
+  tradeHistory: []
 };
 
 interface IReduxState {

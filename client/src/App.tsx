@@ -37,8 +37,15 @@ class App extends React.Component<
   }
 
   handleChange = (selectedOption: ITeamSelectOption[]) => {
+    const { dispatch } = this.props;
     this.setState({ selectedOption });
+    if (selectedOption.length === 2) {
+      const f1 = selectedOption[0].value;
+      const f2 = selectedOption[1].value;
+      dispatch(appActions.getTradeHistory(f1, f2));
+    }
   };
+
   render() {
     const { selectedOption } = this.state;
     const { teamSelectOptions } = this.props;
