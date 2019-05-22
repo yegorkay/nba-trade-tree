@@ -1,7 +1,9 @@
 import { ITeam } from 'shared';
+import { ITeamSelectOption } from 'models';
 
 enum Actions {
-  SET_TEAMS = 'SET_TEAMS'
+  SET_TEAMS = 'SET_TEAMS',
+  SET_TEAM_SELECT_OPTIONS = 'SET_TEAM_SELECT_OPTIONS'
 }
 
 interface ISetTeamsAction {
@@ -9,6 +11,11 @@ interface ISetTeamsAction {
   type: Actions.SET_TEAMS;
 }
 
-type ActionTypes = ISetTeamsAction;
+interface ISetTeamSelectOptions {
+  data: ITeamSelectOption[];
+  type: Actions.SET_TEAM_SELECT_OPTIONS;
+}
+
+type ActionTypes = ISetTeamsAction | ISetTeamSelectOptions;
 
 export { Actions, ActionTypes };

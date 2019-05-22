@@ -19,6 +19,7 @@ module.exports = {
       vendor: resolveSrc(`${basePath}/vendor`),
       services: resolveSrc(`${basePath}/services`),
       store: resolveSrc(`${basePath}/store`),
+      models: resolveSrc(`${basePath}/models`),
       shared: resolveSrc(`../shared`)
     }
   },

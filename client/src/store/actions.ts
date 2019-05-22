@@ -1,3 +1,4 @@
+import { ITeamSelectOption } from 'models';
 import { apiService, formatService } from 'services';
 import { Dispatch } from 'vendor';
 import { Actions } from 'store';
@@ -12,7 +13,8 @@ class AppActions {
           'teamAbr',
           'teamName'
         );
-        dispatch(this.setTeams(teams));
+        dispatch(this.setTeams(data.data));
+        dispatch(this.setTeamSelectOptions(teams));
       });
     };
   }
@@ -20,6 +22,13 @@ class AppActions {
   setTeams(data: ITeam[]) {
     return {
       type: Actions.SET_TEAMS,
+      data
+    };
+  }
+
+  setTeamSelectOptions(data: ITeamSelectOption[]) {
+    return {
+      type: Actions.SET_TEAM_SELECT_OPTIONS,
       data
     };
   }

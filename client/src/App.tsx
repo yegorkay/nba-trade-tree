@@ -22,7 +22,7 @@ class App extends React.Component<any, any> {
   };
 
   render() {
-    console.table(this.props.teams);
+    console.log(this.props);
     const { teamData, selectedOption } = this.state;
     return (
       <div>
@@ -43,7 +43,8 @@ class App extends React.Component<any, any> {
 
 const mapStateToProps = (state: any) => {
   return {
-    teams: state.app.teams
+    teams: state.app.teams,
+    teamSelectOptions: state.app.teamSelectOptions
   };
 };
 
