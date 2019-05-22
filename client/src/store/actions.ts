@@ -1,12 +1,13 @@
 import { apiService, formatService } from 'services';
 import { Dispatch } from 'vendor';
-import { actionTypes } from 'store';
+import { Actions } from 'store';
+import { ITeam } from 'shared';
 
 class AppActions {
   getTeams() {
     return (dispatch: Dispatch) => {
       apiService.getTeams().then(({ data }) => {
-        const teams = formatService.createSelectLabels(
+        const teams: ITeam[] | any[] = formatService.createSelectLabels(
           data.data,
           'teamAbr',
           'teamName'
@@ -16,9 +17,9 @@ class AppActions {
     };
   }
 
-  setTeams(data: any) {
+  setTeams(data: ITeam[]) {
     return {
-      type: actionTypes.SET_TEAMS,
+      type: Actions.SET_TEAMS,
       data
     };
   }

@@ -1,5 +1,14 @@
-const actionTypes = {
-  SET_TEAMS: 'SET_TEAMS'
-};
+import { ITeam } from 'shared';
 
-export { actionTypes };
+enum Actions {
+  SET_TEAMS = 'SET_TEAMS'
+}
+
+interface ISetTeamsAction {
+  data: ITeam[];
+  type: Actions.SET_TEAMS;
+}
+
+type ActionTypes = ISetTeamsAction;
+
+export { Actions, ActionTypes };

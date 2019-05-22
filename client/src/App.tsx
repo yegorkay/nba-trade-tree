@@ -22,7 +22,7 @@ class App extends React.Component<any, any> {
   };
 
   render() {
-    console.log(this.props);
+    console.table(this.props.teams);
     const { teamData, selectedOption } = this.state;
     return (
       <div>
