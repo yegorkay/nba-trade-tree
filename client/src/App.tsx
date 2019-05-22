@@ -13,15 +13,22 @@ interface IAppProps {
   teamSelectOptions: ITeamSelectOption[];
 }
 
+interface IAppState {
+  selectedOption: ITeamSelectOption[];
+}
+
 @connect(
   (state: IReduxState): IAppProps => ({
     teams: state.app.teams,
     teamSelectOptions: state.app.teamSelectOptions
   })
 )
-class App extends React.Component<IAppProps & IConnectedComponentProps, {}> {
+class App extends React.Component<
+  IAppProps & IConnectedComponentProps,
+  IAppState
+> {
   state = {
-    selectedOption: null
+    selectedOption: []
   };
 
   componentDidMount() {
@@ -29,25 +36,24 @@ class App extends React.Component<IAppProps & IConnectedComponentProps, {}> {
     dispatch(appActions.getTeams());
   }
 
-  handleChange = (selectedOption: any) => {
+  handleChange = (selectedOption: ITeamSelectOption[]) => {
     this.setState({ selectedOption });
-    console.log(`Option selected:`, selectedOption);
   };
-
   render() {
     const { selectedOption } = this.state;
     const { teamSelectOptions } = this.props;
+
     return (
       <div>
         <Select
-          options={teamSelectOptions}
+          options={selectedOption.length < 2 ? teamSelectOptions : []}
           placeholder="Select a Team..."
           onChange={this.handleChange}
-        />
-        <Select
-          options={teamSelectOptions}
-          placeholder="Select a Team..."
-          isDisabled={selectedOption === null}
+          closeMenuOnSelect={selectedOption.length === 1}
+          isMulti
+          noOptionsMessage={() =>
+            'You are only able to select two teams at a time.'
+          }
         />
       </div>
     );

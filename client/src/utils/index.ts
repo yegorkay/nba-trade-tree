@@ -1,4 +1,4 @@
-import { connect as connectReactRedux } from 'react-redux';
+import { connect as connectReactRedux } from 'vendor';
 
 export function connect(
   mapStateToProps: any,

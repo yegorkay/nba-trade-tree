@@ -5,14 +5,7 @@ import { store } from 'store';
 const ConnectedApp = () => (
   <Provider {...{ store }}>
     <Router>
-      <Route
-        path="/"
-        component={App}
-        // render={({ location, history }) => {
-        //   const { query } = getParams(location);
-        //   return <App query={query} history={history} />;
-        // }}
-      />
+      <Route path="/" component={App} />
     </Router>
   </Provider>
 );
