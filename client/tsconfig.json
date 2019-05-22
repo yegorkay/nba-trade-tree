@@ -25,6 +25,7 @@
       "services": ["../client/src/services"],
       "store": ["../client/src/store"],
       "models": ["../client/src/models"],
+      "utils": ["../client/src/utils"],
       "shared": ["../shared"]
     }
   },

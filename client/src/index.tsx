@@ -1,13 +1,19 @@
-import * as ReactDOM from 'react-dom';
-import * as React from 'react';
-import App from './App';
-
-import { Provider } from 'react-redux';
+import { App } from './App';
+import { Provider, ReactDOM, React, Router, Route } from 'vendor';
 import { store } from 'store';
 
 const ConnectedApp = () => (
-  <Provider store={store}>
-    <App />
+  <Provider {...{ store }}>
+    <Router>
+      <Route
+        path="/"
+        component={App}
+        // render={({ location, history }) => {
+        //   const { query } = getParams(location);
+        //   return <App query={query} history={history} />;
+        // }}
+      />
+    </Router>
   </Provider>
 );
 

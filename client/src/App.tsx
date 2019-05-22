@@ -1,10 +1,26 @@
-import { React, Select, connect } from 'vendor';
+import { React, Select } from 'vendor';
+import { connect } from 'utils';
 import { appActions } from 'store';
-import { IReduxState } from 'models';
+import {
+  IReduxState,
+  ITeamSelectOption,
+  IConnectedComponentProps
+} from 'models';
+import { ITeam } from 'shared';
 
-class App extends React.Component<any, any> {
+interface IAppProps {
+  teams: ITeam[];
+  teamSelectOptions: ITeamSelectOption[];
+}
+
+@connect(
+  (state: IReduxState): IAppProps => ({
+    teams: state.app.teams,
+    teamSelectOptions: state.app.teamSelectOptions
+  })
+)
+class App extends React.Component<IAppProps & IConnectedComponentProps, {}> {
   state = {
-    teamData: [],
     selectedOption: null
   };
 
@@ -15,24 +31,21 @@ class App extends React.Component<any, any> {
 
   handleChange = (selectedOption: any) => {
     this.setState({ selectedOption });
-    // apiService
-    //   .getTradeHistory(selectedOption.value)
-    //   .then((data) => console.log(data));
     console.log(`Option selected:`, selectedOption);
   };
 
   render() {
-    console.log(this.props);
-    const { teamData, selectedOption } = this.state;
+    const { selectedOption } = this.state;
+    const { teamSelectOptions } = this.props;
     return (
       <div>
         <Select
-          options={teamData}
+          options={teamSelectOptions}
           placeholder="Select a Team..."
           onChange={this.handleChange}
         />
         <Select
-          options={teamData}
+          options={teamSelectOptions}
           placeholder="Select a Team..."
           isDisabled={selectedOption === null}
         />
@@ -41,11 +54,4 @@ class App extends React.Component<any, any> {
   }
 }
 
-const mapStateToProps = (state: IReduxState) => {
-  return {
-    teams: state.app.teams,
-    teamSelectOptions: state.app.teamSelectOptions
-  };
-};
-
-export default connect(mapStateToProps)(App);
+export { App };

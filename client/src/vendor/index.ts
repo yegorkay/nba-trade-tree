@@ -10,8 +10,14 @@ import {
   createStore,
   Dispatch
 } from 'redux';
-import { connect } from 'react-redux';
+import { connect, Provider } from 'react-redux';
 import thunk from 'redux-thunk';
+import * as ReactDOM from 'react-dom';
+import {
+  BrowserRouter as Router,
+  Route,
+  RouteComponentProps
+} from 'react-router-dom';
 
 export {
   _,
@@ -23,7 +29,12 @@ export {
   createStore,
   Dispatch,
   produce,
+  Provider,
   React,
+  ReactDOM,
+  Route,
+  RouteComponentProps,
+  Router,
   Select,
   thunk
 };
