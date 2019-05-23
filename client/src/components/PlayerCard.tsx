@@ -13,7 +13,7 @@ const PlayerCard: FunctionComponent<IPlayerCardProps> = (props) => {
       p={2}
       m={1}
       border={1}
-      width={1 / 8}
+      width={256}
       borderRadius={8}
       boxShadow="0 2px 6px rgba(0, 0, 0, 0.25)"
     >

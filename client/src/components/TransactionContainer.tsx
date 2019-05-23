@@ -22,7 +22,7 @@ const TransactionContainer: FunctionComponent<ITransactionContainerProps> = (
             <Text mb={2}>
               Transaction Date: {formatService.formatDate(playerArray[0])}
             </Text>
-            <Flex>
+            <Flex flexWrap="wrap">
               {playerArray[1].map((player) => (
                 <PlayerCard {...{ player }} />
               ))}
