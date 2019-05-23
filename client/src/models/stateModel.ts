@@ -1,4 +1,4 @@
-import { ITeamSelectOption } from 'models';
+import { ITeamSelectOption, Dictionary } from 'models';
 import { ITeam, ITrade } from 'shared';
 import { Actions } from 'store';
 
@@ -15,7 +15,7 @@ interface ISetTeamSelectOptions {
 }
 
 interface ISetTradeHistory {
-  data: ITrade[];
+  data: Dictionary<ITrade[]>;
   type: Actions.SET_TRADE_HISTORY;
 }
 
@@ -26,13 +26,13 @@ type ActionTypes = ISetTeamsAction | ISetTeamSelectOptions | ISetTradeHistory;
 interface IState {
   readonly teams: ITeam[];
   readonly teamSelectOptions: ITeamSelectOption[];
-  readonly tradeHistory: ITrade[];
+  readonly tradeHistory: Dictionary<ITrade[]>;
 }
 
 const initialState: IState = {
   teams: [],
   teamSelectOptions: [],
-  tradeHistory: []
+  tradeHistory: {}
 };
 
 interface IReduxState {

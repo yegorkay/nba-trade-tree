@@ -1,4 +1,4 @@
-import { ITeamSelectOption } from 'models';
+import { ITeamSelectOption, Dictionary } from 'models';
 import { apiService, formatService } from 'services';
 import { Dispatch } from 'vendor';
 import { Actions } from 'store';
@@ -41,7 +41,7 @@ class AppActions {
     };
   }
 
-  setTradeHistory(data: ITrade[]) {
+  setTradeHistory(data: Dictionary<ITrade[]>) {
     return {
       type: Actions.SET_TRADE_HISTORY,
       data
