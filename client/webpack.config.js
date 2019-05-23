@@ -22,6 +22,7 @@ module.exports = {
       models: resolveSrc(`${basePath}/models`),
       utils: resolveSrc(`${basePath}/utils`),
       components: resolveSrc(`${basePath}/components`),
+      messages: resolveSrc(`${basePath}/messages`),
       shared: resolveSrc(`../shared`)
     }
   },

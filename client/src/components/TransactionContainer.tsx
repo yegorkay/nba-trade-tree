@@ -2,6 +2,7 @@ import { React, FunctionComponent, _ } from 'vendor';
 import { ITrade } from 'shared';
 import { Dictionary } from 'models';
 import { PlayerCard, Card, Box, Text, Flex } from 'components';
+import { ErrorMessages } from 'messages';
 
 interface ITransactionContainerProps {
   transactions: Dictionary<ITrade[]> | {};
@@ -26,7 +27,7 @@ const TransactionContainer: FunctionComponent<ITransactionContainerProps> = (
           </Box>
         ))
       ) : (
-        <Text>There are no transactions available.</Text>
+        <Text>{ErrorMessages.NO_TRANSACTIONS}</Text>
       )}
     </Card>
   );

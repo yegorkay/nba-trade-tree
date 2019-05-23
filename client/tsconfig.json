@@ -27,6 +27,7 @@
       "models": ["../client/src/models"],
       "utils": ["../client/src/utils"],
       "components": ["../client/src/components"],
+      "messages": ["../client/src/messages"],
       "shared": ["../shared"]
     }
   },

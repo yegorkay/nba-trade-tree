@@ -9,6 +9,7 @@ import {
 } from 'models';
 import { ITeam, ITrade } from 'shared';
 import { TransactionContainer } from 'components';
+import { ErrorMessages } from 'messages';
 
 interface IAppProps {
   teams: ITeam[];
@@ -155,9 +156,7 @@ class App extends React.Component<
           onChange={this.handleChange}
           closeMenuOnSelect={selectedOption.length === 1}
           isMulti
-          noOptionsMessage={() =>
-            'You are only able to select two teams at a time.'
-          }
+          noOptionsMessage={() => ErrorMessages.MAX_TEAMS_SELECTED}
         />
         <TransactionContainer {...{ transactions }} />
       </div>
