@@ -26,6 +26,7 @@
     "react-router": "5.0.0",
     "react-router-dom": "5.0.0",
     "react-select": "2.4.3",
+    "rebass": "^3.1.0",
     "redux": "4.0.1",
     "redux-thunk": "2.3.0"
   },
@@ -37,6 +38,8 @@
     "@types/react-router": "5.0.1",
     "@types/react-router-dom": "4.3.3",
     "@types/react-select": "2.0.18",
+    "@types/rebass": "^3.0.4",
+    "@types/styled-components": "4.1.8",
     "awesome-typescript-loader": "5.2.1",
     "friendly-errors-webpack-plugin": "1.7.0",
     "lodash": "4.17.11",

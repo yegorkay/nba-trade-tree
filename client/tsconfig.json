@@ -26,6 +26,7 @@
       "store": ["../client/src/store"],
       "models": ["../client/src/models"],
       "utils": ["../client/src/utils"],
+      "components": ["../client/src/components"],
       "shared": ["../shared"]
     }
   },

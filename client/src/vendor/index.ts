@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { FunctionComponent } from 'react';
 import * as _ from 'lodash';
 import axios from 'axios';
 import Select from 'react-select';
@@ -18,6 +19,7 @@ import {
   Route,
   RouteComponentProps
 } from 'react-router-dom';
+import styled from 'styled-components';
 
 export {
   _,
@@ -28,6 +30,7 @@ export {
   connect,
   createStore,
   Dispatch,
+  FunctionComponent,
   produce,
   Provider,
   React,
@@ -36,5 +39,6 @@ export {
   RouteComponentProps,
   Router,
   Select,
+  styled,
   thunk
 };

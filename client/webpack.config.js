@@ -21,6 +21,7 @@ module.exports = {
       store: resolveSrc(`${basePath}/store`),
       models: resolveSrc(`${basePath}/models`),
       utils: resolveSrc(`${basePath}/utils`),
+      components: resolveSrc(`${basePath}/components`),
       shared: resolveSrc(`../shared`)
     }
   },
