@@ -20,6 +20,7 @@ import {
   RouteComponentProps
 } from 'react-router-dom';
 import styled from 'styled-components';
+import * as moment from 'moment';
 
 export {
   _,
@@ -31,6 +32,7 @@ export {
   createStore,
   Dispatch,
   FunctionComponent,
+  moment,
   produce,
   Provider,
   React,
