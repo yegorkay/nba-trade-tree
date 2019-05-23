@@ -1,9 +1,10 @@
 import { React, FunctionComponent, _ } from 'vendor';
-import { ITradeObject } from 'models';
+import { ITrade } from 'shared';
+import { Dictionary } from 'models';
 import { PlayerCard, Card, Box, Text, Flex } from 'components';
 
 interface ITransactionContainerProps {
-  transactions: ITradeObject | {};
+  transactions: Dictionary<ITrade[]> | {};
 }
 
 const TransactionContainer: FunctionComponent<ITransactionContainerProps> = (

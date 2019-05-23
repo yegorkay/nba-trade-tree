@@ -5,9 +5,9 @@ import {
   IReduxState,
   ITeamSelectOption,
   IConnectedComponentProps,
-  ITradeObject
+  Dictionary
 } from 'models';
-import { ITeam } from 'shared';
+import { ITeam, ITrade } from 'shared';
 import { TransactionContainer } from 'components';
 
 interface IAppProps {
@@ -52,7 +52,7 @@ class App extends React.Component<
     const { selectedOption } = this.state;
     const { teamSelectOptions } = this.props;
 
-    const transactions: ITradeObject = {
+    const transactions: Dictionary<ITrade[]> = {
       '2018-07-18': [
         {
           name: 'Kawhi Leonard',
