@@ -15,10 +15,10 @@ const TransactionContainer: FunctionComponent<ITransactionContainerProps> = (
   const { transactions } = props;
   const isEmpty = _.isEmpty(transactions);
   return (
-    <Card m={3}>
+    <Card mt={3} mb={3}>
       {!isEmpty ? (
         Object.entries(transactions).map((playerArray) => (
-          <Box m={3}>
+          <Box mb={3}>
             <Text mb={2}>
               Transaction Date: {formatService.formatDate(playerArray[0])}
             </Text>

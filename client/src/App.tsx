@@ -1,4 +1,4 @@
-import { React, Select } from 'vendor';
+import { React, Select, Component } from 'vendor';
 import { connect } from 'utils';
 import { appActions } from 'store';
 import {
@@ -8,12 +8,13 @@ import {
   Dictionary
 } from 'models';
 import { ITeam, ITrade } from 'shared';
-import { TransactionContainer } from 'components';
+import { TransactionContainer, Box, Flex } from 'components';
 import { ErrorMessages } from 'messages';
 
 interface IAppProps {
   teams: ITeam[];
   teamSelectOptions: ITeamSelectOption[];
+  tradeHistory: Dictionary<ITrade[]>;
 }
 
 interface IAppState {
@@ -23,13 +24,11 @@ interface IAppState {
 @connect(
   (state: IReduxState): IAppProps => ({
     teams: state.app.teams,
-    teamSelectOptions: state.app.teamSelectOptions
+    teamSelectOptions: state.app.teamSelectOptions,
+    tradeHistory: state.app.tradeHistory
   })
 )
-class App extends React.Component<
-  IAppProps & IConnectedComponentProps,
-  IAppState
-> {
+class App extends Component<IAppProps & IConnectedComponentProps, IAppState> {
   state = {
     selectedOption: []
   };
@@ -40,8 +39,16 @@ class App extends React.Component<
   }
 
   handleChange = (selectedOption: ITeamSelectOption[]) => {
+    this.setState({ selectedOption }, () =>
+      this.handleTradeHistory(selectedOption)
+    );
+  };
+
+  handleTradeHistory = (selectedOption: ITeamSelectOption[]) => {
     const { dispatch } = this.props;
-    this.setState({ selectedOption });
+    if (selectedOption.length === 0) {
+      dispatch(appActions.resetTradeHistory());
+    }
     if (selectedOption.length === 2) {
       const f1 = selectedOption[0].value;
       const f2 = selectedOption[1].value;
@@ -51,115 +58,22 @@ class App extends React.Component<
 
   render() {
     const { selectedOption } = this.state;
-    const { teamSelectOptions } = this.props;
-
-    const transactions: Dictionary<ITrade[]> = {
-      '2018-07-18': [
-        {
-          name: 'Kawhi Leonard',
-          playerId: 'leonaka01',
-          tradedBy: 'SAS',
-          tradedTo: 'TOR',
-          transactionDate: '2018-07-18'
-        },
-        {
-          name: 'Danny Green',
-          playerId: 'greenda02',
-          tradedBy: 'SAS',
-          tradedTo: 'TOR',
-          transactionDate: '2018-07-18'
-        },
-        {
-          name: 'DeMar DeRozan',
-          playerId: 'derozde01',
-          tradedBy: 'TOR',
-          tradedTo: 'SAS',
-          transactionDate: '2018-07-18'
-        },
-        {
-          name: 'Jakob Poeltl',
-          playerId: 'poeltja01',
-          tradedBy: 'TOR',
-          tradedTo: 'SAS',
-          transactionDate: '2018-07-18'
-        }
-      ],
-      '2014-02-20': [
-        {
-          name: 'Nando de Colo',
-          playerId: 'decolna01',
-          tradedBy: 'SAS',
-          tradedTo: 'TOR',
-          transactionDate: '2014-02-20'
-        },
-        {
-          name: 'Austin Daye',
-          playerId: 'dayeau01',
-          tradedBy: 'TOR',
-          tradedTo: 'SAS',
-          transactionDate: '2014-02-20'
-        }
-      ],
-      '2007-06-28': [
-        {
-          name: 'Giorgos Printezis',
-          playerId: 'printgi01',
-          tradedBy: 'SAS',
-          tradedTo: 'TOR',
-          transactionDate: '2007-06-28'
-        },
-        {
-          name: 'Goran Dragic',
-          playerId: 'dragigo01',
-          tradedBy: 'TOR',
-          tradedTo: 'SAS',
-          transactionDate: '2007-06-28'
-        }
-      ],
-      '2006-06-21': [
-        {
-          name: 'Matt Bonner',
-          playerId: 'bonnema01',
-          tradedBy: 'TOR',
-          tradedTo: 'SAS',
-          transactionDate: '2006-06-21'
-        },
-        {
-          name: 'Eric Williams',
-          playerId: 'willier01',
-          tradedBy: 'TOR',
-          tradedTo: 'SAS',
-          transactionDate: '2006-06-21'
-        },
-        {
-          name: 'Jack McClinton',
-          playerId: '',
-          tradedBy: 'TOR',
-          tradedTo: 'SAS',
-          transactionDate: '2006-06-21'
-        },
-        {
-          name: 'Rasho Nesterovic',
-          playerId: 'nestera01',
-          tradedBy: 'SAS',
-          tradedTo: 'TOR',
-          transactionDate: '2006-06-21'
-        }
-      ]
-    };
+    const { teamSelectOptions, tradeHistory } = this.props;
 
     return (
-      <div>
-        <Select
-          options={selectedOption.length < 2 ? teamSelectOptions : []}
-          placeholder="Select a Team..."
-          onChange={this.handleChange}
-          closeMenuOnSelect={selectedOption.length === 1}
-          isMulti
-          noOptionsMessage={() => ErrorMessages.MAX_TEAMS_SELECTED}
-        />
-        <TransactionContainer {...{ transactions }} />
-      </div>
+      <Flex justifyContent="center">
+        <Box width={1024} pt={5} pb={5}>
+          <Select
+            isMulti
+            onChange={this.handleChange}
+            placeholder="Select a Team..."
+            closeMenuOnSelect={selectedOption.length === 1}
+            noOptionsMessage={() => ErrorMessages.MAX_TEAMS_SELECTED}
+            options={selectedOption.length < 2 ? teamSelectOptions : []}
+          />
+          <TransactionContainer transactions={tradeHistory} />
+        </Box>
+      </Flex>
     );
   }
 }

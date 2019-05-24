@@ -6,4 +6,4 @@ interface IConnectedComponentProps extends RouteComponentProps {
   dispatch: Dispatch;
 }
 
-export { IConnectedComponentProps };
+export { IConnectedComponentProps, Dispatch };

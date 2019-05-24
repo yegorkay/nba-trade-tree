@@ -1,6 +1,5 @@
-import { ITeamSelectOption, Dictionary } from 'models';
+import { ITeamSelectOption, Dictionary, Dispatch } from 'models';
 import { apiService, formatService } from 'services';
-import { Dispatch } from 'vendor';
 import { Actions } from 'store';
 import { ITeam, ITrade } from 'shared';
 
@@ -41,7 +40,11 @@ class AppActions {
     };
   }
 
-  setTradeHistory(data: Dictionary<ITrade[]>) {
+  resetTradeHistory() {
+    return (dispatch: Dispatch) => dispatch(this.setTradeHistory({}));
+  }
+
+  setTradeHistory(data: Dictionary<ITrade[]> | {}) {
     return {
       type: Actions.SET_TRADE_HISTORY,
       data

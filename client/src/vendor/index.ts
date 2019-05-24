@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FunctionComponent } from 'react';
+import { FunctionComponent, Component } from 'react';
 import * as _ from 'lodash';
 import axios from 'axios';
 import Select from 'react-select';
@@ -8,8 +8,9 @@ import {
   applyMiddleware,
   combineReducers,
   compose,
-  createStore,
-  Dispatch
+  createStore
+  // TODO figure out dispatch types in actions
+  // Dispatch
 } from 'redux';
 import { connect, Provider } from 'react-redux';
 import thunk from 'redux-thunk';
@@ -28,9 +29,10 @@ export {
   axios,
   combineReducers,
   compose,
+  Component,
   connect,
   createStore,
-  Dispatch,
+  // Dispatch,
   FunctionComponent,
   moment,
   produce,
