@@ -1,4 +1,4 @@
-import { ITrade } from '../models';
+import { ITrade } from '../../../shared';
 import { Dictionary } from 'lodash';
 import { scrapeMainTransaction } from '../services';
 import { Response, Request } from 'express';

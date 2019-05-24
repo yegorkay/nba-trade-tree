@@ -1,5 +1,5 @@
 import { BBALL_PREFIX } from '../settings';
-import { ITrade } from '../models';
+import { ITrade } from '../../../shared';
 import puppeteer from 'puppeteer';
 import $ from 'cheerio';
 import _ from 'lodash';

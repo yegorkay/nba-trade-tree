@@ -1,4 +1,4 @@
-import { ITeam } from '../models';
+import { ITeam } from '../../../shared';
 
 export const teamNames: ITeam[] = [
   {
@@ -6,7 +6,7 @@ export const teamNames: ITeam[] = [
     teamName: 'Atlanta Hawks'
   },
   {
-    teamAbr: 'BKN',
+    teamAbr: 'NJN',
     teamName: 'Brooklyn Nets'
   },
   {

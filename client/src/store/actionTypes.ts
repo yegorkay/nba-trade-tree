@@ -1,0 +1,7 @@
+enum Actions {
+  SET_TEAMS = 'SET_TEAMS',
+  SET_TEAM_SELECT_OPTIONS = 'SET_TEAM_SELECT_OPTIONS',
+  SET_TRADE_HISTORY = 'SET_TRADE_HISTORY'
+}
+
+export { Actions };

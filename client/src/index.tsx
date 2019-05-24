@@ -1,5 +1,13 @@
-import * as ReactDOM from 'react-dom';
-import * as React from 'react';
 import { App } from './App';
+import { Provider, ReactDOM, React, Router, Route } from 'vendor';
+import { store } from 'store';
 
-ReactDOM.render(<App />, document.getElementById('app'));
+const ConnectedApp = () => (
+  <Provider {...{ store }}>
+    <Router>
+      <Route path="/" component={App} />
+    </Router>
+  </Provider>
+);
+
+ReactDOM.render(<ConnectedApp />, document.getElementById('app'));
