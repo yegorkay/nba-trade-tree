@@ -50,6 +50,24 @@ class AppActions {
       data
     };
   }
+
+  setAsyncStart() {
+    return {
+      type: Actions.SET_ASYNC_START
+    };
+  }
+
+  setAsyncSuccess() {
+    return {
+      type: Actions.SET_ASYNC_SUCCESS
+    };
+  }
+
+  setAsyncError() {
+    return {
+      type: Actions.SET_ASYNC_ERROR
+    };
+  }
 }
 
 const appActions = new AppActions();

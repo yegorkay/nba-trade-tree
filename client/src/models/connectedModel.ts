@@ -6,4 +6,10 @@ interface IConnectedComponentProps extends RouteComponentProps {
   dispatch: Dispatch;
 }
 
-export { IConnectedComponentProps, Dispatch };
+interface IAsyncStatus {
+  start: boolean;
+  success: boolean;
+  error: boolean;
+}
+
+export { IConnectedComponentProps, Dispatch, IAsyncStatus };

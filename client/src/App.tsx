@@ -5,16 +5,19 @@ import {
   IReduxState,
   ITeamSelectOption,
   IConnectedComponentProps,
-  Dictionary
+  Dictionary,
+  IAsyncStatus
 } from 'models';
 import { ITeam, ITrade } from 'shared';
 import { TransactionContainer, Box, Flex } from 'components';
 import { ErrorMessages } from 'messages';
+import { apiService } from 'services';
 
 interface IAppProps {
   teams: ITeam[];
   teamSelectOptions: ITeamSelectOption[];
   tradeHistory: Dictionary<ITrade[]>;
+  asyncStatus: IAsyncStatus;
 }
 
 interface IAppState {
@@ -25,7 +28,8 @@ interface IAppState {
   (state: IReduxState): IAppProps => ({
     teams: state.app.teams,
     teamSelectOptions: state.app.teamSelectOptions,
-    tradeHistory: state.app.tradeHistory
+    tradeHistory: state.app.tradeHistory,
+    asyncStatus: state.app.asyncStatus
   })
 )
 class App extends Component<IAppProps & IConnectedComponentProps, IAppState> {
@@ -36,6 +40,7 @@ class App extends Component<IAppProps & IConnectedComponentProps, IAppState> {
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch(appActions.getTeams());
+    apiService.configureInterceptor();
   }
 
   handleChange = (selectedOption: ITeamSelectOption[]) => {
@@ -58,7 +63,9 @@ class App extends Component<IAppProps & IConnectedComponentProps, IAppState> {
 
   render() {
     const { selectedOption } = this.state;
-    const { teamSelectOptions, tradeHistory } = this.props;
+    const { teamSelectOptions, tradeHistory, asyncStatus } = this.props;
+
+    console.log(asyncStatus);
 
     return (
       <Flex justifyContent="center">

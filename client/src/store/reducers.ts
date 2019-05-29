@@ -14,6 +14,27 @@ const appReducer = (state = initialState, action: ActionTypes) =>
       case Actions.SET_TRADE_HISTORY:
         draft.tradeHistory = action.data;
         break;
+      case Actions.SET_ASYNC_START:
+        draft.asyncStatus = {
+          start: true,
+          success: false,
+          error: false
+        };
+        break;
+      case Actions.SET_ASYNC_SUCCESS:
+        draft.asyncStatus = {
+          start: false,
+          success: true,
+          error: false
+        };
+        break;
+      case Actions.SET_ASYNC_ERROR:
+        draft.asyncStatus = {
+          start: false,
+          success: false,
+          error: true
+        };
+        break;
     }
   });
 
