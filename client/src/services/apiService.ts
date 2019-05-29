@@ -1,5 +1,6 @@
 import { axios } from 'vendor';
 import { routes } from 'shared';
+import { store, appActions } from 'store';
 
 class ApiService {
   getTeams() {
@@ -15,6 +16,24 @@ class ApiService {
       url: routes.TRADE,
       params: { f1, f2 }
     });
+  }
+
+  configureInterceptor() {
+    axios.interceptors.request.use((config) => {
+      store.dispatch(appActions.setAsyncStart());
+      return config;
+    });
+
+    axios.interceptors.response.use(
+      (response) => {
+        store.dispatch(appActions.setAsyncSuccess());
+        return response;
+      },
+      (error) => {
+        store.dispatch(appActions.setAsyncError());
+        return Promise.reject(error);
+      }
+    );
   }
 }
 
