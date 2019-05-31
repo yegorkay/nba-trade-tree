@@ -1,19 +1,21 @@
 import { React, FunctionComponent, _ } from 'vendor';
 import { ITrade } from 'shared';
-import { Dictionary } from 'models';
+import { Dictionary, ITeamSelectOption } from 'models';
 import { PlayerCard, Card, Box, Text, Flex, LoadingWrapper } from 'components';
 import { ErrorMessages } from 'messages';
 import { formatService } from 'services';
 
 interface ITransactionContainerProps {
   transactions: Dictionary<ITrade[]> | {};
+  selectedOption: ITeamSelectOption[] | [];
 }
 
 const TransactionContainer: FunctionComponent<ITransactionContainerProps> = (
   props
 ) => {
-  const { transactions } = props;
-  const isEmpty = _.isEmpty(transactions);
+  const { transactions, selectedOption } = props;
+  console.log(selectedOption);
+  const isEmpty = selectedOption.length > 0 && _.isEmpty(transactions);
   return (
     <LoadingWrapper>
       <Card mt={3} mb={3}>

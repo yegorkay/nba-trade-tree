@@ -1,7 +1,7 @@
 import { React, Component } from 'vendor';
 import { connect } from 'utils';
 import { IReduxState, IAsyncStatus } from 'models';
-import { Box } from 'components';
+import { Box, Loader } from 'components';
 
 interface ILoadingWrapper {
   asyncStatus?: IAsyncStatus;
@@ -21,11 +21,7 @@ class LoadingWrapper extends Component<ILoadingWrapper, {}> {
     }
 
     if (asyncStatus && asyncStatus.start) {
-      return (
-        <Box mt={2} mb={2}>
-          Loading...
-        </Box>
-      );
+      return <Loader />;
     }
 
     if (asyncStatus && asyncStatus.error) {

@@ -63,6 +63,7 @@ class App extends Component<IAppProps & IConnectedComponentProps, IAppState> {
   render() {
     const { selectedOption } = this.state;
     const { teamSelectOptions, tradeHistory, asyncStatus } = this.props;
+    const options = selectedOption.length < 2 ? teamSelectOptions : [];
 
     return (
       <Flex justifyContent="center">
@@ -74,9 +75,12 @@ class App extends Component<IAppProps & IConnectedComponentProps, IAppState> {
             placeholder="Select a Team..."
             closeMenuOnSelect={selectedOption.length === 1}
             noOptionsMessage={() => ErrorMessages.MAX_TEAMS_SELECTED}
-            options={selectedOption.length < 2 ? teamSelectOptions : []}
+            options={options}
           />
-          <TransactionContainer transactions={tradeHistory} />
+          <TransactionContainer
+            transactions={tradeHistory}
+            selectedOption={selectedOption}
+          />
         </Box>
       </Flex>
     );
