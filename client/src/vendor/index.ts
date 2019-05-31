@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FunctionComponent, Component } from 'react';
+import { FunctionComponent, Component, useEffect } from 'react';
 import * as _ from 'lodash';
 import axios from 'axios';
 import Select from 'react-select';
@@ -44,5 +44,6 @@ export {
   Router,
   Select,
   styled,
-  thunk
+  thunk,
+  useEffect
 };
