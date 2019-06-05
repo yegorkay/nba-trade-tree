@@ -11,7 +11,6 @@ import {
 import { ITeam, ITrade } from 'shared';
 import { TransactionContainer, Box, Flex } from 'components';
 import { ErrorMessages } from 'messages';
-import { apiService } from 'services';
 
 interface IAppProps {
   teams: ITeam[];
@@ -40,7 +39,6 @@ class App extends Component<IAppProps & IConnectedComponentProps, IAppState> {
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch(appActions.getTeams());
-    apiService.configureInterceptor();
   }
 
   handleChange = (selectedOption: ITeamSelectOption[]) => {
@@ -64,21 +62,24 @@ class App extends Component<IAppProps & IConnectedComponentProps, IAppState> {
   render() {
     const { selectedOption } = this.state;
     const { teamSelectOptions, tradeHistory, asyncStatus } = this.props;
-
-    console.log(asyncStatus);
+    const options = selectedOption.length < 2 ? teamSelectOptions : [];
 
     return (
       <Flex justifyContent="center">
         <Box width={1024} pt={5} pb={5}>
           <Select
             isMulti
+            isDisabled={asyncStatus.start}
             onChange={this.handleChange}
             placeholder="Select a Team..."
             closeMenuOnSelect={selectedOption.length === 1}
             noOptionsMessage={() => ErrorMessages.MAX_TEAMS_SELECTED}
-            options={selectedOption.length < 2 ? teamSelectOptions : []}
+            options={options}
           />
-          <TransactionContainer transactions={tradeHistory} />
+          <TransactionContainer
+            transactions={tradeHistory}
+            selectedOption={selectedOption}
+          />
         </Box>
       </Flex>
     );
