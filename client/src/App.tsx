@@ -11,7 +11,6 @@ import {
 import { ITeam, ITrade } from 'shared';
 import { TransactionContainer, Box, Flex } from 'components';
 import { ErrorMessages } from 'messages';
-// import { apiService } from 'services';
 
 interface IAppProps {
   teams: ITeam[];

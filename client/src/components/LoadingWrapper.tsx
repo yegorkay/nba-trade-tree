@@ -2,6 +2,7 @@ import { React, Component } from 'vendor';
 import { connect } from 'utils';
 import { IReduxState, IAsyncStatus } from 'models';
 import { Box, Loader } from 'components';
+import { ErrorMessages } from 'messages';
 
 interface ILoadingWrapper {
   asyncStatus?: IAsyncStatus;
@@ -16,22 +17,18 @@ class LoadingWrapper extends Component<ILoadingWrapper, {}> {
   render() {
     const { asyncStatus, children } = this.props;
 
-    if (asyncStatus && asyncStatus.success) {
-      return children;
-    }
+    if (asyncStatus) {
+      const { success, start, error } = asyncStatus;
 
-    if (asyncStatus && asyncStatus.start) {
-      return <Loader />;
+      if (success) return children;
+      if (start) return <Loader />;
+      if (error)
+        return (
+          <Box m={2} mb={2}>
+            {ErrorMessages.GENERAL}
+          </Box>
+        );
     }
-
-    if (asyncStatus && asyncStatus.error) {
-      return (
-        <Box m={2} mb={2}>
-          An error has occured.
-        </Box>
-      );
-    }
-
     return null;
   }
 }

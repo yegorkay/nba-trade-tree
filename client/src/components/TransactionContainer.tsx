@@ -10,28 +10,31 @@ interface ITransactionContainerProps {
   selectedOption: ITeamSelectOption[] | [];
 }
 
+const renderPlayerCard = (playerArray: [string, ITrade[]]): JSX.Element => (
+  <Box mb={3}>
+    <Text mb={2}>
+      Transaction Date: {formatService.formatDate(playerArray[0])}
+    </Text>
+    <Flex flexWrap="wrap">
+      {playerArray[1].map((player) => (
+        <PlayerCard {...{ player }} />
+      ))}
+    </Flex>
+  </Box>
+);
+
 const TransactionContainer: FunctionComponent<ITransactionContainerProps> = (
   props
 ) => {
   const { transactions, selectedOption } = props;
-  console.log(selectedOption);
   const isEmpty = selectedOption.length > 0 && _.isEmpty(transactions);
+  const transactionCards = Object.entries(transactions).map(renderPlayerCard);
+
   return (
     <LoadingWrapper>
       <Card mt={3} mb={3}>
         {!isEmpty ? (
-          Object.entries(transactions).map((playerArray) => (
-            <Box mb={3}>
-              <Text mb={2}>
-                Transaction Date: {formatService.formatDate(playerArray[0])}
-              </Text>
-              <Flex flexWrap="wrap">
-                {playerArray[1].map((player) => (
-                  <PlayerCard {...{ player }} />
-                ))}
-              </Flex>
-            </Box>
-          ))
+          transactionCards
         ) : (
           <Text>{ErrorMessages.NO_TRANSACTIONS}</Text>
         )}
