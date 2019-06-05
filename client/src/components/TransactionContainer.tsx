@@ -1,6 +1,6 @@
-import { React, FunctionComponent, _ } from 'vendor';
+import { React, _ } from 'vendor';
 import { ITrade } from 'shared';
-import { Dictionary, ITeamSelectOption } from 'models';
+import { Dictionary, ITeamSelectOption, FunctionComponent } from 'models';
 import { PlayerCard, Card, Box, Text, Flex, LoadingWrapper } from 'components';
 import { ErrorMessages } from 'messages';
 import { formatService } from 'services';
@@ -36,8 +36,8 @@ const TransactionContainer: FunctionComponent<ITransactionContainerProps> = (
         {!isEmpty ? (
           transactionCards
         ) : (
-          <Text>{ErrorMessages.NO_TRANSACTIONS}</Text>
-        )}
+            <Text>{ErrorMessages.NO_TRANSACTIONS}</Text>
+          )}
       </Card>
     </LoadingWrapper>
   );

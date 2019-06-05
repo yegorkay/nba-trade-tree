@@ -1,6 +1,7 @@
-import { React, FunctionComponent } from 'vendor';
+import { React } from 'vendor';
 import { ITrade } from 'shared';
 import { Card, Text, Link } from 'components';
+import { FunctionComponent } from 'models';
 
 interface IPlayerCardProps {
   player: ITrade;

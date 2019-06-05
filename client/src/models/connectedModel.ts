@@ -1,4 +1,4 @@
-import { RouteComponentProps } from 'vendor';
+import { RouteComponentProps } from 'models';
 
 type Dispatch = (arg: any) => any;
 

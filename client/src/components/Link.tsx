@@ -1,12 +1,9 @@
 import {
   React,
-  RouterLink,
-  LinkProps,
-  BoxProps,
-  FunctionComponent,
   styled
 } from 'vendor';
-import { RebassLink } from 'components';
+import { FunctionComponent, BoxProps, LinkProps } from 'models';
+import { RebassLink, RouterLink } from 'components';
 
 const LinkWrapper: FunctionComponent<LinkProps & BoxProps> = (props) => (
   <RebassLink {...props} as={RouterLink} />
