@@ -15,6 +15,7 @@ import {
 import { connect, Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import * as ReactDOM from 'react-dom';
+import { Link as RouterLink, LinkProps } from 'react-router-dom';
 import {
   BrowserRouter as Router,
   Route,
@@ -22,11 +23,13 @@ import {
 } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
 import * as moment from 'moment';
+import { BoxProps } from 'rebass';
 
 export {
   _,
   applyMiddleware,
   axios,
+  BoxProps,
   combineReducers,
   compose,
   Component,
@@ -35,6 +38,7 @@ export {
   // Dispatch,
   FunctionComponent,
   keyframes,
+  LinkProps,
   moment,
   produce,
   Provider,
@@ -43,6 +47,7 @@ export {
   Route,
   RouteComponentProps,
   Router,
+  RouterLink,
   Select,
   styled,
   thunk,
