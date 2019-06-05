@@ -1,22 +1,25 @@
-import { React, Select, Component } from 'vendor';
+import { React, Select, Component, _ } from 'vendor';
 import { connect } from 'utils';
 import { appActions } from 'store';
 import {
-  IReduxState,
-  ITeamSelectOption,
-  IConnectedComponentProps,
   Dictionary,
-  IAsyncStatus
+  IAsyncStatus,
+  IConnectedComponentProps,
+  IReduxState,
+  ITeamQueryParams,
+  ITeamSelectOption
 } from 'models';
 import { ITeam, ITrade } from 'shared';
 import { TransactionContainer, Box, Flex } from 'components';
 import { ErrorMessages } from 'messages';
+import { routes } from 'routes';
 
 interface IAppProps {
   teams: ITeam[];
   teamSelectOptions: ITeamSelectOption[];
   tradeHistory: Dictionary<ITrade[]>;
   asyncStatus: IAsyncStatus;
+  queryParams: ITeamQueryParams;
 }
 
 interface IAppState {
@@ -28,7 +31,8 @@ interface IAppState {
     teams: state.app.teams,
     teamSelectOptions: state.app.teamSelectOptions,
     tradeHistory: state.app.tradeHistory,
-    asyncStatus: state.app.asyncStatus
+    asyncStatus: state.app.asyncStatus,
+    queryParams: state.app.queryParams
   })
 )
 class App extends Component<IAppProps & IConnectedComponentProps, IAppState> {
@@ -41,21 +45,45 @@ class App extends Component<IAppProps & IConnectedComponentProps, IAppState> {
     dispatch(appActions.getTeams());
   }
 
+  componentWillReceiveProps(nextProps: IAppProps) {
+    const { dispatch, queryParams } = this.props;
+    const paramPropsNoMatch = !_.isEqual(queryParams, nextProps.queryParams);
+
+    if (paramPropsNoMatch) {
+      const { f1, f2 } = nextProps.queryParams;
+      const noQueryParams = f1 === '' && f2 === '';
+
+      if (!noQueryParams) {
+        dispatch(appActions.getTradeHistory(f1, f2));
+      }
+    }
+  }
+
   handleChange = (selectedOption: ITeamSelectOption[]) => {
     this.setState({ selectedOption }, () =>
       this.handleTradeHistory(selectedOption)
     );
   };
 
+  handleQueryParams = (search: string = '') => {
+    const { history } = this.props;
+    history.push({
+      pathname: routes.root(),
+      search
+    });
+  };
+
   handleTradeHistory = (selectedOption: ITeamSelectOption[]) => {
     const { dispatch } = this.props;
     if (selectedOption.length === 0) {
       dispatch(appActions.resetTradeHistory());
+      this.handleQueryParams();
     }
     if (selectedOption.length === 2) {
       const f1 = selectedOption[0].value;
       const f2 = selectedOption[1].value;
       dispatch(appActions.getTradeHistory(f1, f2));
+      this.handleQueryParams(`?f1=${f1}&f2=${f2}`);
     }
   };
 

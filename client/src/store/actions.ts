@@ -1,4 +1,9 @@
-import { ITeamSelectOption, Dictionary, Dispatch } from 'models';
+import {
+  ITeamSelectOption,
+  Dictionary,
+  Dispatch,
+  ITeamQueryParams
+} from 'models';
 import { apiService, formatService } from 'services';
 import { Actions } from 'store';
 import { ITeam, ITrade } from 'shared';
@@ -66,6 +71,18 @@ class AppActions {
   setAsyncError() {
     return {
       type: Actions.SET_ASYNC_ERROR
+    };
+  }
+
+  setQueryParams() {
+    const searchParams = new URLSearchParams(location.search);
+    const data: ITeamQueryParams = {
+      f1: searchParams.get('f1') || '',
+      f2: searchParams.get('f2') || ''
+    };
+    return {
+      type: Actions.SET_QUERY_PARAMS,
+      data
     };
   }
 }

@@ -1,4 +1,9 @@
-import { ITeamSelectOption, Dictionary, IAsyncStatus } from 'models';
+import {
+  ITeamSelectOption,
+  Dictionary,
+  IAsyncStatus,
+  ITeamQueryParams
+} from 'models';
 import { ITeam, ITrade } from 'shared';
 
 /** State type definitions */
@@ -7,6 +12,7 @@ interface IState {
   readonly teamSelectOptions: ITeamSelectOption[];
   readonly tradeHistory: Dictionary<ITrade[]>;
   readonly asyncStatus: IAsyncStatus;
+  readonly queryParams: ITeamQueryParams;
 }
 
 const initialState: IState = {
@@ -17,6 +23,10 @@ const initialState: IState = {
     start: false,
     success: false,
     error: false
+  },
+  queryParams: {
+    f1: '',
+    f2: ''
   }
 };
 

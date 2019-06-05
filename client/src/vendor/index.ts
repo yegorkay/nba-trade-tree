@@ -15,10 +15,7 @@ import {
 import { connect, Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import * as ReactDOM from 'react-dom';
-import {
-  BrowserRouter as Router,
-  Route
-} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
 import * as moment from 'moment';
 
@@ -42,6 +39,7 @@ export {
   Router,
   Select,
   styled,
+  Switch,
   thunk,
   useEffect
 };
