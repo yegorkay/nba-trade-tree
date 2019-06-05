@@ -1,8 +1,7 @@
-import { App } from './App';
-import { Player } from './Player';
-import { Provider, ReactDOM, React, Router, Route, useEffect } from 'vendor';
+import { Provider, ReactDOM, React, useEffect } from 'vendor';
 import { store } from 'store';
 import { apiService } from 'services';
+import { RouterConfig } from 'routes';
 
 const ConnectedApp = () => {
   useEffect(() => {
@@ -11,10 +10,7 @@ const ConnectedApp = () => {
 
   return (
     <Provider {...{ store }}>
-      <Router>
-        <Route path="/" exact component={App} />
-        <Route path="/player" component={Player} />
-      </Router>
+      <RouterConfig />
     </Provider>
   );
 };

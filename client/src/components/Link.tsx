@@ -3,12 +3,19 @@ import {
   RouterLink,
   LinkProps,
   BoxProps,
-  FunctionComponent
+  FunctionComponent,
+  styled
 } from 'vendor';
 import { RebassLink } from 'components';
 
-const Link: FunctionComponent<LinkProps & BoxProps> = (props) => (
+const LinkWrapper: FunctionComponent<LinkProps & BoxProps> = (props) => (
   <RebassLink {...props} as={RouterLink} />
 );
+
+const Link = styled(LinkWrapper)`
+  text-decoration: none;
+  color: inherit;
+`;
+
 
 export { Link };

@@ -23,6 +23,7 @@ module.exports = {
       utils: resolveSrc(`${basePath}/utils`),
       components: resolveSrc(`${basePath}/components`),
       messages: resolveSrc(`${basePath}/messages`),
+      routes: resolveSrc(`${basePath}/routes`),
       shared: resolveSrc(`../shared`)
     }
   },
