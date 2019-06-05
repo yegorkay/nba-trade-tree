@@ -4,16 +4,16 @@ import { IReduxState, IAsyncStatus } from 'models';
 import { Box, Loader } from 'components';
 import { ErrorMessages } from 'messages';
 
-interface ILoadingWrapper {
+interface ILoadingWrapperProps {
   asyncStatus?: IAsyncStatus;
 }
 
 @connect(
-  (state: IReduxState): ILoadingWrapper => ({
+  (state: IReduxState): ILoadingWrapperProps => ({
     asyncStatus: state.app.asyncStatus
   })
 )
-class LoadingWrapper extends Component<ILoadingWrapper, {}> {
+class LoadingWrapper extends Component<ILoadingWrapperProps, {}> {
   render() {
     const { asyncStatus, children } = this.props;
 
