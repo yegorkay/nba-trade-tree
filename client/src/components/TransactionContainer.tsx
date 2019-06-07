@@ -10,14 +10,19 @@ interface ITransactionContainerProps {
   selectedOption: ITeamSelectOption[] | [];
 }
 
-const renderPlayerCard = (playerArray: [string, ITrade[]]): JSX.Element => (
-  <Box mb={3}>
+const renderPlayerCard = (
+  playerArray: [string, ITrade[]],
+  index: number
+): JSX.Element => (
+  <Box mb={3} key={index}>
     <Text mb={2}>
       Transaction Date: {formatService.formatDate(playerArray[0])}
     </Text>
     <Flex flexWrap="wrap">
       {playerArray[1].map((player) => (
-        <PlayerCard {...{ player }} />
+        <PlayerCard
+          {...{ player, key: `${player.transactionDate}-${player.name}` }}
+        />
       ))}
     </Flex>
   </Box>
@@ -36,8 +41,8 @@ const TransactionContainer: FunctionComponent<ITransactionContainerProps> = (
         {!isEmpty ? (
           transactionCards
         ) : (
-            <Text>{ErrorMessages.NO_TRANSACTIONS}</Text>
-          )}
+          <Text>{ErrorMessages.NO_TRANSACTIONS}</Text>
+        )}
       </Card>
     </LoadingWrapper>
   );

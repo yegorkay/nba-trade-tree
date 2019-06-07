@@ -24,6 +24,7 @@ interface IAppProps {
 
 interface IAppState {
   selectedOption: ITeamSelectOption[];
+  defaultValue: ITeamSelectOption[]; // We have a default value to avoid the select component not rendering
 }
 
 @connect(
@@ -37,7 +38,8 @@ interface IAppState {
 )
 class App extends Component<IAppProps & IConnectedComponentProps, IAppState> {
   state = {
-    selectedOption: []
+    selectedOption: [],
+    defaultValue: []
   };
 
   componentDidMount() {
@@ -46,8 +48,20 @@ class App extends Component<IAppProps & IConnectedComponentProps, IAppState> {
   }
 
   componentWillReceiveProps(nextProps: IAppProps) {
-    const { dispatch, queryParams } = this.props;
+    const { dispatch, queryParams, teamSelectOptions } = this.props;
+
     const paramPropsNoMatch = !_.isEqual(queryParams, nextProps.queryParams);
+    const selectOptionsNoMatch = !_.isEqual(
+      teamSelectOptions,
+      nextProps.teamSelectOptions
+    );
+
+    if (selectOptionsNoMatch) {
+      this.handleDefaultValue(
+        nextProps.teamSelectOptions,
+        nextProps.queryParams
+      );
+    }
 
     if (paramPropsNoMatch) {
       const { f1, f2 } = nextProps.queryParams;
@@ -58,6 +72,21 @@ class App extends Component<IAppProps & IConnectedComponentProps, IAppState> {
       }
     }
   }
+
+  handleDefaultValue = (
+    teamSelectOptions: ITeamSelectOption[],
+    queryParams: ITeamQueryParams
+  ) => {
+    const getQueryValue = (query: string) =>
+      teamSelectOptions.findIndex((team) => team.value === query);
+
+    const f1 = getQueryValue(queryParams.f1);
+    const f2 = getQueryValue(queryParams.f2);
+
+    const defaultValue = [teamSelectOptions[f1], teamSelectOptions[f2]];
+
+    this.setState({ defaultValue, selectedOption: defaultValue });
+  };
 
   handleChange = (selectedOption: ITeamSelectOption[]) => {
     this.setState({ selectedOption }, () =>
@@ -88,22 +117,25 @@ class App extends Component<IAppProps & IConnectedComponentProps, IAppState> {
   };
 
   render() {
-    const { selectedOption } = this.state;
+    const { selectedOption, defaultValue } = this.state;
     const { teamSelectOptions, tradeHistory, asyncStatus } = this.props;
     const options = selectedOption.length < 2 ? teamSelectOptions : [];
 
     return (
       <Flex justifyContent="center">
         <Box width={1024} pt={5} pb={5}>
-          <Select
-            isMulti
-            isDisabled={asyncStatus.start}
-            onChange={this.handleChange}
-            placeholder="Select a Team..."
-            closeMenuOnSelect={selectedOption.length === 1}
-            noOptionsMessage={() => ErrorMessages.MAX_TEAMS_SELECTED}
-            options={options}
-          />
+          {defaultValue.length ? (
+            <Select
+              isMulti
+              defaultValue={defaultValue}
+              isDisabled={asyncStatus.start}
+              onChange={this.handleChange}
+              placeholder="Select a Team..."
+              closeMenuOnSelect={selectedOption.length === 1}
+              noOptionsMessage={() => ErrorMessages.MAX_TEAMS_SELECTED}
+              options={options}
+            />
+          ) : null}
           <TransactionContainer
             transactions={tradeHistory}
             selectedOption={selectedOption}
