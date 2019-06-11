@@ -120,6 +120,7 @@ class App extends Component<IAppProps & IConnectedComponentProps, IAppState> {
       const f1 = selectedOption[0].value;
       const f2 = selectedOption[1].value;
       dispatch(appActions.getTradeHistory(f1, f2));
+      // TODO fix the state of defaultValue
       this.handleDefaultValue(teamSelectOptions, queryParams);
       this.handleQueryParams(`?f1=${f1}&f2=${f2}`);
     }
