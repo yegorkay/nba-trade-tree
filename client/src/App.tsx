@@ -77,7 +77,10 @@ class App extends Component<IAppProps & IConnectedComponentProps, IAppState> {
     }
   }
 
-  getDefaultValue = (teamSelectOptions: ITeamSelectOption[], queryParams: ITeamQueryParams): ITeamSelectOption[] => {
+  getDefaultValue = (
+    teamSelectOptions: ITeamSelectOption[],
+    queryParams: ITeamQueryParams
+  ): ITeamSelectOption[] => {
     const getQueryValue = (query: string) =>
       teamSelectOptions.findIndex((team) => team.value === query);
 
@@ -86,13 +89,15 @@ class App extends Component<IAppProps & IConnectedComponentProps, IAppState> {
 
     const defaultValue = [teamSelectOptions[f1], teamSelectOptions[f2]];
     return defaultValue;
-  }
+  };
 
   handleDefaultValue = (
     teamSelectOptions: ITeamSelectOption[],
     queryParams: ITeamQueryParams
   ) => {
-    this.setState({ defaultValue: this.getDefaultValue(teamSelectOptions, queryParams) });
+    this.setState({
+      defaultValue: this.getDefaultValue(teamSelectOptions, queryParams)
+    });
   };
 
   handleChange = (selectedOption: ITeamSelectOption[]) => {
@@ -110,18 +115,26 @@ class App extends Component<IAppProps & IConnectedComponentProps, IAppState> {
   };
 
   handleTradeHistory = (selectedOption: ITeamSelectOption[]) => {
-    const { dispatch, teamSelectOptions, queryParams } = this.props;
+    const { dispatch, teamSelectOptions } = this.props;
     if (selectedOption.length === 0) {
       dispatch(appActions.resetTradeHistory());
       this.handleQueryParams();
-      this.setState({ defaultValue: [] })
+      this.setState({ defaultValue: [] });
     }
     if (selectedOption.length === 2) {
       const f1 = selectedOption[0].value;
       const f2 = selectedOption[1].value;
       dispatch(appActions.getTradeHistory(f1, f2));
-      // TODO fix the state of defaultValue
-      this.handleDefaultValue(teamSelectOptions, queryParams);
+
+      const getQueryValue = (query: string) =>
+        teamSelectOptions.findIndex((team) => team.value === query);
+
+      this.setState({
+        defaultValue: [
+          teamSelectOptions[getQueryValue(f1)],
+          teamSelectOptions[getQueryValue(f2)]
+        ]
+      });
       this.handleQueryParams(`?f1=${f1}&f2=${f2}`);
     }
   };
