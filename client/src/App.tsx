@@ -43,8 +43,12 @@ class App extends Component<IAppProps & IConnectedComponentProps, IAppState> {
   };
 
   componentDidMount() {
-    const { dispatch } = this.props;
+    const { dispatch, queryParams, teamSelectOptions } = this.props;
     dispatch(appActions.getTeams());
+    const hasQueryParams = queryParams.f1 !== '' && queryParams.f2 !== '';
+    if (hasQueryParams) {
+      this.handleDefaultValue(teamSelectOptions, queryParams);
+    }
   }
 
   componentWillReceiveProps(nextProps: IAppProps) {
@@ -73,10 +77,7 @@ class App extends Component<IAppProps & IConnectedComponentProps, IAppState> {
     }
   }
 
-  handleDefaultValue = (
-    teamSelectOptions: ITeamSelectOption[],
-    queryParams: ITeamQueryParams
-  ) => {
+  getDefaultValue = (teamSelectOptions: ITeamSelectOption[], queryParams: ITeamQueryParams): ITeamSelectOption[] => {
     const getQueryValue = (query: string) =>
       teamSelectOptions.findIndex((team) => team.value === query);
 
@@ -84,8 +85,14 @@ class App extends Component<IAppProps & IConnectedComponentProps, IAppState> {
     const f2 = getQueryValue(queryParams.f2);
 
     const defaultValue = [teamSelectOptions[f1], teamSelectOptions[f2]];
+    return defaultValue;
+  }
 
-    this.setState({ defaultValue, selectedOption: defaultValue });
+  handleDefaultValue = (
+    teamSelectOptions: ITeamSelectOption[],
+    queryParams: ITeamQueryParams
+  ) => {
+    this.setState({ defaultValue: this.getDefaultValue(teamSelectOptions, queryParams) });
   };
 
   handleChange = (selectedOption: ITeamSelectOption[]) => {
@@ -103,15 +110,17 @@ class App extends Component<IAppProps & IConnectedComponentProps, IAppState> {
   };
 
   handleTradeHistory = (selectedOption: ITeamSelectOption[]) => {
-    const { dispatch } = this.props;
+    const { dispatch, teamSelectOptions, queryParams } = this.props;
     if (selectedOption.length === 0) {
       dispatch(appActions.resetTradeHistory());
       this.handleQueryParams();
+      this.setState({ defaultValue: [] })
     }
     if (selectedOption.length === 2) {
       const f1 = selectedOption[0].value;
       const f2 = selectedOption[1].value;
       dispatch(appActions.getTradeHistory(f1, f2));
+      this.handleDefaultValue(teamSelectOptions, queryParams);
       this.handleQueryParams(`?f1=${f1}&f2=${f2}`);
     }
   };
@@ -120,11 +129,13 @@ class App extends Component<IAppProps & IConnectedComponentProps, IAppState> {
     const { selectedOption, defaultValue } = this.state;
     const { teamSelectOptions, tradeHistory, asyncStatus } = this.props;
     const options = selectedOption.length < 2 ? teamSelectOptions : [];
+    /** This is a workaround to show `defaultValue` */
+    const showSelect = asyncStatus.success || !asyncStatus.start;
 
     return (
       <Flex justifyContent="center">
         <Box width={1024} pt={5} pb={5}>
-          {defaultValue.length ? (
+          {showSelect && (
             <Select
               isMulti
               defaultValue={defaultValue}
@@ -135,7 +146,7 @@ class App extends Component<IAppProps & IConnectedComponentProps, IAppState> {
               noOptionsMessage={() => ErrorMessages.MAX_TEAMS_SELECTED}
               options={options}
             />
-          ) : null}
+          )}
           <TransactionContainer
             transactions={tradeHistory}
             selectedOption={selectedOption}
