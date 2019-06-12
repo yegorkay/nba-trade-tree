@@ -41,6 +41,7 @@ class AppActions {
     return (dispatch: Dispatch) => {
       apiService.getTradeHistory(f1, f2).then(({ data }) => {
         dispatch(this.setTradeHistory(data.data));
+        dispatch(this.setQueryParams(f1, f2));
       });
     };
   }
@@ -74,11 +75,11 @@ class AppActions {
     };
   }
 
-  setQueryParams() {
+  setQueryParams(f1: string = '', f2: string = '') {
     const searchParams = new URLSearchParams(location.search);
     const data: ITeamQueryParams = {
-      f1: searchParams.get('f1') || '',
-      f2: searchParams.get('f2') || ''
+      f1: searchParams.get('f1') || f1,
+      f2: searchParams.get('f2') || f2
     };
     return {
       type: Actions.SET_QUERY_PARAMS,
