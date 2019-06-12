@@ -19,6 +19,10 @@ class FormatService {
     const format = 'MMMM Do YYYY';
     return moment(new Date(date)).format(format);
   }
+
+  getQueryIndexValue(query: string, teamSelectOptions: ITeamSelectOption[]): number {
+    return teamSelectOptions.findIndex((team) => team.value === query);
+  }
 }
 
 const formatService = new FormatService();

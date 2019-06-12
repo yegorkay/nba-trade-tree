@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FunctionComponent, Component, useEffect } from 'react';
+import { Component, useEffect } from 'react';
 import * as _ from 'lodash';
 import axios from 'axios';
 import Select from 'react-select';
@@ -15,11 +15,7 @@ import {
 import { connect, Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import * as ReactDOM from 'react-dom';
-import {
-  BrowserRouter as Router,
-  Route,
-  RouteComponentProps
-} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
 import * as moment from 'moment';
 
@@ -33,7 +29,6 @@ export {
   connect,
   createStore,
   // Dispatch,
-  FunctionComponent,
   keyframes,
   moment,
   produce,
@@ -41,10 +36,10 @@ export {
   React,
   ReactDOM,
   Route,
-  RouteComponentProps,
   Router,
   Select,
   styled,
+  Switch,
   thunk,
   useEffect
 };

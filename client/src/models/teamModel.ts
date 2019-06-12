@@ -3,4 +3,9 @@ interface ITeamSelectOption {
   label: string;
 }
 
-export { ITeamSelectOption };
+interface ITeamQueryParams {
+  f1: string;
+  f2: string;
+}
+
+export { ITeamSelectOption, ITeamQueryParams };

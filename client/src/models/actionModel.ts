@@ -1,4 +1,4 @@
-import { ITeamSelectOption, Dictionary } from 'models';
+import { ITeamSelectOption, Dictionary, ITeamQueryParams } from 'models';
 import { ITeam, ITrade } from 'shared';
 import { Actions } from 'store';
 
@@ -35,10 +35,20 @@ interface ISetAsyncError {
   type: Actions.SET_ASYNC_ERROR;
 }
 
+/** Reducer Type for: `Query Params` */
+interface ISetTeamQueryParams {
+  data: ITeamQueryParams;
+  type: Actions.SET_QUERY_PARAMS;
+}
+
 type ITeamTypes = ISetTeams | ISetTeamSelectOptions;
 
 type AsyncTypes = ISetAsyncStart | ISetAsyncSuccess | ISetAsyncError;
 
-type ActionTypes = ITeamTypes | ISetTradeHistory | AsyncTypes;
+type ActionTypes =
+  | ITeamTypes
+  | ISetTradeHistory
+  | AsyncTypes
+  | ISetTeamQueryParams;
 
 export { ActionTypes };

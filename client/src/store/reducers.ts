@@ -35,6 +35,9 @@ const appReducer = (state = initialState, action: ActionTypes) =>
           error: true
         };
         break;
+      case Actions.SET_QUERY_PARAMS:
+        draft.queryParams = action.data;
+        break;
     }
   });
 

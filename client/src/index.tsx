@@ -1,18 +1,17 @@
-import { App } from './App';
-import { Provider, ReactDOM, React, Router, Route, useEffect } from 'vendor';
-import { store } from 'store';
+import { Provider, ReactDOM, React, useEffect } from 'vendor';
+import { store, appActions } from 'store';
 import { apiService } from 'services';
+import { RouterConfig } from 'routes';
 
 const ConnectedApp = () => {
   useEffect(() => {
     apiService.configureInterceptor();
+    store.dispatch(appActions.setQueryParams());
   }, []);
 
   return (
     <Provider {...{ store }}>
-      <Router>
-        <Route path="/" component={App} />
-      </Router>
+      <RouterConfig />
     </Provider>
   );
 };

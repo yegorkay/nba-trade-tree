@@ -1,4 +1,5 @@
-import { React, FunctionComponent, styled, keyframes } from 'vendor';
+import { React, styled, keyframes } from 'vendor';
+import { FunctionComponent } from 'models';
 
 const Loader: FunctionComponent<{}> = () => (
   <LoaderWrapper>
