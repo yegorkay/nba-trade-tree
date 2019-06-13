@@ -1,4 +1,5 @@
 export * from './actionTypes';
-export * from './actions';
+export * from './tradeActions';
+export * from './settingsActions';
 export * from './reducers';
 export * from './store';

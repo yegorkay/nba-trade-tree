@@ -1,6 +1,6 @@
 import { React, Select, Component, _ } from 'vendor';
 import { connect } from 'utils';
-import { appActions } from 'store';
+import { tradeActions } from 'store';
 import {
   Dictionary,
   IAsyncStatus,
@@ -45,7 +45,7 @@ class App extends Component<IAppProps & IConnectedComponentProps, IAppState> {
 
   componentDidMount() {
     const { dispatch, queryParams, teamSelectOptions } = this.props;
-    dispatch(appActions.getTeams());
+    dispatch(tradeActions.getTeams());
     const hasQueryParams = queryParams.f1 !== '' && queryParams.f2 !== '';
     if (hasQueryParams) {
       this.setDefaultValue(teamSelectOptions, queryParams);
@@ -73,7 +73,7 @@ class App extends Component<IAppProps & IConnectedComponentProps, IAppState> {
       const noQueryParams = f1 === '' && f2 === '';
 
       if (!noQueryParams) {
-        dispatch(appActions.getTradeHistory(f1, f2));
+        dispatch(tradeActions.getTradeHistory(f1, f2));
       }
     }
   }
@@ -117,7 +117,7 @@ class App extends Component<IAppProps & IConnectedComponentProps, IAppState> {
     const { dispatch } = this.props;
 
     this.setState({ defaultValue: [] }, () => {
-      dispatch(appActions.resetTradeHistory());
+      dispatch(tradeActions.resetTradeHistory());
       this.handleQueryParams();
     });
   }
@@ -129,7 +129,7 @@ class App extends Component<IAppProps & IConnectedComponentProps, IAppState> {
     const f1 = selectedOption[0].value;
     const f2 = selectedOption[1].value;
 
-    dispatch(appActions.getTradeHistory(f1, f2));
+    dispatch(tradeActions.getTradeHistory(f1, f2));
 
     const getFieldIndex = (field: string) => formatService.getQueryIndexValue(field, teamSelectOptions);
 

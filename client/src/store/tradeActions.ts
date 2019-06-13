@@ -2,13 +2,12 @@ import {
   ITeamSelectOption,
   Dictionary,
   Dispatch,
-  ITeamQueryParams
 } from 'models';
 import { apiService, formatService } from 'services';
-import { Actions } from 'store';
+import { Actions, settingsActions } from 'store';
 import { ITeam, ITrade } from 'shared';
 
-class AppActions {
+class TradeActions {
   getTeams() {
     return (dispatch: Dispatch) => {
       apiService.getTeams().then(({ data }) => {
@@ -41,7 +40,7 @@ class AppActions {
     return (dispatch: Dispatch) => {
       apiService.getTradeHistory(f1, f2).then(({ data }) => {
         dispatch(this.setTradeHistory(data.data));
-        dispatch(this.setQueryParams(f1, f2));
+        dispatch(settingsActions.setQueryParams(f1, f2));
       });
     };
   }
@@ -50,44 +49,14 @@ class AppActions {
     return (dispatch: Dispatch) => dispatch(this.setTradeHistory({}));
   }
 
-  setTradeHistory(data: Dictionary<ITrade[]> | {}) {
+  setTradeHistory(data: Dictionary<ITrade[]>) {
     return {
       type: Actions.SET_TRADE_HISTORY,
       data
     };
   }
-
-  setAsyncStart() {
-    return {
-      type: Actions.SET_ASYNC_START
-    };
-  }
-
-  setAsyncSuccess() {
-    return {
-      type: Actions.SET_ASYNC_SUCCESS
-    };
-  }
-
-  setAsyncError() {
-    return {
-      type: Actions.SET_ASYNC_ERROR
-    };
-  }
-
-  setQueryParams(f1: string = '', f2: string = '') {
-    const searchParams = new URLSearchParams(location.search);
-    const data: ITeamQueryParams = {
-      f1: searchParams.get('f1') || f1,
-      f2: searchParams.get('f2') || f2
-    };
-    return {
-      type: Actions.SET_QUERY_PARAMS,
-      data
-    };
-  }
 }
 
-const appActions = new AppActions();
+const tradeActions = new TradeActions();
 
-export { appActions };
+export { tradeActions };

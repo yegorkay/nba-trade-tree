@@ -1,12 +1,12 @@
 import { Provider, ReactDOM, React, useEffect } from 'vendor';
-import { store, appActions } from 'store';
+import { store, settingsActions } from 'store';
 import { apiService } from 'services';
 import { RouterConfig } from 'routes';
 
 const ConnectedApp = () => {
   useEffect(() => {
     apiService.configureInterceptor();
-    store.dispatch(appActions.setQueryParams());
+    store.dispatch(settingsActions.setQueryParams());
   }, []);
 
   return (
