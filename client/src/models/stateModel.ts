@@ -6,19 +6,29 @@ import {
 } from 'models';
 import { ITeam, ITrade } from 'shared';
 
-/** State type definitions */
-interface IState {
+interface ITradeState {
   readonly teams: ITeam[];
   readonly teamSelectOptions: ITeamSelectOption[];
   readonly tradeHistory: Dictionary<ITrade[]>;
+}
+
+interface ISettingsState {
   readonly asyncStatus: IAsyncStatus;
   readonly queryParams: ITeamQueryParams;
 }
 
-const initialState: IState = {
+interface IGlobalState {
+  trade: ITradeState;
+  settings: ISettingsState;
+}
+
+const tradeState: ITradeState = {
   teams: [],
   teamSelectOptions: [],
-  tradeHistory: {},
+  tradeHistory: {}
+};
+
+const settingsState: ISettingsState = {
   asyncStatus: {
     start: false,
     success: false,
@@ -30,8 +40,16 @@ const initialState: IState = {
   }
 };
 
-interface IReduxState {
-  app: IState;
-}
+const globalState: IGlobalState = {
+  trade: tradeState,
+  settings: settingsState
+};
 
-export { initialState, IState, IReduxState };
+export {
+  ITradeState,
+  ISettingsState,
+  globalState,
+  tradeState,
+  settingsState,
+  IGlobalState
+};

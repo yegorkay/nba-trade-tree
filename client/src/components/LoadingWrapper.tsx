@@ -1,6 +1,6 @@
 import { React, Component } from 'vendor';
 import { connect } from 'utils';
-import { IReduxState, IAsyncStatus } from 'models';
+import { IGlobalState, IAsyncStatus } from 'models';
 import { Box, Loader } from 'components';
 import { ErrorMessages } from 'messages';
 
@@ -9,8 +9,8 @@ interface ILoadingWrapperProps {
 }
 
 @connect(
-  (state: IReduxState): ILoadingWrapperProps => ({
-    asyncStatus: state.app.asyncStatus
+  (state: IGlobalState): ILoadingWrapperProps => ({
+    asyncStatus: state.settings.asyncStatus
   })
 )
 class LoadingWrapper extends Component<ILoadingWrapperProps, {}> {

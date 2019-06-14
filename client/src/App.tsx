@@ -5,7 +5,7 @@ import {
   Dictionary,
   IAsyncStatus,
   IConnectedComponentProps,
-  IReduxState,
+  IGlobalState,
   ITeamQueryParams,
   ITeamSelectOption
 } from 'models';
@@ -29,12 +29,12 @@ interface IAppState {
 }
 
 @connect(
-  (state: IReduxState): IAppProps => ({
-    teams: state.app.teams,
-    teamSelectOptions: state.app.teamSelectOptions,
-    tradeHistory: state.app.tradeHistory,
-    asyncStatus: state.app.asyncStatus,
-    queryParams: state.app.queryParams
+  (state: IGlobalState): IAppProps => ({
+    teams: state.trade.teams,
+    teamSelectOptions: state.trade.teamSelectOptions,
+    tradeHistory: state.trade.tradeHistory,
+    asyncStatus: state.settings.asyncStatus,
+    queryParams: state.settings.queryParams
   })
 )
 class App extends Component<IAppProps & IConnectedComponentProps, IAppState> {
@@ -62,10 +62,7 @@ class App extends Component<IAppProps & IConnectedComponentProps, IAppState> {
     );
 
     if (selectOptionsNoMatch) {
-      this.setDefaultValue(
-        nextProps.teamSelectOptions,
-        nextProps.queryParams
-      );
+      this.setDefaultValue(nextProps.teamSelectOptions, nextProps.queryParams);
     }
 
     if (paramPropsNoMatch) {
@@ -82,11 +79,19 @@ class App extends Component<IAppProps & IConnectedComponentProps, IAppState> {
     teamSelectOptions: ITeamSelectOption[],
     queryParams: ITeamQueryParams
   ): ITeamSelectOption[] => {
+    const f1Index = formatService.getQueryIndexValue(
+      queryParams.f1,
+      teamSelectOptions
+    );
+    const f2Index = formatService.getQueryIndexValue(
+      queryParams.f2,
+      teamSelectOptions
+    );
 
-    const f1Index = formatService.getQueryIndexValue(queryParams.f1, teamSelectOptions);
-    const f2Index = formatService.getQueryIndexValue(queryParams.f2, teamSelectOptions);
-
-    const defaultValue = [teamSelectOptions[f1Index], teamSelectOptions[f2Index]];
+    const defaultValue = [
+      teamSelectOptions[f1Index],
+      teamSelectOptions[f2Index]
+    ];
     return defaultValue;
   };
 
@@ -120,10 +125,9 @@ class App extends Component<IAppProps & IConnectedComponentProps, IAppState> {
       dispatch(tradeActions.resetTradeHistory());
       this.handleQueryParams();
     });
-  }
+  };
 
   fetchTradeHistory = (selectedOption: ITeamSelectOption[]) => {
-
     const { dispatch, teamSelectOptions } = this.props;
 
     const f1 = selectedOption[0].value;
@@ -131,7 +135,8 @@ class App extends Component<IAppProps & IConnectedComponentProps, IAppState> {
 
     dispatch(tradeActions.getTradeHistory(f1, f2));
 
-    const getFieldIndex = (field: string) => formatService.getQueryIndexValue(field, teamSelectOptions);
+    const getFieldIndex = (field: string) =>
+      formatService.getQueryIndexValue(field, teamSelectOptions);
 
     this.setState({
       defaultValue: [
@@ -140,7 +145,7 @@ class App extends Component<IAppProps & IConnectedComponentProps, IAppState> {
       ]
     });
     this.handleQueryParams(`?f1=${f1}&f2=${f2}`);
-  }
+  };
 
   handleTradeHistory = (selectedOption: ITeamSelectOption[]) => {
     const noSelectedOptions = selectedOption.length === 0;
