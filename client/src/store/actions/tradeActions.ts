@@ -1,6 +1,6 @@
 import { ITeamSelectOption, Dictionary, Dispatch } from 'models';
 import { appService, formatService } from 'services';
-import { Actions, settingsActions } from 'store';
+import { TradeActions as Actions, settingsActions } from 'store';
 import { ITeam, ITrade } from 'shared';
 
 class TradeActions {

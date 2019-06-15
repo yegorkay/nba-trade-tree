@@ -1,10 +1,7 @@
-import {
-  ITeamQueryParams
-} from 'models';
-import { Actions } from 'store';
+import { ITeamQueryParams } from 'models';
+import { SettingsActions as Actions } from 'store';
 
 class SettingsActions {
-
   setAsyncStart() {
     return {
       type: Actions.SET_ASYNC_START

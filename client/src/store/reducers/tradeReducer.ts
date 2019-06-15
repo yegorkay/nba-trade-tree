@@ -1,17 +1,17 @@
 import { produce } from 'vendor';
-import { Actions } from 'store';
-import { tradeState, ActionTypes } from 'models';
+import { TradeActions } from 'store';
+import { tradeState, TradeActionTypes } from 'models';
 
-const tradeReducer = (state = tradeState, action: ActionTypes) =>
+const tradeReducer = (state = tradeState, action: TradeActionTypes) =>
   produce(state, (trade) => {
     switch (action.type) {
-      case Actions.SET_TEAMS:
+      case TradeActions.SET_TEAMS:
         trade.teams = action.data;
         break;
-      case Actions.SET_TEAM_SELECT_OPTIONS:
+      case TradeActions.SET_TEAM_SELECT_OPTIONS:
         trade.teamSelectOptions = action.data;
         break;
-      case Actions.SET_TRADE_HISTORY:
+      case TradeActions.SET_TRADE_HISTORY:
         trade.tradeHistory = action.data;
         break;
     }

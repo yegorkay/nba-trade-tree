@@ -1,32 +1,32 @@
 import { produce } from 'vendor';
-import { Actions } from 'store';
-import { settingsState, ActionTypes } from 'models';
+import { SettingsActions } from 'store';
+import { settingsState, SettingsActionTypes } from 'models';
 
-const settingsReducer = (state = settingsState, action: ActionTypes) =>
+const settingsReducer = (state = settingsState, action: SettingsActionTypes) =>
   produce(state, (settings) => {
     switch (action.type) {
-      case Actions.SET_ASYNC_START:
+      case SettingsActions.SET_ASYNC_START:
         settings.asyncStatus = {
           start: true,
           success: false,
           error: false
         };
         break;
-      case Actions.SET_ASYNC_SUCCESS:
+      case SettingsActions.SET_ASYNC_SUCCESS:
         settings.asyncStatus = {
           start: false,
           success: true,
           error: false
         };
         break;
-      case Actions.SET_ASYNC_ERROR:
+      case SettingsActions.SET_ASYNC_ERROR:
         settings.asyncStatus = {
           start: false,
           success: false,
           error: true
         };
         break;
-      case Actions.SET_QUERY_PARAMS:
+      case SettingsActions.SET_QUERY_PARAMS:
         settings.queryParams = action.data;
         break;
     }
