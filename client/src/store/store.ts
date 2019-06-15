@@ -1,3 +1,4 @@
+import { IGlobalState } from 'models';
 import {
   applyMiddleware,
   combineReducers,
@@ -5,10 +6,11 @@ import {
   createStore,
   thunk
 } from 'vendor';
-import { appReducer } from 'store';
+import { tradeReducer, settingsReducer } from 'store';
 
-const reducers = combineReducers({
-  app: appReducer
+const reducers = combineReducers<IGlobalState>({
+  trade: tradeReducer,
+  settings: settingsReducer
 });
 
 const composeEnhancers =

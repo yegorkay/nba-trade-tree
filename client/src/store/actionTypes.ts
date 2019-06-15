@@ -1,4 +1,4 @@
-enum Actions {
+enum TradeActions {
   SET_TEAMS = 'SET_TEAMS',
   SET_TEAM_SELECT_OPTIONS = 'SET_TEAM_SELECT_OPTIONS',
   SET_TRADE_HISTORY = 'SET_TRADE_HISTORY',
@@ -8,4 +8,11 @@ enum Actions {
   SET_QUERY_PARAMS = 'SET_QUERY_PARAMS'
 }
 
-export { Actions };
+enum SettingsActions {
+  SET_ASYNC_START = 'SET_ASYNC_START',
+  SET_ASYNC_SUCCESS = 'SET_ASYNC_SUCCESS',
+  SET_ASYNC_ERROR = 'SET_ASYNC_ERROR',
+  SET_QUERY_PARAMS = 'SET_QUERY_PARAMS'
+}
+
+export { TradeActions, SettingsActions };

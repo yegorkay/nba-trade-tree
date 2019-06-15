@@ -1,8 +1,9 @@
 import { axios } from 'vendor';
 import { routes } from 'shared';
-import { store, appActions } from 'store';
+import { store, settingsActions } from 'store';
+import { History } from 'models';
 
-class ApiService {
+class AppService {
   getTeams() {
     return axios({
       method: 'GET',
@@ -20,23 +21,30 @@ class ApiService {
 
   configureInterceptor() {
     axios.interceptors.request.use((config) => {
-      store.dispatch(appActions.setAsyncStart());
+      store.dispatch(settingsActions.setAsyncStart());
       return config;
     });
 
     axios.interceptors.response.use(
       (response) => {
-        store.dispatch(appActions.setAsyncSuccess());
+        store.dispatch(settingsActions.setAsyncSuccess());
         return response;
       },
       (error) => {
-        store.dispatch(appActions.setAsyncError());
+        store.dispatch(settingsActions.setAsyncError());
         return Promise.reject(error);
       }
     );
   }
+
+  handleQueryParams(history: History, pathname: string, search: string = '') {
+    return history.push({
+      pathname,
+      search
+    });
+  }
 }
 
-const apiService = new ApiService();
+const appService = new AppService();
 
-export { apiService };
+export { appService };

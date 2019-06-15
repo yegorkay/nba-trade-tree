@@ -1,11 +1,11 @@
 import { React, Select, Component, _ } from 'vendor';
 import { connect } from 'utils';
-import { appActions } from 'store';
+import { tradeActions } from 'store';
 import {
   Dictionary,
   IAsyncStatus,
   IConnectedComponentProps,
-  IReduxState,
+  IGlobalState,
   ITeamQueryParams,
   ITeamSelectOption
 } from 'models';
@@ -13,7 +13,7 @@ import { ITeam, ITrade } from 'shared';
 import { TransactionContainer, Box, Flex } from 'components';
 import { ErrorMessages } from 'messages';
 import { routes } from 'routes';
-import { formatService } from 'services';
+import { formatService, appService } from 'services';
 
 interface IAppProps {
   teams: ITeam[];
@@ -29,12 +29,12 @@ interface IAppState {
 }
 
 @connect(
-  (state: IReduxState): IAppProps => ({
-    teams: state.app.teams,
-    teamSelectOptions: state.app.teamSelectOptions,
-    tradeHistory: state.app.tradeHistory,
-    asyncStatus: state.app.asyncStatus,
-    queryParams: state.app.queryParams
+  (state: IGlobalState): IAppProps => ({
+    teams: state.trade.teams,
+    teamSelectOptions: state.trade.teamSelectOptions,
+    tradeHistory: state.trade.tradeHistory,
+    asyncStatus: state.settings.asyncStatus,
+    queryParams: state.settings.queryParams
   })
 )
 class App extends Component<IAppProps & IConnectedComponentProps, IAppState> {
@@ -45,7 +45,7 @@ class App extends Component<IAppProps & IConnectedComponentProps, IAppState> {
 
   componentDidMount() {
     const { dispatch, queryParams, teamSelectOptions } = this.props;
-    dispatch(appActions.getTeams());
+    dispatch(tradeActions.getTeams());
     const hasQueryParams = queryParams.f1 !== '' && queryParams.f2 !== '';
     if (hasQueryParams) {
       this.setDefaultValue(teamSelectOptions, queryParams);
@@ -62,10 +62,7 @@ class App extends Component<IAppProps & IConnectedComponentProps, IAppState> {
     );
 
     if (selectOptionsNoMatch) {
-      this.setDefaultValue(
-        nextProps.teamSelectOptions,
-        nextProps.queryParams
-      );
+      this.setDefaultValue(nextProps.teamSelectOptions, nextProps.queryParams);
     }
 
     if (paramPropsNoMatch) {
@@ -73,7 +70,7 @@ class App extends Component<IAppProps & IConnectedComponentProps, IAppState> {
       const noQueryParams = f1 === '' && f2 === '';
 
       if (!noQueryParams) {
-        dispatch(appActions.getTradeHistory(f1, f2));
+        dispatch(tradeActions.getTradeHistory(f1, f2));
       }
     }
   }
@@ -82,11 +79,15 @@ class App extends Component<IAppProps & IConnectedComponentProps, IAppState> {
     teamSelectOptions: ITeamSelectOption[],
     queryParams: ITeamQueryParams
   ): ITeamSelectOption[] => {
+    const getFieldIndex = (field: 'f1' | 'f2'): number =>
+      formatService.getQueryIndexValue(queryParams[field], teamSelectOptions);
+    const f1Index = getFieldIndex('f1');
+    const f2Index = getFieldIndex('f2');
 
-    const f1Index = formatService.getQueryIndexValue(queryParams.f1, teamSelectOptions);
-    const f2Index = formatService.getQueryIndexValue(queryParams.f2, teamSelectOptions);
-
-    const defaultValue = [teamSelectOptions[f1Index], teamSelectOptions[f2Index]];
+    const defaultValue = [
+      teamSelectOptions[f1Index],
+      teamSelectOptions[f2Index]
+    ];
     return defaultValue;
   };
 
@@ -105,33 +106,25 @@ class App extends Component<IAppProps & IConnectedComponentProps, IAppState> {
     );
   };
 
-  handleQueryParams = (search: string = '') => {
-    const { history } = this.props;
-    history.push({
-      pathname: routes.root(),
-      search
+  resetPage = () => {
+    const { dispatch, history } = this.props;
+
+    this.setState({ defaultValue: [] }, () => {
+      dispatch(tradeActions.resetTradeHistory());
+      appService.handleQueryParams(history, routes.root());
     });
   };
 
-  resetPage = () => {
-    const { dispatch } = this.props;
-
-    this.setState({ defaultValue: [] }, () => {
-      dispatch(appActions.resetTradeHistory());
-      this.handleQueryParams();
-    });
-  }
-
   fetchTradeHistory = (selectedOption: ITeamSelectOption[]) => {
-
-    const { dispatch, teamSelectOptions } = this.props;
+    const { dispatch, teamSelectOptions, history } = this.props;
 
     const f1 = selectedOption[0].value;
     const f2 = selectedOption[1].value;
 
-    dispatch(appActions.getTradeHistory(f1, f2));
+    dispatch(tradeActions.getTradeHistory(f1, f2));
 
-    const getFieldIndex = (field: string) => formatService.getQueryIndexValue(field, teamSelectOptions);
+    const getFieldIndex = (field: string) =>
+      formatService.getQueryIndexValue(field, teamSelectOptions);
 
     this.setState({
       defaultValue: [
@@ -139,8 +132,8 @@ class App extends Component<IAppProps & IConnectedComponentProps, IAppState> {
         teamSelectOptions[getFieldIndex(f2)]
       ]
     });
-    this.handleQueryParams(`?f1=${f1}&f2=${f2}`);
-  }
+    appService.handleQueryParams(history, routes.root(), `?f1=${f1}&f2=${f2}`);
+  };
 
   handleTradeHistory = (selectedOption: ITeamSelectOption[]) => {
     const noSelectedOptions = selectedOption.length === 0;

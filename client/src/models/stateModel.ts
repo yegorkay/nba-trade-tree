@@ -1,37 +1,13 @@
-import {
-  ITeamSelectOption,
-  Dictionary,
-  IAsyncStatus,
-  ITeamQueryParams
-} from 'models';
-import { ITeam, ITrade } from 'shared';
+import { ISettingsState, settingsState, tradeState, ITradeState } from 'models';
 
-/** State type definitions */
-interface IState {
-  readonly teams: ITeam[];
-  readonly teamSelectOptions: ITeamSelectOption[];
-  readonly tradeHistory: Dictionary<ITrade[]>;
-  readonly asyncStatus: IAsyncStatus;
-  readonly queryParams: ITeamQueryParams;
+interface IGlobalState {
+  trade: ITradeState;
+  settings: ISettingsState;
 }
 
-const initialState: IState = {
-  teams: [],
-  teamSelectOptions: [],
-  tradeHistory: {},
-  asyncStatus: {
-    start: false,
-    success: false,
-    error: false
-  },
-  queryParams: {
-    f1: '',
-    f2: ''
-  }
+const globalState: IGlobalState = {
+  trade: tradeState,
+  settings: settingsState
 };
 
-interface IReduxState {
-  app: IState;
-}
-
-export { initialState, IState, IReduxState };
+export { globalState, IGlobalState };
