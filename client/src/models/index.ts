@@ -7,3 +7,4 @@ export { FunctionComponent } from 'react';
 export { BoxProps } from 'rebass';
 export { LinkProps } from 'react-router-dom';
 export { RouteComponentProps } from 'react-router-dom';
+export { History } from 'history';

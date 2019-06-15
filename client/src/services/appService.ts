@@ -1,8 +1,9 @@
 import { axios } from 'vendor';
 import { routes } from 'shared';
 import { store, settingsActions } from 'store';
+import { History } from 'models';
 
-class ApiService {
+class AppService {
   getTeams() {
     return axios({
       method: 'GET',
@@ -35,8 +36,15 @@ class ApiService {
       }
     );
   }
+
+  handleQueryParams(history: History, pathname: string, search: string = '') {
+    return history.push({
+      pathname,
+      search
+    });
+  }
 }
 
-const apiService = new ApiService();
+const appService = new AppService();
 
-export { apiService };
+export { appService };

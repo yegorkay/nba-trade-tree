@@ -13,7 +13,7 @@ import { ITeam, ITrade } from 'shared';
 import { TransactionContainer, Box, Flex } from 'components';
 import { ErrorMessages } from 'messages';
 import { routes } from 'routes';
-import { formatService } from 'services';
+import { formatService, appService } from 'services';
 
 interface IAppProps {
   teams: ITeam[];
@@ -79,14 +79,10 @@ class App extends Component<IAppProps & IConnectedComponentProps, IAppState> {
     teamSelectOptions: ITeamSelectOption[],
     queryParams: ITeamQueryParams
   ): ITeamSelectOption[] => {
-    const f1Index = formatService.getQueryIndexValue(
-      queryParams.f1,
-      teamSelectOptions
-    );
-    const f2Index = formatService.getQueryIndexValue(
-      queryParams.f2,
-      teamSelectOptions
-    );
+    const getFieldIndex = (field: 'f1' | 'f2'): number =>
+      formatService.getQueryIndexValue(queryParams[field], teamSelectOptions);
+    const f1Index = getFieldIndex('f1');
+    const f2Index = getFieldIndex('f2');
 
     const defaultValue = [
       teamSelectOptions[f1Index],
@@ -110,25 +106,17 @@ class App extends Component<IAppProps & IConnectedComponentProps, IAppState> {
     );
   };
 
-  handleQueryParams = (search: string = '') => {
-    const { history } = this.props;
-    history.push({
-      pathname: routes.root(),
-      search
-    });
-  };
-
   resetPage = () => {
-    const { dispatch } = this.props;
+    const { dispatch, history } = this.props;
 
     this.setState({ defaultValue: [] }, () => {
       dispatch(tradeActions.resetTradeHistory());
-      this.handleQueryParams();
+      appService.handleQueryParams(history, routes.root());
     });
   };
 
   fetchTradeHistory = (selectedOption: ITeamSelectOption[]) => {
-    const { dispatch, teamSelectOptions } = this.props;
+    const { dispatch, teamSelectOptions, history } = this.props;
 
     const f1 = selectedOption[0].value;
     const f2 = selectedOption[1].value;
@@ -144,7 +132,7 @@ class App extends Component<IAppProps & IConnectedComponentProps, IAppState> {
         teamSelectOptions[getFieldIndex(f2)]
       ]
     });
-    this.handleQueryParams(`?f1=${f1}&f2=${f2}`);
+    appService.handleQueryParams(history, routes.root(), `?f1=${f1}&f2=${f2}`);
   };
 
   handleTradeHistory = (selectedOption: ITeamSelectOption[]) => {

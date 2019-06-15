@@ -1,16 +1,12 @@
-import {
-  ITeamSelectOption,
-  Dictionary,
-  Dispatch,
-} from 'models';
-import { apiService, formatService } from 'services';
+import { ITeamSelectOption, Dictionary, Dispatch } from 'models';
+import { appService, formatService } from 'services';
 import { Actions, settingsActions } from 'store';
 import { ITeam, ITrade } from 'shared';
 
 class TradeActions {
   getTeams() {
     return (dispatch: Dispatch) => {
-      apiService.getTeams().then(({ data }) => {
+      appService.getTeams().then(({ data }) => {
         const teams: ITeam[] | any[] = formatService.createSelectLabels(
           data.data,
           'teamAbr',
@@ -38,7 +34,7 @@ class TradeActions {
 
   getTradeHistory(f1: string, f2: string) {
     return (dispatch: Dispatch) => {
-      apiService.getTradeHistory(f1, f2).then(({ data }) => {
+      appService.getTradeHistory(f1, f2).then(({ data }) => {
         dispatch(this.setTradeHistory(data.data));
         dispatch(settingsActions.setQueryParams(f1, f2));
       });
