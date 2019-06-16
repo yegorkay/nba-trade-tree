@@ -1,6 +1,6 @@
 import { ITeamSelectOption, Dictionary, ITeamQueryParams } from 'models';
-import { ITeam, ITrade } from 'shared';
-import { TradeActions, SettingsActions } from 'store';
+import { ITeam, ITrade, ITransaction } from 'shared';
+import { TradeActions, SettingsActions, PlayerActions } from 'store';
 
 /** Reducer Type for: `Trade History` */
 interface ISetTradeHistory {
@@ -41,6 +41,11 @@ interface ISetTeamQueryParams {
   type: SettingsActions.SET_QUERY_PARAMS;
 }
 
+interface ISetPlayerHistory {
+  data: ITransaction[];
+  type: PlayerActions.SET_PLAYER;
+}
+
 type ITeamTypes = ISetTeams | ISetTeamSelectOptions;
 
 type AsyncTypes = ISetAsyncStart | ISetAsyncSuccess | ISetAsyncError;
@@ -49,4 +54,6 @@ type TradeActionTypes = ITeamTypes | ISetTradeHistory;
 
 type SettingsActionTypes = AsyncTypes | ISetTeamQueryParams;
 
-export { TradeActionTypes, SettingsActionTypes };
+type PlayerActionTypes = ISetPlayerHistory;
+
+export { TradeActionTypes, SettingsActionTypes, PlayerActionTypes };

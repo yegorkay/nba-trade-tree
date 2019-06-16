@@ -6,11 +6,12 @@ import {
   createStore,
   thunk
 } from 'vendor';
-import { tradeReducer, settingsReducer } from 'store';
+import { tradeReducer, settingsReducer, playerReducer } from 'store';
 
 const reducers = combineReducers<IGlobalState>({
   trade: tradeReducer,
-  settings: settingsReducer
+  settings: settingsReducer,
+  playerHistory: playerReducer
 });
 
 const composeEnhancers =

@@ -3,6 +3,7 @@ export * from './stateModel';
 export * from './connectedModel';
 export * from './actionModel';
 export * from './settingsModel';
+export * from './playerModel';
 export * from './tradeModel';
 export { Dictionary } from 'lodash';
 export { FunctionComponent } from 'react';

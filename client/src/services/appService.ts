@@ -19,6 +19,14 @@ class AppService {
     });
   }
 
+  getPlayerHistory(id: string, date?: string) {
+    return axios({
+      method: 'GET',
+      url: routes.PLAYER_HISTORY,
+      params: { id, date }
+    });
+  }
+
   configureInterceptor() {
     axios.interceptors.request.use((config) => {
       store.dispatch(settingsActions.setAsyncStart());

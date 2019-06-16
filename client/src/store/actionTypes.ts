@@ -15,4 +15,8 @@ enum SettingsActions {
   SET_QUERY_PARAMS = 'SET_QUERY_PARAMS'
 }
 
-export { TradeActions, SettingsActions };
+enum PlayerActions {
+  SET_PLAYER = 'SET_PLAYER'
+}
+
+export { TradeActions, SettingsActions, PlayerActions };
