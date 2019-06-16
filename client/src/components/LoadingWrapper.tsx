@@ -1,5 +1,5 @@
 import { React, Component } from 'vendor';
-import { connect } from 'utils';
+import { connect } from 'services';
 import { IGlobalState, IAsyncStatus } from 'models';
 import { Box, Loader } from 'components';
 import { ErrorMessages } from 'messages';

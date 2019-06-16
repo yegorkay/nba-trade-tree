@@ -6,12 +6,7 @@
     "forceConsistentCasingInFileNames": true,
     "downlevelIteration": true,
     "jsx": "react",
-    "lib": [
-      "dom",
-      "es2017",
-      "es5",
-      "es6"
-    ],
+    "lib": ["dom", "es2017", "es5", "es6"],
     "module": "es6",
     "moduleResolution": "node",
     "noImplicitAny": true,
@@ -26,41 +21,17 @@
     "suppressImplicitAnyIndexErrors": true,
     "target": "es5",
     "paths": {
-      "vendor": [
-        "../client/src/vendor"
-      ],
-      "services": [
-        "../client/src/services"
-      ],
-      "store": [
-        "../client/src/store"
-      ],
-      "models": [
-        "../client/src/models"
-      ],
-      "utils": [
-        "../client/src/utils"
-      ],
-      "components": [
-        "../client/src/components"
-      ],
-      "messages": [
-        "../client/src/messages"
-      ],
-      "routes": [
-        "../client/src/routes"
-      ],
-      "shared": [
-        "../shared"
-      ]
+      "vendor": ["../client/src/vendor"],
+      "services": ["../client/src/services"],
+      "store": ["../client/src/store"],
+      "models": ["../client/src/models"],
+      "components": ["../client/src/components"],
+      "messages": ["../client/src/messages"],
+      "routes": ["../client/src/routes"],
+      "views": ["../client/src/views"],
+      "shared": ["../shared"]
     }
   },
-  "include": [
-    "./src/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "./data",
-    "./*.js"
-  ]
+  "include": ["./src/**/*"],
+  "exclude": ["node_modules", "./data", "./*.js"]
 }
