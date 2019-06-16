@@ -2,7 +2,8 @@
   "name": "nba-trade-tree",
   "private": true,
   "devDependencies": {
-    "concurrently": "4.1.0"
+    "concurrently": "4.1.0",
+    "husky": "2.4.1"
   },
   "scripts": {
     "client": "cd client && npm start",
@@ -11,5 +12,10 @@
     "install-server": "cd server && npm i",
     "start": "concurrently - kill-others \"npm run client\" \"npm run server\"",
     "install": "npm run install-client & npm run install-server"
+  },
+  "husky": {
+    "hooks": {
+      "pre-push": "cd server && npm test"
+    }
   }
 }
