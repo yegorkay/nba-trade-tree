@@ -1,5 +1,4 @@
 import { React, Select, Component, _ } from 'vendor';
-import { connect } from 'utils';
 import { tradeActions } from 'store';
 import {
   Dictionary,
@@ -13,9 +12,9 @@ import { ITeam, ITrade } from 'shared';
 import { TransactionContainer, Box, Flex } from 'components';
 import { ErrorMessages } from 'messages';
 import { routes } from 'routes';
-import { formatService, appService } from 'services';
+import { formatService, appService, connect } from 'services';
 
-interface IAppProps {
+interface ITradeProps {
   teams: ITeam[];
   teamSelectOptions: ITeamSelectOption[];
   tradeHistory: Dictionary<ITrade[]>;
@@ -23,13 +22,13 @@ interface IAppProps {
   queryParams: ITeamQueryParams;
 }
 
-interface IAppState {
+interface ITradeState {
   selectedOption: ITeamSelectOption[];
   defaultValue: ITeamSelectOption[]; // We have a default value to avoid the select component not rendering
 }
 
 @connect(
-  (state: IGlobalState): IAppProps => ({
+  (state: IGlobalState): ITradeProps => ({
     teams: state.trade.teams,
     teamSelectOptions: state.trade.teamSelectOptions,
     tradeHistory: state.trade.tradeHistory,
@@ -37,7 +36,10 @@ interface IAppState {
     queryParams: state.settings.queryParams
   })
 )
-class App extends Component<IAppProps & IConnectedComponentProps, IAppState> {
+class Trade extends Component<
+  ITradeProps & IConnectedComponentProps,
+  ITradeState
+> {
   state = {
     selectedOption: [],
     defaultValue: []
@@ -52,7 +54,7 @@ class App extends Component<IAppProps & IConnectedComponentProps, IAppState> {
     }
   }
 
-  componentWillReceiveProps(nextProps: IAppProps) {
+  componentWillReceiveProps(nextProps: ITradeProps) {
     const { dispatch, queryParams, teamSelectOptions } = this.props;
 
     const paramPropsNoMatch = !_.isEqual(queryParams, nextProps.queryParams);
@@ -179,4 +181,4 @@ class App extends Component<IAppProps & IConnectedComponentProps, IAppState> {
   }
 }
 
-export { App };
+export { Trade };
