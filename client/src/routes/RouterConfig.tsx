@@ -6,7 +6,7 @@ const RouterConfig = () => (
   <Router>
     <Switch>
       <Route path={routes.root()} exact component={Trade} />
-      <Route path={routes.player(null)} component={Player} />
+      <Route path={routes.player(null, null)} component={Player} />
     </Switch>
   </Router>
 );

@@ -19,7 +19,7 @@ class AppService {
     });
   }
 
-  getPlayerHistory(id: string, date?: string) {
+  getPlayerHistory(id: string, date: string) {
     return axios({
       method: 'GET',
       url: routes.PLAYER_HISTORY,

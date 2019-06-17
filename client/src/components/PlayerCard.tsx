@@ -9,7 +9,7 @@ interface IPlayerCardProps {
 }
 
 const PlayerCard: FunctionComponent<IPlayerCardProps> = (props) => {
-  const { name, tradedBy, tradedTo, playerId } = props.player;
+  const { name, tradedBy, tradedTo, playerId, transactionDate } = props.player;
   return (
     <Card
       p={2}
@@ -19,7 +19,7 @@ const PlayerCard: FunctionComponent<IPlayerCardProps> = (props) => {
       borderRadius={8}
       boxShadow="0 2px 6px rgba(0, 0, 0, 0.25)"
     >
-      <Link to={routes.player(playerId)}>
+      <Link to={routes.player(playerId, transactionDate)}>
         <Text mb={1}>{name}</Text>
         <Text mb={1}>Traded By: {tradedBy}</Text>
         <Text>Traded To: {tradedTo}</Text>

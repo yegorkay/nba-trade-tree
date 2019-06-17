@@ -16,8 +16,11 @@ interface IPlayerProps {
 class Player extends Component<IPlayerProps & IConnectedComponentProps, {}> {
   componentDidMount() {
     const { match, dispatch } = this.props;
-    const playerId = match.params['playerId'];
-    dispatch(playerActions.getPlayerHistory(playerId));
+    const getParam = (param: 'playerId' | 'date'): string =>
+      match.params[param];
+    const playerId = getParam('playerId');
+    const date = getParam('date');
+    dispatch(playerActions.getPlayerHistory(playerId, date));
   }
 
   render() {

@@ -5,7 +5,8 @@ const routes = {
   /** route = `/` */
   root: () => '/',
   /** route = `/player/:playerId` */
-  player: (playerId: string | null) => `/player/${createParam(playerId)}`
+  player: (playerId: string | null, date: string | null) =>
+    `/player/${createParam(playerId)}/${createParam(date, 'date')}`
 };
 
 export { routes };
