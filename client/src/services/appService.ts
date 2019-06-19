@@ -29,16 +29,19 @@ class AppService {
 
   configureInterceptor() {
     axios.interceptors.request.use((config) => {
+      console.log('start');
       store.dispatch(settingsActions.setAsyncStart());
       return config;
     });
 
     axios.interceptors.response.use(
       (response) => {
+        console.log('success');
         store.dispatch(settingsActions.setAsyncSuccess());
         return response;
       },
       (error) => {
+        console.log('reject');
         store.dispatch(settingsActions.setAsyncError());
         return Promise.reject(error);
       }

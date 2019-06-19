@@ -106,7 +106,7 @@ export const teamNames: ITeam[] = [
     teamName: 'Philadelphia 76ers'
   },
   {
-    teamAbr: 'PHX',
+    teamAbr: 'PHO',
     teamName: 'Phoenix Suns'
   },
   {
