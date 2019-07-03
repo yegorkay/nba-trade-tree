@@ -1,4 +1,3 @@
-import { moment } from 'vendor';
 import { ITeamSelectOption } from 'models';
 
 class FormatService {
@@ -15,12 +14,10 @@ class FormatService {
     });
   }
 
-  formatDate(date: string): string {
-    const format = 'MMMM Do YYYY';
-    return moment(new Date(date)).format(format);
-  }
-
-  getQueryIndexValue(query: string, teamSelectOptions: ITeamSelectOption[]): number {
+  getQueryIndexValue(
+    query: string,
+    teamSelectOptions: ITeamSelectOption[]
+  ): number {
     return teamSelectOptions.findIndex((team) => team.value === query);
   }
 }

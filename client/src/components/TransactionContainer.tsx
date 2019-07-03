@@ -1,9 +1,16 @@
 import { React, _ } from 'vendor';
 import { ITrade } from 'shared';
 import { Dictionary, ITeamSelectOption, FunctionComponent } from 'models';
-import { PlayerCard, Card, Box, Text, Flex, LoadingWrapper } from 'components';
+import {
+  PlayerCard,
+  Card,
+  Box,
+  Text,
+  Flex,
+  LoadingWrapper,
+  FormattedDate
+} from 'components';
 import { ErrorMessages } from 'messages';
-import { formatService } from 'services';
 
 interface ITransactionContainerProps {
   transactions: Dictionary<ITrade[]>;
@@ -14,19 +21,19 @@ const renderPlayerCard = (
   playerArray: [string, ITrade[]],
   index: number
 ): JSX.Element => (
-    <Box mb={3} key={index}>
-      <Text mb={2}>
-        Transaction Date: {formatService.formatDate(playerArray[0])}
-      </Text>
-      <Flex flexWrap="wrap">
-        {playerArray[1].map((player) => (
-          <PlayerCard
-            {...{ player, key: `${player.transactionDate}-${player.name}` }}
-          />
-        ))}
-      </Flex>
-    </Box>
-  );
+  <Box mb={3} key={index}>
+    <Text mb={2}>
+      Transaction Date: <FormattedDate date={playerArray[0]} />
+    </Text>
+    <Flex flexWrap="wrap">
+      {playerArray[1].map((player) => (
+        <PlayerCard
+          {...{ player, key: `${player.transactionDate}-${player.name}` }}
+        />
+      ))}
+    </Flex>
+  </Box>
+);
 
 const TransactionContainer: FunctionComponent<ITransactionContainerProps> = (
   props
@@ -41,8 +48,8 @@ const TransactionContainer: FunctionComponent<ITransactionContainerProps> = (
         {!isEmpty ? (
           transactionCards
         ) : (
-            <Text>{ErrorMessages.NO_TRANSACTIONS}</Text>
-          )}
+          <Text>{ErrorMessages.NO_TRANSACTIONS}</Text>
+        )}
       </Card>
     </LoadingWrapper>
   );

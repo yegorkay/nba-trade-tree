@@ -1,3 +1,4 @@
+import { IBasePlayer } from './basePlayerModel';
 import { IPlayer } from './playerModel';
 
 export interface ITransaction {
@@ -5,6 +6,6 @@ export interface ITransaction {
   transactionDate: string;
   tradedBy: string;
   tradedTo: string;
-  tradedPlayers: IPlayer[] | [];
+  tradedPlayers: IBasePlayer[] | [];
   tradedPicks: IPlayer[] | [];
 }

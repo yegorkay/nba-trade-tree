@@ -14,6 +14,6 @@ export interface ITransaction {
   transactionDate: string;
   tradedBy: string;
   tradedTo: string;
-  tradedPlayers: IPlayer[] | [];
+  tradedPlayers: IBasePlayer[] | [];
   tradedPicks: IPlayer[] | [];
 }
