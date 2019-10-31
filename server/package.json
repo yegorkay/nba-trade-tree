@@ -17,7 +17,7 @@
     "body-parser": "1.18.3",
     "cheerio": "1.0.0-rc.2",
     "express": "4.16.4",
-    "lodash": "4.17.11",
+    "lodash": "4.17.13",
     "moment": "2.24.0",
     "puppeteer": "1.12.2"
   },
