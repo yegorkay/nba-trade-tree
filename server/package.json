@@ -19,7 +19,7 @@
     "express": "4.16.4",
     "lodash": "4.17.11",
     "moment": "2.24.0",
-    "puppeteer": "1.12.2"
+    "puppeteer": "1.13.0"
   },
   "devDependencies": {
     "@types/body-parser": "1.17.0",
